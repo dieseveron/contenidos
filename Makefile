@@ -32,5 +32,4 @@ clean:
 	rm *aux *log
 
 clean-all:
-	cd $(OUTPUTDIR)
-	rm *aux *log *pdf
+	rm pdf/*
