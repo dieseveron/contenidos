@@ -1,3 +1,13 @@
-pdf/*.aux
-pdf/*.log
-pdf/*.pdf
+*.aux
+*.log
+*.nav
+*.out
+*.mk
+*.snm
+*.tmp
+*.toc
+*.vrb
+*~
+*-stamp
+src/*/*/main.pdf
+*.pdfpc
