@@ -1,35 +1,14 @@
-
-OUTPUTDIR=pdf
+SRC      = src
+SUBJECTS = $(SRC)/iso $(SRC)/so
 
 all:
-	pdflatex -output-directory $(OUTPUTDIR) practica01.tex
-	pdflatex -output-directory $(OUTPUTDIR) practica02.tex
-	pdflatex -output-directory $(OUTPUTDIR) practica03.tex
-	pdflatex -output-directory $(OUTPUTDIR) practica04.tex
-	pdflatex -output-directory $(OUTPUTDIR) practica05.tex
-	pdflatex -output-directory $(OUTPUTDIR) practica06.tex
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ ; done
 
-01:
-	pdflatex -output-directory $(OUTPUTDIR) practica01.tex
-
-02:
-	pdflatex -output-directory $(OUTPUTDIR) practica02.tex
-
-03:
-	pdflatex -output-directory $(OUTPUTDIR) practica03.tex
-
-04:	
-	pdflatex -output-directory $(OUTPUTDIR) practica04.tex
-
-05:
-	pdflatex -output-directory $(OUTPUTDIR) practica05.tex
-
-06:	
-	pdflatex -output-directory $(OUTPUTDIR) practica06.tex
+install:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ install ; done
 
 clean:
-	cd $(OUTPUTDIR)
-	rm *aux *log
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ clean ; done
 
-clean-all:
-	rm pdf/*
+distclean:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ distclean ; done
