@@ -40,3 +40,6 @@ ejecutá `make install` para que el sistema de compilación la guarde en el
 directorio `pdf/`. ¡No hagas `commit`s de PDFs sin terminar!
 
 # ¿Cómo colaborar?
+La mejor forma de escribir material para la cátedra utilizando este
+repositorio es mirando y estudiando lo que ya está hecho, con el objetivo de
+aprender la sintaxis, y traducir a LaTeX el material de años anteriores.
