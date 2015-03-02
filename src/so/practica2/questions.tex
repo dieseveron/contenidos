@@ -1,3 +1,358 @@
-\question Hello world.
+\section{Conceptos teóricos}
+\textit{El propósito de esta primera sección de la práctica es introducir
+  los conceptos preliminares que necesitará el alumno, para desarrollar la
+  actividad práctica del apartado B de la presente guía de estudio.}
+\begin{questions}
+  \question ¿Qué es el \textit{kernel} de GNU/Linux? ¿Cuáles son sus funciones
+  principales dentro del Sistema Operativo?
 
-\question Good bye cruel world!
+  \question Indique una breve reseña histórica acerca de la evolución del
+  \textit{kernel} de GNU/Linux
+
+  \question Explique brevemente la arquitectura del \textit{kernel} de GNU/Linux
+  teniendo en cuenta: tipo de \textit{kernel}, módulos, portabilidad, etc.
+
+  \question ¿Cuáles son los cambios que se introdujeron en el \textit{kernel} a
+  partir de la versión 3.0? ¿ Cuál fue la razón por la cual se cambió de la
+  versión 2 a la 3?
+
+  \question ¿Cómo se define el versionado de los \textit{kernel}s de GNU/Linux?
+
+  \question ¿Cuáles son las razones por las cuáles los usuarios de
+  GNU/Linux recompilan sus kernels?
+
+  \question ¿Cuáles son las distintas opciones para realizar la
+  configuración de opciones de compilación de un \textit{kernel}? Cite diferencias,
+  necesidades (paquetes adicionales de software que se pueden requerir),
+  pro y contras de cada una de ellas.
+
+  \question Nombre al menos 5 opciones de las más importantes que
+  encontrará al momento de realizar la configuración de un \textit{kernel} para su
+  posterior compilación.
+
+  \question Indique que tarea realiza cada uno de los siguientes comandos
+  durante la tarea de configuración/compilación del \textit{kernel}:
+
+  \begin{parts}
+  \part \texttt{make menuconfig}
+
+  \part \texttt{make clean}
+
+  \part \texttt{make} (investigue la funcionalidad del parámetro \texttt{-j})
+
+  \part \texttt{make modules} (utilizado en antiguos kernels, actualmente
+  no es necesario)
+
+  \part \texttt{make modules\_install}
+
+  \part \texttt{make install}
+  \end{parts}
+
+  \question Una vez que el \textit{kernel} fue compilado, ¿dónde queda ubicada su
+  imagen? ¿dónde debería ser reubicada? ¿Existe algún comando que realice
+  esta copia en forma automática?
+
+  \question ¿A qué hace referencia el archivo \texttt{initramfs}? ¿Cuál es
+  su funcionalidad?  ¿Bajo qué condiciones puede no ser necesario?
+
+  \question ¿Cuál es la razón por la que una vez compilado el nuevo \textit{kernel},
+  es necesario reconfigurar el gestor de arranque que tengamos instalado?
+
+  \question ¿Qué es un módulo del \textit{kernel}? ¿Cuáles son los comandos
+  principales para el manejo de módulos del kernel?
+
+  \question ¿Qué es un parche del \textit{kernel}? ¿Cuáles son las razones
+  principales por las cuáles se deberían aplicar parches en el kernel? ¿A
+  través de qué comando se realiza la aplicación de parches en el
+  \textit{kernel}?
+\end{questions}
+
+\section{Ejercicio taller: Compilación del \textit{kernel} Linux}
+\textit{El propósito del siguiente ejercicio es el de guiar al alumno en el
+  proceso de compilación del \textit{kernel} de GNU/Linux. Si bien los
+  siguientes ejercicios permiten agregar determinada funcionalidad al
+  \textit{kernel}, es aconsejable que los alumnos investiguen las distintas
+  opciones con el fin de adquirir experiencia adicional. Para la
+  realización de este taller se ha utilizado la versión \KERNELBASEVERSION\
+  del \textit{kernel} de GNU/Linux. Aquel alumno que decida utilizar otra
+  versión deberá descargar el código fuente y los parches del
+  \textit{kernel} correspondientes de acuerdo a la versión utilizada.  }
+
+A través de los siguientes pasos agregaremos nueva funcionalidad a nuestro
+\textit{kernel} de GNU/Linux asumiendo que la misma no se encuentra soportada en
+nuestro \textit{kernel} actual. Dentro de la funcionalidad a agregar se encuentran:
+
+\begin{itemize}
+\item El soporte para sistemas de archivos \texttt{minix} y \texttt{ext4}
+\item Soporte para la utilización de dispositivos de \textit{loopback}
+\item Actualizaremos una versión de nuestro \textit{kernel}, a través de la aplicación de
+parches
+\end{itemize}
+
+Aquel alumno que utilice la máquina virtual provista por la Cátedra, no
+tendrá que instalar el software necesario para realizar la compilación, ya
+que el mismo se encuentra incluido. \textbf{El nombre del usuario a utilizar es
+\texttt{so}, y su contraseña \texttt{sistemasoperativos}}. Este usuario
+tiene permitido utilizar \texttt{sudo}, por lo cual para obtener
+privilegios de \texttt{root} basta con ejecutar el comando \texttt{sudo
+  su}.
+
+En caso de no utilizar la máquina virtual provista, se deberá realizar la
+instalación del software requerido para la instalación (librerías,
+compiladores, etc.)
+
+En los comandos de ejemplo de esta práctica se verá que algunos comandos
+empiezan con \texttt{\$} y otros con \texttt{\#}. Estos símbolos
+representan el \textit{prompt} del usuario y no deben escribirse cuando se
+copie el comando. El símbolo \texttt{\$} significa que el comando debe
+ejecutarse con un usuario normal. En el caso de la máquina virtual, es el
+usuario \texttt{so}. El símbolo \texttt{\#} significa que el comando debe
+ejecutarse con privilegios de usuario \texttt{root}.
+
+\begin{questions}
+  \question Descargue los archivos publicados en el sitio web de la
+  cátedra, que se llaman \textit{minixFS} y \textit{ext4FS.gz} (en la
+  máquina virtual provista por la cátedra se encuentran en el directorio
+  \texttt{/home/so}).
+
+  Estos archivos representan lo que se conoce como \textit{loop
+    device}. Básicamente son archivos regulares que pueden ser tratados
+  como dispositivos de bloques, donde uno puede crear un sistema de
+  archivos dentro de ellos y montarlos como si montáramos cualquier otro
+  dispositivo de bloques como, por ejemplo, particiones de un disco
+  rígido. La particularidad que tienen estos archivos, es que han sido
+  formateados con distintos tipos de sistemas de archivos. El archivo
+  denominado \textit{minixFS} se formateó con un tipo de sistema de
+  archivos denominado \texttt{minix}. Como ya sabrán, para poder acceder a
+  la información de este pseudo dispositivo, tendremos que soportar el
+  sistema de archivos \texttt{minix} en nuestro \textit{kernel}. Por otro lado, el
+  archivo llamado \textit{ext4FS.gz} está comprimido con la utilidad
+  \texttt{gzip} (para descomprimirlo utilizaremos \texttt{gzip -d
+    ext4FS.gz}). En este archivo comprimido, encontraremos otro dispositivo
+  de bloques, formateado con el sistema de archivos \textit{extended 4}
+  (\texttt{ext4}).
+
+  \question La tarea que tendremos que realizar en este ejercicio consiste
+  en intentar montar los archivos con formato \texttt{minix} y
+  \texttt{ext4} que se encuentran publicado en el sitio de la cátedra y que
+  ya hemos descargado, con el fin de poder visualizar la información que en
+  él se encuentra. Para ello, seguiremos los siguientes pasos:
+  \begin{parts}
+    \part Descargaremos este archivo en algún directorio determinado de
+    nuestro \textit{File System}, como por ejemplo nuestro directorio
+    personal, \texttt{\$HOME}.
+
+    \part Verificaremos que dentro del directorio \texttt{/mnt} existan al
+    menos dos directorios donde podamos montar nuestros pseudo
+    dispositivos. Si no existen los directorios, los crearemos. Por ejemplo
+    podemos utilizar el nombre \texttt{/mnt/minix/} y \texttt{/mnt/ext4/}.
+
+    \part A continuación montaremos nuestros dispositivos utilizando los
+    siguientes comandos:\\
+    \texttt{\\
+\$ sudo su \\
+\# mount -t minix \$HOME/minixFS /mnt/minix/ -o loop\\
+\# mount -t ext4 \$HOME/ext4FS /mnt/ext4/ -o loop}\\
+
+\part ¿Puede explicar qué sucedió? {\small \textbf{Nota}: \textit{si estás
+    usando la máquina virtual de la cátedra, el comportamiento esperado es
+    que los comandos anteriores fallen.}}
+
+  \end{parts}
+
+  \question Descargue el código fuente del \textit{kernel} a compilar, el parche
+  correspondiente a la versión a la que se quiere llevar el código fuente,
+  arme la estructura de directorios y aplique el parche (en la máquina
+  virtual provista por la cátedra se encuentran en el directorio
+  \texttt{/usr/src}).
+  \begin{parts}
+    \part  Descargar el código fuente:\\
+    \texttt{\\ % Debería hacerlo con verbatim o lslisting, pero no resuelve
+               % las macros. Lo dejo así hasta que encuentre una forma más
+               % prolija de hacerlo.
+\$ cd /usr/src/\\
+\$ sudo su\\
+\# wget
+https://kernel.org/pub/linux/kernel/v3.x/linux-\KERNELBASEVERSION.tar.xz}\\
+
+\part Descargar el parche correspondiente a la versión a la que quiere
+llevar su código fuente. Si se está usando la máquina virtual provista por la cátedra,
+el parche también se encuentra en \texttt{/usr/src}:\\
+\texttt{\\
+\# wget https://kernel.org/pub/linux/kernel/v3.x/patch-\PATCHEDKERNELVERSION.xz} \\
+
+\part Descomprimir el \textit{kernel} utilizando usuario sin privilegios de
+\texttt{root} (en la virtual, el usuario \texttt{so}), en un nuevo
+directorio en el \texttt{\$HOME} del usuario.\\
+\texttt{\\
+\# exit \\
+\$ mkdir \$HOME/kernel/ \\
+\$ cd \$HOME/kernel/ \\
+\$ tar xvf /usr/src/linux-\KERNELBASEVERSION.tar.xz} \\
+
+\part  Aplique el parche descargado a nuestro código fuente. Esta
+tarea la haremos ubicados en el directorio de nuestro código fuente y a
+través de la herramienta \texttt{patch}, verificando que no arroje errores al
+finalizar.\\
+\texttt{\\
+\$ cd \$HOME/kernel/linux-\KERNELBASEVERSION \\
+\$ xzcat /usr/src/patch-\PATCHEDKERNELVERSION.xz | patch -p1} \\
+  \end{parts}
+
+  \question Configurar el código fuente del \textit{kernel} para su
+  compilación. Esta tarea se realiza a través de los comandos vistos en el
+  ejercicio 8 de la primera parte de esta práctica. En primer lugar, se
+  deberá partir de la configuración del \textit{kernel} que está corriendo
+  actualmente. Por convención, esta configuración se encuentra ubicada en
+  \texttt{/boot}. La copiaremos al directorio donde se encuentra el \textit{kernel}
+  parcheado.\\
+\texttt{\\
+\$ cp /boot/config-\$(uname -r) \$HOME/kernel/linux-\KERNELBASEVERSION/.config} \\
+
+  En este caso utilizaremos la herramienta \texttt{menuconfig}. Para ello
+  ejecutaremos:\\
+\texttt{\\
+\$ cd \$HOME/kernel/linux-\KERNELBASEVERSION \\
+\$ make menuconfig} \\
+
+  Este comando pondrá en pantalla un menú
+  de configuración del código fuente del \textit{kernel} donde podremos
+  seleccionar diversas opciones dependiendo de nuestro hardware y
+  necesidades. Dentro de las opciones que debemos seleccionar con el fin de
+  cumplir nuestro objetivo se encuentran:
+  \begin{parts}
+    \part Soporte para sistemas de archivos \texttt{minix}: En la opción
+    \textit{File Systems} $\to$ \textit{Miscellaneous filesystems},
+    tendremos que seleccionar \textit{Minix fs support}.
+
+    \part Soporte para sistemas de archivos \texttt{ext4}: En la opción
+    \textit{File Systems}, tendremos que seleccionar \textit{The Extended 4
+      (ext4) filesystem}.
+
+    \part Soporte para dispositivos de \textit{Loopback}: En la opción
+    \textit{Device Drivers} $\to$ \textit{Block Devices}, tendremos que
+    seleccionar \textit{Loopback device support}.
+  \end{parts}
+
+  La forma de movernos a través de este menú es utilizando las flechas del
+  cursor, la tecla \textit{Enter} y la barra espaciadora. A través de esta
+  última podremos decidir sobre determinada opción si la misma será
+  incluida en nuestro \textit{kernel}, si será soportada a través de módulos, o bien
+  si no se dará soporte a la funcionalidad (\texttt{<*>}, \texttt{<M>},
+  \texttt{< >} respectivamente). Una vez seleccionadas las opciones
+  necesarias, saldremos de este menú de configuración a través de la opción
+  \texttt{Exit}, guardando los cambios.
+
+  \question Luego de configurar nuestro \textit{kernel}, nos dispondremos a realizar
+  la compilación del mismo y sus módulos.
+    
+  Para realizar la compilación deberemos ejecutar:
+
+  \texttt{\$ make -j\textbf{X}}
+
+  \textbf{X} deberá reemplazarse por la cantidad de procesadores con los
+  que cuente su máquina. En máquinas con más de un procesador o núcleo, la
+  utilización de este parámetro puede acelerar mucho el proceso de
+  compilación, ya que ejecuta \textbf{X} \textit{jobs} o procesos para la
+  tarea de compilación en forma simultánea. Este comando debemos ejecutarlo
+  ubicados dentro del directorio donde se encuentra el código fuente del
+  \textit{kernel} descargado
+  (\texttt{\KERNELSOURCEPATH/linux-\KERNELBASEVERSION}). La ejecución de
+  este último puede durar varios minutos, o incluso horas, dependiendo del
+  tipo de hardware que tengamos en nuestra PC y las opciones que hayamos
+  seleccionado al momento de la configuración. Una vez finalizado este
+  proceso, debemos verificar que no haya arrojado errores. En caso de que
+  esto ocurra debemos verificar de qué tipo de error se trata y volver a la
+  configuración de nuestro \textit{kernel} para corregir los problemas. Una
+  vez corregidos tendremos que volver a compilar nuestro
+  \textit{kernel}. Previo a esta nueva compilación debemos correr el
+  comando \texttt{make clean} para eliminar pasos inconclusos de
+  compilaciones anteriores.
+
+  \question Finalizado este proceso, debemos reubicar las nuevas imágenes
+  en los directorios correspondientes, instalar los módulos, crear una
+  imagen \texttt{initramfs} y reconfigurar nuestro gestor de arranque.
+  \begin{parts}
+    \part En primer lugar, para realizar la instalación de los módulos
+    ejecutaremos:
+
+    \texttt{\$ sudo make modules\_install}
+
+    Recordar que debemos estar ubicados en el directorio
+    \texttt{\KERNELSOURCEPATH/linux-\KERNELBASEVERSION}. Este comando
+    copiará los módulos compilados al directorio
+    \texttt{/lib/modules/\PATCHEDKERNELVERSION}.
+
+    \part Para reubicar la imagen del \textit{kernel} disponemos de al
+    menos dos métodos.
+    \begin{enumerate}
+    \item Utilizar el siguiente comando:\\
+      \texttt{\\
+        \$ sudo make install} \\
+ 
+      Este comando reubicará todos los archivos creados durante el proceso
+      de compilación. Este es el método \textbf{recomendado} puesto que,
+      entre otros detalles, no sobre-escribirá ningún archivo en caso de
+      que el \textit{kernel} que estemos instalando tenga la misma versión
+      que el que está corriendo.
+
+    \item Este método consiste en hacer lo mismo que el anterior, pero de
+      forma manual. Se deben realizar la copia manual de cada uno de los
+      archivos creados. Para ello debemos ejecutar los siguientes comandos:\\
+      \texttt{\\
+        \$ sudo su \\
+        \# cp -i \KERNELSOURCEPATH/linux-\KERNELBASEVERSION/arch/i386/boot/bzImage /boot/vmlinuz-\PATCHEDKERNELVERSION \\
+        \# cp -i \KERNELSOURCEPATH/linux-\KERNELBASEVERSION/System.map /boot/System.map-\PATCHEDKERNELVERSION \\
+        \# cp -i \KERNELSOURCEPATH/linux-\KERNELBASEVERSION/.config
+        /boot/config-\PATCHEDKERNELVERSION
+      } \\
+
+El primer comando copiará la imagen del \textit{kernel}, el segundo copiará el
+archivo de mapa de símbolos correspondiente a la nueva imagen del
+\textit{kernel}. El último comando nos permitirá mantener una copia del archivo de
+configuración con el cual fue compilado nuestro \textit{kernel}. Si bien no es
+necesario mantener este último archivo, es recomendable hacerlo, con el fin
+de mantener el orden y una documentación de las opciones de compilación
+utilizadas en la imagen compilada.
+    \end{enumerate}
+
+    \part Si en el inciso anterior se utilizó la opción de \texttt{make
+      install}, entonces podremos saltear este paso. De lo contrario, para
+    la creación de la imagen \texttt{initramfs} utilizaremos el
+    comando: \\
+    \texttt{\\
+      \# mkinitramfs -o /boot/initrd.img-\PATCHEDKERNELVERSION\ \PATCHEDKERNELVERSION}\\
+    
+\part El último paso previo a realizar la prueba de nuestra imagen del
+\textit{kernel}, es reconfigurar nuestro gestor arranque de manera tal que podamos
+\textit{bootear} con la nueva imagen. Suponiendo que el gestor de arranque
+que tenemos instalado es GRUB en su versión 2, ejecutaremos el comando:\\
+\texttt{\\
+\# update-grub2}\\
+
+Este comando se encargará de agregar las entradas correspondientes en el
+archivo de configuración \texttt{/boot/grub/grub.cfg}. Nuevamente, si
+utilizamos \texttt{make install} para instalar el \textit{kernel}, entonces
+es posible saltear este paso.
+
+  \end{parts}
+
+  \question Como último paso, a través del comando \texttt{reboot},
+  reiniciaremos nuestro equipo y probaremos el nuevo \textit{kernel}
+  recientemente compilado. Al momento de cargarse nuestro gestor de
+  arranque, veremos una nueva entrada que hace referencia al nuevo
+  \textit{kernel}. Para \textit{bootear}, seleccionamos esta entrada y
+  verificamos que el sistema funcione correctamente. En caso de que el
+  sistema no arranque con el nuevo \textit{kernel}, tendremos la opción de
+  volver a \textit{bootear} con nuestro \textit{kernel} anterior para
+  corregir los errores y realizar una nueva compilación.
+
+  \question Repita el procedimiento del inciso dos. ¿Qué sucede ahora?
+
+  Como nuestro \textit{kernel} tiene soporte para este tipo de \textit{File
+    System}, entonces, ingresando a \texttt{/mnt/minix}, encontraremos la
+  información contenida en este pseudo dispositivo. Nos encontraremos con
+  una situación similar al querer montar el sistema de archivos
+  \texttt{ext4}.
+
+\end{questions}
