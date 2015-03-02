@@ -7,7 +7,7 @@ PRACTICE := $(notdir $(CURDIR))
 
 all: pdf
 pdf: $(NAME).pdf
-$(NAME).pdf:
+$(NAME).pdf: $(NAME).tex
 	$(TEXC) $(NAME)
 
 install: $(PDFDIR)/$(SUBJECT)/$(PRACTICE).pdf
