@@ -21,7 +21,13 @@ puede efectuarse mediante el siguiente comando:
     # apt-get install make texlive texlive-lang-spanish
 
 ## Windows
-TODO
+En Windows NT y sus versiones derivadas debera desacargar los siguientes instaladores:
+
+	#MikTex desde "http://mirrors.ctan.org/systems/win32/miktex/setup/basic-miktex-2.9.5105.exe"
+	#GnuWin desde "http://gnuwin32.sourceforge.net/downlinks/make.php"
+
+Una vez descargado los archivos debera ejecutarlos siguiente las indicaciones. Para finalizar reinicie la máquina.
+Nota: en caso de que la ejecucion de los comandos `make` o `pdflatex` no sean reconocidos por el interprete de comandos, agregar los siguientes directorios a la variable de entorno PATH del sistema: %DIRECTORIO_INSTALACION_MIKTEX%\miktex\bin y %DIRECTORIO_INSTALACION_GNUWIN%\bin.
 
 # Modo de uso
 La forma más sencilla de compilar el contenido de este repositorio es
