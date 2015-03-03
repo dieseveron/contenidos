@@ -1,0 +1,815 @@
+\section{Introducción}
+\begin{frame}
+  \frametitle{Introducción}
+  ¿Qué es una shell?
+  \begin{itemize}
+  \item Intérprete de \alert{comandos}
+  \item Interactivo
+  \item En sistemas operativos *nix es configurable
+  \item Proveen estructuras de control que permiten programar \textit{shell scripts}
+  \end{itemize}
+
+  \pause
+  ¿Qué puedo hacer con \textit{shell scripts}?
+  \begin{itemize}
+  \item \alert{Automatización} de tareas
+  \item Aplicaciones interactivas
+  \item Aplicaciones con interfaz gráfica (con el comando \textit{zenity},
+    por ejemplo)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Tipos de \textit{shell}}
+  Existen muchas \textit{shells}. Sus diferencias consisten principalmente
+  en sintaxis. A continuación se listan las más utilizadas:
+  \begin{itemize}
+  \item \texttt{sh:} \textit{Shell} por defecto en Unix.
+  \item \texttt{bash:} Cómoda, instalada por defecto en la mayoría de las
+    distribuciones.
+  \item \texttt{dash:} Eficiente, parcialmente compatible con
+    \texttt{bash}.
+  \item \texttt{csh:} Sintaxis incompatible con
+    \texttt{bash}/\texttt{dash}.
+  \item Otros...
+  \end{itemize}
+  \pause
+  \begin{block}{Tip}
+	En la materia utilizaremos \texttt{bash}.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Diferencias con otros lenguajes}
+	¿Por qué \textit{shell script} y no C, o Java, o Python?
+	\begin{itemize}
+		\item Práctico para manejar archivos
+		\item Extremadamente \alert{simple} para crear procesos y manipular
+          sus salidas
+		\item \alert{Independiente} de la plataforma (a diferencia de C)
+		\item Funciona en cualquier sistema operativo de tipo *nix
+          (distribución GNU/Linux, Mac OS X, etc.)
+		\item Se puede probar en el \alert{intérprete interactivo} (a
+          diferencia de C y Java)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Elementos del lenguaje}
+	\begin{itemize}
+		\item Instrucciones: comandos
+		\begin{itemize}
+			\item Internos o \textit{built-in} (\texttt{help} para verlos)
+			\item Externos (archivos separados \texttt{man comando})
+		\end{itemize}
+		\item Redirecciones y \textit{pipes}
+		\item Comentarios que empiezan con \texttt{\#}
+		\item Estructuras de control
+		\begin{itemize}
+			\item \texttt{if}
+			\item \texttt{while}
+			\item \texttt{for} (2 tipos)
+			\item \texttt{case}
+		\end{itemize}
+		\item Variables
+		\begin{itemize}
+			\item \textit{Strings}
+			\item Arreglos ()
+		\end{itemize}
+		\item Funciones
+	\end{itemize}
+\end{frame}
+
+\section{Conceptos básicos}
+\subsection{Comandos}
+\begin{frame}[fragile]
+	\frametitle{Repaso de algunos comandos útiles}
+	\begin{itemize}
+		\item Imprimir el contenido de un archivo
+		\begin{lstlisting}
+			cat archivo
+		\end{lstlisting}
+		\item Imprimir texto
+		\begin{lstlisting}
+			echo "Hola mundo"
+		\end{lstlisting}
+		\item Leer una línea desde entrada estándar en la variable \texttt{var}
+		\begin{lstlisting}
+			read var
+		\end{lstlisting}
+      \item Quedarme con la primer columna de un texto separado por
+        \texttt{:} desde entrada estándar
+		\begin{lstlisting}
+			cut -d: -f1
+		\end{lstlisting}
+		\item Contar la cantidad de líneas que se leen desde entrada estándar
+		\begin{lstlisting}
+			wc -l
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Repaso de algunos comandos útiles}
+	\begin{itemize}
+    \item Buscar todos los archivos que contengan la cadena \textbf{pepe}
+      en el directorio \texttt{/tmp}
+		\begin{lstlisting}
+			grep pepe /tmp/*
+		\end{lstlisting}
+      \item Buscar todos los archivos dentro del \textit{home} del usuario,
+        cuyo nombre termine en \texttt{.doc}
+		\begin{lstlisting}
+			find $HOME -name "*.doc"
+		\end{lstlisting}%$
+		
+		\item Buscar todos los archivos dentro del directorio actual que sean enlaces simbólicos
+		\begin{lstlisting}
+			find -type l
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Repaso de algunos comandos útiles}
+	\begin{itemize}
+		\item \textbf{Empaquetado:} Se unen varíos archivos en uno solo (\texttt{tar})
+		\begin{lstlisting}
+			tar –cvf archivo.tar archivo1 archivo2 archivo 3
+			tar –xvf archivo.tar
+		\end{lstlisting}
+		\item \textbf{Compresión:} Se reduce el tamaño de un archivo (\texttt{gzip}/\texttt{bzip2}/etc.)
+		\begin{lstlisting}
+			gzip archivo.tar # Genera archivo.tar.gz comprimido
+			gzip –d archivo.tar.gz # Descomprime archivo.tar
+		\end{lstlisting}
+		\item El comando \texttt{tar} puede invocar a \texttt{gzip} por nosotros (argumento ``z''):
+		\begin{lstlisting}
+			tar –cvzf archivo.tar.gz arch1 arch2 arch3
+			tar –xvzf archivo.tar.gz
+		\end{lstlisting}	
+	\end{itemize}
+\end{frame}
+
+\subsection{Redirecciones y pipes}
+\begin{frame}
+	\frametitle{Redirecciones y pipes: stdin, stdout, stderr}
+	Los procesos (programas en ejecución) normalmente cuentan con 3 ``archivos'' abiertos.
+	\begin{itemize}
+		\item \textbf{stdin:} Entrada estándar, normalmente el teclado.
+		\item \textbf{stdout:} Salida estándar, normalmente el monitor.
+		\item \textbf{stderr:} Error estándar, normalmente la salida
+          estándar.
+	\end{itemize}
+	Se identifican en el S.O. con un número, el \alert{\textit{file
+        descriptor}} (descriptor de archivo):
+	\begin{enumerate}
+		\setcounter{enumi}{-1}
+		\item Entrada estándar
+		\item Salida estándar
+		\item Error estándar
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Redirecciones}
+	Sintaxis básica:
+	\begin{lstlisting}
+		comando > archivo
+		comando >> archivo
+	\end{lstlisting}
+	\begin{itemize}
+		\item \textbf{\textgreater} Redirección destructiva:
+		\begin{itemize}
+			\item Si \textit{archivo} no existe, se crea.
+			\item Si \textit{archivo} existe, sobreescribe.
+		\end{itemize}
+		\item \textbf{\textgreater\textgreater} Redirección no destructiva:
+		\begin{itemize}
+			\item Si \textit{archivo} no existe, se crea.
+			\item Si \textit{archivo} existe, agrega al final.
+		\end{itemize}
+	\end{itemize}
+    \pause
+	¿Qué hace?:
+	\begin{lstlisting}
+		cd
+		ls >> /tmp/lista.txt
+		cd /tmp
+		ls >> /tmp/lista.txt
+	\end{lstlisting}
+
+	¿Y si cambiamos \textgreater\textgreater{} por \textgreater{}?
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Otras redirecciones}
+	Sintaxis básica:
+	\begin{lstlisting}
+		comando 2> archivo
+		comando 2>> archivo
+		comando < archivo
+	\end{lstlisting}
+	\begin{itemize}
+		\item \textbf{2\textgreater{} y 2\textgreater\textgreater} Redirigen el error estándar
+		\item \textbf{\textless} Hace que \textit{archivo} sea la entrada de \textit{comando}.
+		
+		En otras palabras cuando \textit{comando} intente leer entrada del teclado, en realidad, va a leer el contenido de \textit{archivo}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Pipes (tuberías)}
+	Sintaxis básica:
+	\begin{lstlisting}
+		comando | comando2 | comando3
+	\end{lstlisting}
+	\begin{itemize}
+    \item Conectan la \alert{salida} de un comando con la \alert{entrada}
+      de otro.
+		\item Indispensables para hacer programas potentes en \textit{shell
+            script}.
+	\end{itemize}
+	Ejemplos:
+	\begin{lstlisting}
+		cat archivo | tr a-z A-Z
+		cat archivo | grep hola | cut -d, -f1
+		cat /etc/passwd | cut –d: -f1 | grep a | wc -l
+		cat /etc/passwd | cut -d: -f7 | sort | uniq > res.txt
+	\end{lstlisting}	
+\end{frame}
+
+
+\subsection{Variables y sustitución de comandos}
+\begin{frame}[fragile]
+	\frametitle{Variables}
+	\begin{itemize}[<+->]
+		\item \texttt{bash} soporta \textit{strings} y \textit{arrays}
+		\item Los nombres son \textit{case sensitive}
+		\item Para crear una variable:
+		\begin{lstlisting}
+			NOMBRE="pepe" # SIN espacios alrededor del =
+		\end{lstlisting}
+		\item Para accederla se usa \${}:
+		\begin{lstlisting}
+			echo $NOMBRE
+		\end{lstlisting}%$
+		
+		\item Para evitar ambiguedades se pueden usar llaves:
+		\begin{lstlisting}
+			# Esto no accede a $NOMBRE
+			echo $NOMBREesto_no_es_parte_de_la_variable
+			# Esto sí
+			echo ${NOMBRE}esto_no_es_parte_de_la_variable
+		\end{lstlisting}%$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Variables: Ejemplo 1}
+Los nombres de las variables pueden contener mayúsculas, minúsculas, números y el símbolo \_ (underscore)‏, pero no pueden empezar con un número.
+	\begin{lstlisting}
+		NOMBRE="Fulano De Tal"
+		facultad=Informatica
+		carrera_1="Licenciatura en Sistemas"
+		carrera_2="Licenciatura en Informatica"
+		echo El alumno $NOMBRE de la Facultad de $facultad cursa $carrera_1 y $carrera_2
+		# imprime:
+		#  El alumno Fulano De Tal de la Facultad de 
+		#  Informática cursa Licenciatura en Sistemas
+		#  y Licenciatura en Informatica
+	\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Variables: Ejemplo 2}
+	\begin{lstlisting}
+		nombre=Carlos
+		echo "Hola $nombre" # Hola Carlos
+		echo Hola ${nombre} # Hola Carlos
+		nombre=5
+		echo "Hola $nombre" # Hola 5
+	\end{lstlisting}%$
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Variables: Arreglos}
+  \begin{itemize}
+  \item \alert{\textit{``Bashismo''}}
+  \item Creación:
+    \begin{lstlisting}
+      arreglo_a=() # Se crea vacío
+      arreglo_b=(1 2 3 5 8 13 21) # Inicializado
+    \end{lstlisting}
+  \item Asignación de un valor en una posición concreta:
+    \begin{lstlisting}
+      arreglo_b[2]=spam
+    \end{lstlisting}
+  \item Acceso a un valor del arreglo (En este caso las llaves no son opcionales):
+    \begin{lstlisting}
+      echo ${arreglo_b[2]}
+      copia=${arreglo_b[2]}
+    \end{lstlisting}
+  \item Acceso a todos los valores del arreglo:
+    \begin{lstlisting}
+      echo ${arreglo[@]} # o bien ${arreglo[*]}
+    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Variables: Arreglos}
+	\begin{itemize}
+		\item Tamaño del arreglo:
+			\begin{lstlisting}
+				${#arreglo[@]} # o bien ${#arreglo[*]}
+			\end{lstlisting}
+		\item Borrado de un elemento (reduce el tamaño del arreglo pero no elimina la posición, solamente la deja vacía):
+			\begin{lstlisting}
+				unset arreglo[2]
+			\end{lstlisting}
+		\item Los índices en los arreglos comienzan en 0
+	\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Variables: Ejemplo de arreglos}
+	\begin{lstlisting}
+#!/bin/bash
+
+arreglo=(1 2 3 5 8 13 21)‏
+arreglo[2]=spam
+echo "El primer elemento es ${arreglo[0]}"
+echo "El tercer elemento es ${arreglo[2]}"
+echo "La longitud: ${#arreglo[*]}"
+echo "Todos sus elementos: ${arreglo[*]}"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Variables: Comillas}
+  \begin{itemize}
+  \item No hacen falta, a menos que:
+    \begin{itemize}
+    \item el \textit{string} tenga espacios.
+    \item que sea una variable cuyo contenido pueda tener espacios.
+    \item son importantes en las condiciones de los \texttt{if}, \texttt{while}, etc...
+    \end{itemize}
+  \item Tipos de comillas
+    \begin{itemize}
+    \item \textbf{``Comillas dobles'':}
+      \begin{lstlisting}
+var='variables'
+echo "Permiten usar $var"
+echo "Y resultados de comandos $(ls)"
+     \end{lstlisting}
+    \item \textbf{`Comillas simples':}
+      \begin{lstlisting}
+echo 'No permiten usar $var'
+echo 'Tampoco resultados de comandos $(ls)'
+      \end{lstlisting}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Comillas: Ejemplos}
+	\begin{lstlisting}
+		Un ejemplo:
+
+		variable="un texto de varias palabras"
+		variable_2=UnaSolaPalabra
+
+		echo "Podemos leer $variable"
+		echo 'No podemos leer $variable'
+
+		variable_3="Asi concateno $variable_2 a otro string"
+	\end{lstlisting}
+	\begin{itemize}
+		\item ¿Qué se imprime en cada caso?
+		\item ¿Cuál es el valor de variable\_3?
+	\end{itemize}
+\end{frame}
+\subsection{Reemplazo de comandos}
+\begin{frame}[fragile]
+	\frametitle{Reemplazo de comandos}
+	\begin{itemize}
+		\item Permite utilizar la salida de un comando como si fuese una cadena de texto normal.
+		\item Permite guardarlo en variables o utilizarlos directamente.
+		\item Se la puede utilizar de dos formas, cada una con distintas reglas:
+		\begin{lstlisting}
+			$(comando_valido)‏
+			`comando_valido`
+		\end{lstlisting}
+		\textbf{Nota:} La primer forma resulta más clara y posee reglas de anidamiento de comandos más sencillas.
+		\item Ejemplo:
+		\begin{lstlisting}
+			arch="$(ls)" # == arch="`ls`" == arch=`ls`
+			mis_archivos="$(ls /home/$(whoami))"
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\section{Programación de scripts}
+\subsection{Scripts}
+\begin{frame}[fragile]
+  \frametitle{¿Cómo hacer un script?}
+  \begin{itemize}
+  \item Crear un archivo con cualquier editor de texto.
+    \pause
+  \item Indicar el intérprete (opcional) en la primer línea con:
+    \begin{lstlisting}
+      #!/bin/bash
+    \end{lstlisting}
+    Está línea, denominada \textit{shebang}, especifica el intérprete
+    que se utilizará para ejecutar \textit{script}. Si no se
+    especifica, se utiliza el intérprete por defecto del usuario.
+    \begin{itemize}
+      \pause
+    \item   ¿Qué problemas puede traer esto?
+    \end{itemize}
+    \pause
+  \item Escribir una serie de comandos en el archivo, de la misma manera
+    que los escribiriamos en la terminal.
+    \pause
+  \item ¿Guardar el script con extensión \textit{.sh}?
+    \pause
+  \item ¿Permisos de ejecución?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Un primer script}
+	\begin{block}{Ejemplos}
+		\begin{lstlisting}
+			#!/bin/bash
+			 
+			# Si la primer línea de mi script comienza
+			# con  la cadena #! se interpretará como el
+			# path al intérprete a utilizar (podría ser
+			# python, perl, php, etc...)‏
+
+			# Ahora el script en sí
+			echo "Hola mundo"
+		\end{lstlisting}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Ejecución del script}
+	Repaso de conceptos:
+	\begin{itemize}
+		\item \textbf{Path absoluto:} Empieza desde el directorio raíz /
+		\item \textbf{Path relativo:} Empieza desde donde estamos posicionados
+		\item \textbf{. y ..} Directorio actual y directorio padre respectivamente
+		\item \textbf{Variable de entorno PATH}.
+	\end{itemize}
+
+    \pause
+
+    ¿Cómo ejecutar un \textit{script}?
+	\begin{itemize}[<+->]
+		\item Lo guardamos
+		\item ¿Le damos permisos de ejecución? 
+		\item Lo ejecutamos 
+		\begin{itemize}
+			\item \texttt{./mi\_script.sh}
+			\item \texttt{bash mi\_script.sh}
+			\item O podemos también ejecutarlo en modo \textit{debug} (depuración)\\
+			\texttt{bash -x mi\_script.sh}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection{Estructuras de control}
+\begin{frame}[fragile]
+	\frametitle{Estructuras de control}
+	\begin{block}{Selección de alternativas:}
+	\begin{columns}
+	    \begin{column}{.45\linewidth}
+		Decisión:
+	    	\begin{lstlisting}
+			if [ condition ]
+			then
+			  block
+			fi
+		\end{lstlisting}
+	    \end{column}
+	    \begin{column}{.45\linewidth}
+		Selección:
+	    	\begin{lstlisting}
+			case $variable in
+			  "valor 1")
+			    block
+			    ;;
+			  "valor 2")
+			    block
+			    ;;
+			  *)
+			    block
+			    ;;
+			esac
+		\end{lstlisting}
+	    \end{column}
+	\end{columns}
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Estructuras de control}
+	\begin{block}{Menú de opciones:}
+		\begin{lstlisting}
+			select variable in opcion1 opcion2 opcion3
+			do
+			  # en $variable está el valor elegido
+			  block
+			done
+		\end{lstlisting}
+	\end{block}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Estructuras de control}
+	\begin{block}{Menú de opciones:}
+	\begin{columns}
+		\begin{column}{.50\linewidth}
+			Ejemplo:
+			\begin{lstlisting}
+				select action in New Exit
+				do
+				  case $action in
+				    "New")‏
+				      echo "Selected option is NEW" 
+				      ;;
+				    "Exit")‏
+				      exit 0
+				      ;;
+				  esac
+				done
+			\end{lstlisting}
+		\end{column}
+		\begin{column}{.45\linewidth}
+			Imprime:
+			\begin{Verbatim}
+				1) new
+				2) exit
+				#?
+			\end{Verbatim}
+			y espera el número de opción por teclado
+		\end{column}
+	\end{columns}
+	\end{block}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Iteración - bloques \texttt{for}}
+	\begin{itemize}
+		\item C-\textit{style}:
+		\begin{lstlisting}
+			for ((i=0; i < 10; i++))
+			do
+			  block
+			done
+		\end{lstlisting}
+		\item Con lista de valores (\texttt{foreach}):
+		\begin{lstlisting}
+			for i in value1 value2 value3 valueN;
+			do
+			  block
+			done
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Iteración - Bloques WHILE y UNTIL:}
+	\begin{block}{while}
+		\begin{lstlisting}
+			while [ condition ] #Mientras se cumpla la condición
+			do
+			  block
+			done
+		\end{lstlisting}
+	\end{block}
+	\begin{block}{until}
+		\begin{lstlisting}
+			until [ condition ] #Mientras NO se cumpla la condición 
+			do
+			  block
+			done
+		\end{lstlisting}
+	\end{block}
+\end{frame}
+\subsection{Comparaciones}
+\begin{frame}[fragile]
+	\frametitle{Evaluación de condiciones lógicas:}
+	Las condiciones lógicas normalmente se evalúan mediante:
+	\begin{lstlisting}
+		[ condition ]
+		test condition
+	\end{lstlisting}
+	Operadores para condition:
+	\begin{tabular}{|l|c|c|}
+		\hline
+		\textbf{Operador} & \textbf{Con strings} & \textbf{Con números} \\ \hline
+		Igualdad & \verb+"$nombre" = "Maria"+ & \verb+$edad -eq 20+ \\ \hline
+		Desigualdad & \verb+"$nombre" != "Maria"+ & \verb+$edad -ne 20+ \\ \hline
+		Mayor & \verb+A > Z+ & \verb+5 -gt 20+ \\ \hline
+		Mayor o igual & \verb+A >= Z+ & \verb+5 -ge 20+ \\ \hline
+		Menor & \verb+A < Z+ & \verb+5 -lt 20+ \\ \hline
+		Menor o igual & \verb+A <= Z+ & \verb+5 -le 20+ \\ \hline
+	\end{tabular}
+
+\end{frame}
+\subsection{Estructuras de control en detalle}
+\begin{frame}[fragile]
+	\frametitle{Estructuras de control - ejemplos:}
+	\begin{block}{Ejemplos:}
+	\begin{columns}
+		\begin{column}{.45\linewidth}
+			\begin{lstlisting}[basicstyle=\tiny]
+				if [ "$USER" == root ]
+				then
+				    echo "super user"
+				else
+				    echo "Ud. es $USER"
+				fi
+				# -------------------
+				n=0
+				while [ $n -ne 5 ]; do
+				  echo $n 
+				  let n++
+				done
+			\end{lstlisting}
+		\end{column}
+		\begin{column}{.45\linewidth}
+			\begin{lstlisting}[basicstyle=\tiny]
+				for archivo in $(ls)‏
+				do
+				  echo "- $archivo"
+				done
+				# -------------------
+				for ((i=0; i<5; i++))‏
+				do
+				  echo $i
+				done
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+	\end{block}
+    \pause
+	Adicionalmente:
+	\begin{itemize}
+    \item \texttt{break [n]} corta la ejecución de n niveles de
+      \textit{loops}.
+    \item \texttt{continue [n]} salta a la siguiente iteración del enésimo
+      \textit{loop} que contiene esta instrucción.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Estructuras de control - break}
+	\begin{lstlisting}
+		#!/bin/bash
+		# Imprime los numeros del 1 al 5
+		# (no es un código para nada elegante)‏
+		i=0
+		# true es un comando que siempre retorna 0
+		while true
+		do
+		  let i++   # Incrementa i en 1
+		  if [ $i -eq 6 ]; then
+		      break   # Corta el loop (while)‏
+		  fi
+		  echo $i
+		done
+	\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Estructuras de control - break}
+	\begin{center}
+		{\Large ¿Qué hace el siguiente \textit{script}?}
+	\end{center}
+
+	\begin{lstlisting}
+		#!/bin/bash
+		i=0 
+		while true
+		do
+		    let i++
+		    if [ $i -eq 6 ]; then
+		        break    # Corta el while
+		    elif [ $i -eq 3 ]; then
+		        continue # Salta una iteración
+		    fi
+		    echo $i  
+		done
+	\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitle{Condiciones compuestas}
+	\begin{lstlisting}
+		# AND
+		if [ $a = $b ] && [ $a = $c ]
+		then
+		  #...
+		 
+		# OR
+		if [ $a = $b ] || [ $a = $c ]
+		then
+		  #...
+	\end{lstlisting}
+\end{frame}
+\subsection{Argumentos y valor de retorno}
+\begin{frame}[fragile]
+	\frametitle{Argumentos y valor de retorno}
+	\begin{itemize}
+		\item Los \textit{scripts} pueden recibir argumentos en su invocación.
+		\item Para accederlos, se utilizan variables especiales:
+		\begin{itemize}
+			\item \texttt{\$0} contiene la invocación al script.
+			\item \texttt{\$1}, \texttt{\$2}, \texttt{\$3}, ... contienen cada uno de los argumentos.
+			\item \texttt{\$\#} contiene la cantidad de argumentos recibidos.
+			\item \texttt{\$*} contiene la lista de todos los argumentos.
+			\item \texttt{\$?} contiene en todo momento el valor de retorno del último comando ejecutado.
+		\end{itemize}
+	\end{itemize}
+	Ejemplo:
+	\begin{lstlisting}
+		if [ $# -ne 2 ]; then
+		    exit 1 # Error
+		else
+		    echo "Nombre: $1, Apellido: $2"
+		fi
+		exit 0     # Funcionó correctamente
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Terminación de un \textit{script}}
+    Para terminar un \textit{script} usualmente se utiliza la función \texttt{exit}:
+	\begin{itemize}
+		\item Causa la terminación de un \textit{script}
+		\item Puede devolver cualquier valor entre 0 y 255:
+		\begin{itemize}
+			\item El valor 0 indica que el script se ejecutó de forma exitosa
+			\item Un valor distinto indica un código de error
+			\item Se puede consultar el \textit{exit status} imprimiendo la
+              variable \texttt{\$?}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection{Funciones}
+\begin{frame}[fragile]
+	\frametitle{Funciones}
+    Las funciones permiten modularizar el comportamiento de los \textit{scripts}.
+	\begin{itemize}
+		\item Se pueden declarar de 2 formas:
+          \begin{itemize}
+		\item \verb+function nombre { block }+
+		\item \verb+nombre() { block }+
+        \end{itemize}
+		\item Con la sentencia \texttt{return} se retorna un valor entre 0 y 255
+		\item El valor de retorno se puede evaluar mediante la variable \texttt{\$?}
+		\item Reciben argumentos en las variables \texttt{\$1},
+          \texttt{\$2}, etc.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Funciones: ejemplos}
+	\begin{lstlisting}
+		# Recibe 2 argumentos y devuelve:
+		#   1 si el primero es el mayor
+		#   0 en caso contrario
+		mayor() {
+		  echo "Se van a comparar los valores $*" 
+		  if [ $1 -gt $2 ]; then
+		    echo "$1 es el mayor" 
+		    return 1
+		  fi
+		  echo "$2 es el mayor"
+		  return 0
+		}
+		mayor 5 6 # Invocación
+		echo $?   # Imprime el resultado
+	\end{lstlisting}
+\end{frame}
+\subsection{Alcance y visibilidad}
+\begin{frame}[fragile]
+	\frametitle{Variables: alcance y visibilidad}
+	\begin{itemize}
+		\item Las variables no inicializadas son reemplazadas por un valor nulo o 0, según el contexto de evaluación.
+		\item Por defecto las variables son globales.
+		\item Una variable local a una función se define con \texttt{local}
+		\begin{lstlisting}
+			test() {
+			  local variable
+			}
+		\end{lstlisting}
+		\item Las variables de entorno son heredadas por los procesos hijos.
+		\item Para exponer una variable global a los procesos hijos se usa
+          el comando \texttt{export}:
+		\begin{lstlisting}
+			export VARIABLE_GLOBAL="Mi var global"+.
+			comando
+			# comando verá entre sus variables de
+			# entorno a VARIABLE_GLOBAL
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
