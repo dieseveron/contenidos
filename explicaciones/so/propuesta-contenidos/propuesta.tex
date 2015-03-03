@@ -1,0 +1,106 @@
+\section{Propuesta}
+
+\begin{frame}{Propuesta de contenidos}
+  \begin{itemize}
+  \item La idea general de esta propuesta es definir nuevo contenido para
+    la cátedra.
+    
+  \item Dejar de abarcar tantos sistemas operativos puesto que el
+    conocimiento que los alumnos adquieren es superficial.
+    
+  \item Motivar a los alumnos con contenido técnico y desafiante. Que las
+    prácticas no sean tan guiadas.
+    
+  \item Profundizar en un sistema operativo, en particular *nix.
+    
+  \item Introducir una serie de ejercicios entregables, tal vez en grupo,
+    con el objetivo de generar un seguimiento del avance de los alumnos.
+    
+\end{itemize}
+\end{frame}
+
+\subsection{Práctica 1}
+\begin{frame}{Práctica 1}
+\begin{itemize}
+\item Repaso comandos
+\item \textit{Pipes}
+\item Redirecciones
+\item \texttt{netcat} (para jugar un poco con redes y redirecciones)
+\item \textit{Scripts} de repaso
+\item Ejercicio entregable, shell 1.
+\end{itemize}
+\end{frame}
+
+\subsection{Práctica 2}
+\begin{frame}{Práctica 2}
+\begin{itemize}
+\item Compilación \textit{kernel}
+\item Ejercicio entregable, shell 2.
+\end{itemize}
+\end{frame}
+
+\subsection{Práctica 3}
+\begin{frame}{Práctica 3}
+\begin{itemize}
+\item \textit{System calls}, módulos y \textit{drivers}
+\item Ejercicio entregable, shell 3.
+\end{itemize}
+\end{frame}
+
+\subsection{Práctica 4}
+\begin{frame}{Práctica 4}
+  Android:
+  \begin{itemize}
+  \item Dejar de usar \texttt{Geanymotion}, ni ningún otro IDE,
+    para dar lugar a las herramientas que provee el SDK.
+  \item rooteo
+  \item etc.
+  \end{itemize}
+\end{frame}  
+\subsection{Práctica 5}
+\begin{frame}{Práctica 5}
+  CPU y memoria
+  \begin{itemize}
+  \item \textit{How programs get run}
+  \item CPU \textit{scheduling}: multi-processor
+  \item Tablas de paginación.
+  \end{itemize}
+\end{frame}  
+
+\subsection{Práctica 6}
+\begin{frame}{Práctica 6}
+  \textit{File systems}
+  \begin{itemize}
+  \item \texttt{/proc}
+  \item \texttt{sysfs} y \texttt{/sys} (\texttt{kobject solo si se
+      necesita ;-(}.
+  \item Visión completa FS Linux en base a \texttt{ext4} (i-nodos, VFS,
+    etc.).
+    
+  \item Algún ejercicio programable utilizando FUSE (Filesystem in Userspace).
+  \end{itemize}
+\end{frame}  
+
+\section{Forma de trabajo}
+\begin{frame}{\texttt{git} y \LaTeX}
+  \begin{itemize}
+  \item Repositorio común para las materias.
+  \item Versionado \texttt{git}.
+  \item Cualquier integrante de la cátedra puede colaborar. Incluso alumnos
+    podrían mandar \textit{pull requests}.
+  \item Beneficios:
+    \begin{itemize}
+    \item Historial de todas las prácticas
+    \item Registro de modificaciones
+    \item Control de estilo de prácticas y explicaciones en un único punto.
+    \item Generación de prácticas y explicaciones de las dos materias con
+      un solo comando (\texttt{make}).
+    \item Todo el poder de \texttt{git} y \LaTeX. ;-)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
