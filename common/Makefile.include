@@ -11,6 +11,7 @@ all: pdf
 pdf: $(NAME).pdf
 $(NAME).pdf: $(NAME).tex
 	$(TEXC) $(NAME)
+	$(TEXC) $(NAME) # HACK: run twice for generating TOC. Will fix soon.
 
 install: $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf
 $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf: $(NAME).pdf
