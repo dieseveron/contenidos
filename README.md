@@ -21,19 +21,19 @@ puede efectuarse mediante el siguiente comando:
     # apt-get install make texlive texlive-lang-spanish texlive-latex-recommended texlive-latex-extra
 
 ## Windows
-En Windows NT y sus versiones derivadas se deberá descargar CygWin en su respectiva arquitectura (x86 ó x86_64) desde "https://cygwin.com/install.html". Junto con este entorno se 
+En Windows NT y sus versiones derivadas se deberá descargar [CygWin](https://cygwin.com/install.html) en su respectiva arquitectura (x86 ó x86_64). Junto con este entorno se 
 deberan instalar los siguientes paquetes:
 
-	* git
-	* textlive
-	* textlive-collection-basic
-	* texlive-collection-latex
-	* texlive-collection-latexextra
-	* texlive-collection-latexrecommended
-	* texlive-collection-pictures
-	* texlive-collection-langspanish
-	* texlive-collection-fontsrecommended
-	* texlive-collection-genericrecommended
+* git
+* textlive
+* textlive-collection-basic
+* texlive-collection-latex
+* texlive-collection-latexextra
+* texlive-collection-latexrecommended
+* texlive-collection-pictures
+* texlive-collection-langspanish
+* texlive-collection-fontsrecommended
+* texlive-collection-genericrecommended
 
 
 # Modo de uso
