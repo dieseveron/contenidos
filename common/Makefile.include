@@ -18,7 +18,7 @@ $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf: $(NAME).pdf
 	cp -u $(NAME).pdf $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf
 
 clean:
-	rm -fv *.aux *.log *.fls *.fdb_latexmk
+	rm -fv *.aux *.log *.fls *.fdb_latexmk *.nav *.out *.snm *.toc
 
 distclean: clean
 	rm -fv $(NAME).pdf
