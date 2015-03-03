@@ -9,6 +9,6 @@
 *.vrb
 *~
 *-stamp
-src/*/*/main.pdf
+*/*/*/main.pdf
 *.pdfpc
 pdf/

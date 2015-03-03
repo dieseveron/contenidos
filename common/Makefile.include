@@ -1,5 +1,5 @@
 NAME = main
-PDFDIR = ../../../../pdf
+PDFDIR = ../../../pdf
 TEXC = pdflatex
 
 TMP      := $(shell dirname $(CURDIR))

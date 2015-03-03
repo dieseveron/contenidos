@@ -1,6 +1,5 @@
-SRC      = src
-EXPL     = $(SRC)/explicaciones
-PRAC     = $(SRC)/practicas
+EXPL     = $(CURDIR)/explicaciones
+PRAC     = $(CURDIR)/practicas
 SUBJECTS = iso so
 
 # General rules
