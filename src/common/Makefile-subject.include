@@ -1,0 +1,13 @@
+DOCUMENTS = $(wildcard */)
+
+all:
+	@for d in $(DOCUMENTS) ; do make -C $$d ; done
+
+install:
+	@for d in $(DOCUMENTS) ; do make -C $$d install; done
+
+clean:
+	@for d in $(DOCUMENTS) ; do make -C $$d clean ; done
+
+distclean:
+	@for d in $(DOCUMENTS) ; do make -C $$d distclean ; done

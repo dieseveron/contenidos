@@ -1,0 +1,24 @@
+NAME = main
+PDFDIR = ../../../../pdf
+TEXC = pdflatex
+
+TMP      := $(shell dirname $(CURDIR))
+TYPE     := $(shell basename `dirname $(TMP)`)
+SUBJECT  := $(shell basename `dirname $(CURDIR)`)
+DOCUMENT := $(notdir $(CURDIR))
+
+all: pdf
+pdf: $(NAME).pdf
+$(NAME).pdf: $(NAME).tex
+	$(TEXC) $(NAME)
+
+install: $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf
+$(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf: $(NAME).pdf
+	mkdir -p $(PDFDIR)/$(TYPE)/$(SUBJECT)/
+	cp -u $(NAME).pdf $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf
+
+clean:
+	rm -fv *.aux *.log *.fls *.fdb_latexmk
+
+distclean: clean
+	rm -fv $(NAME).pdf

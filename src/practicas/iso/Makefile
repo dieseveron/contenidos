@@ -1,1 +1,1 @@
-include ../common/Makefile-subject.include
+include ../../common/Makefile-subject.include
