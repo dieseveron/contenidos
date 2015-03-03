@@ -1,14 +1,40 @@
 SRC      = src
-SUBJECTS = $(SRC)/iso $(SRC)/so
+EXPL     = $(SRC)/explicaciones
+PRAC     = $(SRC)/practicas
+SUBJECTS = iso so
 
-all:
-	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ ; done
+# General rules
+all: explicaciones practicas
 
-install:
-	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ install ; done
+explicaciones:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(EXPL)/$$s/ ; done
 
-clean:
-	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ clean ; done
+practicas:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(PRAC)/$$s/ ; done
 
-distclean:
-	@for s in $(SUBJECTS) ; do $(MAKE) -C $$s/ distclean ; done
+# Install rules
+install: install-explicaciones install-practicas
+
+install-explicaciones:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(EXPL)/$$s/ install ; done
+
+install-practicas:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(PRAC)/$$s/ install ; done
+
+# Clean rules
+clean: clean-explicaciones clean-practicas
+
+clean-explicaciones:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(EXPL)/$$s/ clean ; done
+
+clean-practicas:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(PRAC)/$$s/ clean ; done
+
+# Distclean rules
+distclean: distclean-explicaciones distclean-practicas
+
+distclean-explicaciones:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(EXPL)/$$s/ distclean ; done
+
+distclean-practicas:
+	@for s in $(SUBJECTS) ; do $(MAKE) -C $(PRAC)/$$s/ distclean ; done
