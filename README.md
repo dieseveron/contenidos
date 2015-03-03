@@ -18,7 +18,7 @@ compilar el proyecto:
 En Debian y distribuciones derivadas la instalación de las dependencias
 puede efectuarse mediante el siguiente comando:
 
-    # apt-get install make texlive texlive-lang-spanish
+    # apt-get install make texlive texlive-lang-spanish texlive-latex-recommended texlive-latex-extra
 
 ## Windows
 En Windows NT y sus versiones derivadas se deberá descargar los siguientes instaladores:
