@@ -1,0 +1,133 @@
+\usepackage{pgf}
+
+
+\newif\ifhandout
+%\handouttrue
+\ifhandout
+	\usepackage{pgfpages}
+	\pgfpagesuselayout{4 on 1}[a4paper,border shrink=5mm,landscape]
+\else
+	%\usepackage{beamerthemesplit}
+\fi
+
+% Basado en: http://www.tjansson.dk/?p=82
+
+\usepackage[utf8x]{inputenc}
+
+\definecolor{iso}{RGB}{200,30,30}
+\definecolor{iso_title}{RGB}{255,255,255}
+\definecolor{iso_title_bg}{RGB}{121,121,121}
+\setbeamercovered{transparent}
+\ifhandout
+	\mode<handout>{}
+	\setbeamertemplate{footline}[frame number]
+\else
+	\mode<presentation>
+
+	%\usetheme[numbers,totalnumber,compress,sidebarshades]{PaloAlto}
+
+	% Con número de página, o con footbar
+	%\setbeamertemplate{footline}[frame number]
+	%\setbeamertemplate{footline}[frame]
+	%\setbeamertemplate{headline}{\vspace{1cm}}
+
+	\setbeamertemplate{frametitle}{\vspace{0.2cm}\hfill\textit{\insertframetitle}\vspace{0.3cm}} 
+	\setbeamertemplate{footline}{\vspace{1.5cm}}
+
+	\useinnertheme{circles}
+	\usefonttheme[onlymath]{serif}
+	\setbeamercovered{transparent}
+	\setbeamertemplate{blocks}[rounded][shadow=false]
+
+	\usecolortheme[named=iso]{structure}
+	\setbeamercolor{frametitle}{fg=iso_title}
+	\setbeamercolor{block title}{bg=iso_title_bg,fg=iso_title}
+	%\logo{\includegraphics[width=1.5cm]{style/logo-unlp}}
+
+	% Ocultar barra de navegación
+	\beamertemplatenavigationsymbolsempty
+	
+	\usebackgroundtemplate{
+		\includegraphics[width=\paperwidth,
+		height=\paperheight]{../../../common/beamer-style/fondo}
+	}
+\fi
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{upquote}
+\usepackage{xcolor}
+\usepackage{courier}
+
+\lstset {
+	% Listings en español y con comillas simples copiables
+	extendedchars=\true,
+	inputencoding=utf8x,
+	upquote=true,
+	literate={á}{{\'a}}1
+		{é}{{\'e}}1
+		{í}{{\'i}}1
+		{ó}{{\'o}}1
+		{ú}{{\'u}}1
+		{ñ}{{\~n}}1
+}
+
+\lstset{basicstyle=\tiny\ttfamily,breaklines=true}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+	language=sh,
+	morekeywords={select,in,elif,eq,ne,lt,gt,le,ge},
+	breaklines=true,
+	basicstyle=\footnotesize,
+	showstringspaces=no,
+	%frame=single,
+	% Listings en español y con comillas simples copiables
+	extendedchars=\true,
+	inputencoding=utf8x,
+	upquote=true,
+	literate={á}{{\'a}}1
+		{é}{{\'e}}1
+		{í}{{\'i}}1
+		{ó}{{\'o}}1
+		{ú}{{\'u}}1
+		{ñ}{{\~n}}1
+}
+\ifhandout\else
+	\lstset{
+	%    rulecolor=\color{black!20},
+		backgroundcolor=\color{white},
+		commentstyle=\color{mygreen},
+		keywordstyle=\color{blue},
+		stringstyle=\color{mymauve}
+	}
+\fi
+
+
+% Para que funcione la inclusión de hyperref con utf8x
+\PrerenderUnicode{á}
+\PrerenderUnicode{é}
+\PrerenderUnicode{í}
+\PrerenderUnicode{ó}
+\PrerenderUnicode{ú}
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Agenda}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\AtBeginSubsection[ {\frame<beamer>{\frametitle{Agenda}
+    \tableofcontents[currentsection,currentsubsection]}}%
+]%
+{ \frame<beamer>{ \frametitle{Agenda}
+    \tableofcontents[currentsection,currentsubsection]}
+}
+
+\institute[UNLP]{Facultad de Informática \\
+  Universidad Nacional de La Plata}
+\date{\the\year}
