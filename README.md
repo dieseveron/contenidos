@@ -48,7 +48,7 @@ comando:
     git clone https://github.com/unlp-so/contenidos.git
 
 La forma más sencilla de compilar el contenido de este repositorio es
-utilizando el comando `make install` en el directorio principal. Esto
+utilizando el comando `make` en el directorio principal. Esto
 provocará que se compile todo el material disponible y se lo guarde en el
 directorio `pdf/`.
 
