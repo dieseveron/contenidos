@@ -2,17 +2,11 @@ EXPL     = $(CURDIR)/explicaciones
 PRAC     = $(CURDIR)/practicas
 SUBJECTS = iso so
 
-# General rules
-all: explicaciones practicas
-
-explicaciones:
-	@for s in $(SUBJECTS) ; do $(MAKE) -C $(EXPL)/$$s/ ; done
-
-practicas:
-	@for s in $(SUBJECTS) ; do $(MAKE) -C $(PRAC)/$$s/ ; done
+all: install
 
 # Install rules
 install: install-explicaciones install-practicas
+	echo "Prácticas y explicaciones compiladas correctamente en el directorio pdf/"
 
 install-explicaciones:
 	@for s in $(SUBJECTS) ; do $(MAKE) -C $(EXPL)/$$s/ install ; done
