@@ -9,7 +9,7 @@ DOCUMENT := $(notdir $(CURDIR))
 
 all: pdf
 pdf: $(NAME).pdf
-$(NAME).pdf: $(NAME).tex
+$(NAME).pdf: $(NAME).tex $(DEPS)
 	$(TEXC) $(NAME)
 	$(TEXC) $(NAME) # HACK: run twice for generating TOC. Will fix soon.
 
