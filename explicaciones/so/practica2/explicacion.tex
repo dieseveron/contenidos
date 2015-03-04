@@ -37,7 +37,7 @@
   basado en Minix\cite{Minix} (Clon de Unix desarrollado por Tanembaum en
   1987 con el fin de crear un SO de uso didáctico).
 
-\begin{block}{\alert{Primer anuncio} \hfill (1991)}\small
+\begin{block}{Primer anuncio \hfill (1991)}\small
   \noindent Hello everybody out there using minix - 
  
   I’m doing a (free) operating system (just a hobby, won’t be big and
@@ -59,7 +59,7 @@
 El 5 de octubre de 1991, se anuncia la primera versión ``oficial'' de
 Linux (0.02).
 
-\begin{block}{\alert{Primera \textit{release}} \hfill (1991)}
+\begin{block}{Primera \textit{release} \hfill (1991)}
   [\ldots]
 
   As I mentioned a month ago, I'm working on a free version of a
@@ -78,10 +78,12 @@ Linux (0.02).
 \end{frame}
 
 \begin{frame}{Linux, un poco de historia}
-En 1992, con la \textit{release} de la versión 0.12, se decide cambiar a
-una licencia GNU.
+  \small En 1992, con la \textit{release} de la versión 0.12, se decide
+  cambiar a una licencia GNU.
 
-\begin{block}{\alert{Licencia GNU} \hfill (1992)}
+\begin{block}{Licencia GNU \hfill (1992)}
+  {\small
+
   [\ldots]
 
   The Linux copyright will change: I've had a couple of requests to make it
@@ -95,6 +97,8 @@ una licencia GNU.
   the GNU copyright - read it.
 
   [\ldots]
+
+  }
 
   \hfill \emph{Linus Torvalds}, 1992 \cite{Torvalds1992-2}
 \end{block}
@@ -111,8 +115,12 @@ Fechas relevantes:
   otras arquitecturas.
 
 \item En mayo de 1996 se decide adoptar a Tux como mascota oficial de
-  Linux. 
+  Linux.
+\end{itemize}
+\end{frame}
 
+\begin{frame}{Linux, un poco de historia}
+  \begin{itemize}
 \item En julio de 1996 se lanza la versión 2.0 y se define un sistema de
   nomenclatura. Se desarrolló hasta febrero de 2004 y terminó con la
   versión 2.0.40. Esta versión comenzó a brindar soporte a sistemas
@@ -137,7 +145,10 @@ Fechas relevantes:
 
 \item El 17 Julio de 2011 se lanza la versión 3.0
 \end{itemize}
-\begin{block}{\alert{Anuncio de Linux 3.0} \hfill (2011)}
+\end{frame}
+
+\begin{frame}{Linux, un poco de historia}
+\begin{block}{Anuncio de Linux 3.0 \hfill (2011)}
   [\ldots]
 
   I decided to just bite the bullet, and call the next version 3.0. It will
@@ -153,10 +164,12 @@ Fechas relevantes:
 
 \section{Versionado}
 \begin{frame}{Versionado en Linux 2.6 y 3}
+  
   \begin{block}{Anatomía de una versión}
     \alert{A}.\alert{B}.\structure{C}.[\structure{D}]
   \end{block}
 
+    { \tiny
   \begin{description}
 
   \item[\alert{A}] Denota Versión. Cambia con menor Frecuencia. en 1994
@@ -170,7 +183,7 @@ Fechas relevantes:
 
   \item[\structure{D}] Se utiliza cuando se corrige un grave error sin
     agregar nueva funcionalidad.
-  \end{description}
+  \end{description} }
 
   \vfill \pause En el año 2011, cuando se pasó de la versión
   \alert{2}.\alert{6}.\structure{39} a la \alert{3}.\structure{0}, se
@@ -231,7 +244,7 @@ Fechas relevantes:
 \item \texttt{initrd-tools}: Herramientas para crear discos RAM
 \end{itemize}
 \pause
-\begin{block}{\structure{Tip}}
+\begin{block}{Tip}
   En Debian y distribuciones derivadas, todo este software se encuentra
   empaquetado. Por ejemplo, para instalar el software requerido para hacer
   la práctica:
@@ -264,7 +277,7 @@ Fechas relevantes:
 \begin{frame}{Obtener el código fuente}
   Para descargarlo desde la terminal:
   \begin{block}{}
-    \small {
+    \tiny {
     \texttt{\$ cd /usr/src}\\
     \texttt{\$ sudo wget
       https://kernel.org/pub/linux/kernel/v3.x/linux-\KERNELBASEVERSION.tar.xz} }
@@ -400,7 +413,7 @@ El comando \texttt{make} busca el archivo \texttt{Makefile}, interpreta sus
 directivas y compila el \textit{kernel}. Este proceso puede durar mucho
 tiempo dependiendo del procesador que tengamos.
 
-\begin{block}{\structure{Tip}}
+\begin{block}{Tip}
 \texttt{\$ make -j\textit{X} \# X es el número de \textit{threads}}
 \end{block}
 
@@ -414,6 +427,7 @@ Verificar que este proceso no arroje errores al concluir.
    \end{center}
 \end{frame}
 
+
 \begin{frame}{Instalación del \textit{kernel}}
   Luego de que termina el proceso de compilación, la imagen del
   \textit{kernel} quedará ubicada en
@@ -421,21 +435,23 @@ Verificar que este proceso no arroje errores al concluir.
   próximo paso, entonces, es instalar el \textit{kernel} y otros archivos
   en el directorio \texttt{/boot}.
 
+  { \tiny
   \begin{block}{Ejemplo con arquitectura \textit{i386}}
     \texttt{\$ cd \KERNELSOURCEPATH/linux-\KERNELBASEVERSION \\
 \$ sudo su \\
 \# cp arch/i386/boot/bzImage /boot/vmlinuz-\KERNELBASEVERSION \\
 \# cp System.map /boot/System.map-\KERNELBASEVERSION \\
 \# cp .config /boot/config-\KERNELBASEVERSION}
-  \end{block}
+  \end{block}}
   \vfill \pause
 
   Por supuesto, también existe una regla en el \texttt{Makefile} que
   realiza esto mismo automáticamente.
+  { \tiny
   \begin{block}{}
     \texttt{\$ sudo make install}
-  \end{block}  
-\end{frame}
+  \end{block}}
+\end{frame} 
 
 \begin{frame}{Instalar los módulos}
   Los módulos compilados deben residir en el directorio
@@ -538,8 +554,11 @@ Paso final: ¡\alert{reiniciar} y \structure{probar}!
   revisión 3 de un \textit{kernel}, no tendremos que aplicar el parche de
   la revisión 2 ni de la 1. Simplemente se precisa el código de la versión
   base.
+\end{frame}
 
-{ \small
+\begin{frame}{Aplicar parches al \textit{kernel}}
+  Un ejemplo:
+  { \tiny
   \begin{block}{}
     \texttt{\\
 \$ cd /usr/src \\
@@ -549,7 +568,8 @@ https://kernel.org/pub/linux/kernel/v3.x/patch-\PATCHEDKERNELVERSION.xz \\
 \# exit \\
 \$ cd \KERNELSOURCEPATH/linux-\KERNELBASEVERSION \\
 \$ xzcat /usr/src/patch-\PATCHEDKERNELVERSION.xz | patch -p1}
-\end{block} }
+\end{block}
+}
 \end{frame}
 
 \subsection{Debian way}
