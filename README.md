@@ -42,7 +42,8 @@ funcione se deberán seleccionar las siguientes dependencias:
 
 
 # Modo de uso
-Para realizar el `checkout` del repositorio debera ejecutar el siguiente comando: 
+Para realizar el `checkout` del repositorio se debe ejecutar el siguiente
+comando:
 
     git clone https://github.com/unlp-so/contenidos.git
 
