@@ -18,13 +18,18 @@ compilar el proyecto:
 En Debian y distribuciones derivadas la instalación de las dependencias
 puede efectuarse mediante el siguiente comando:
 
-    # apt-get install make texlive texlive-lang-spanish texlive-latex-recommended texlive-latex-extra
+    # apt-get install git make texlive texlive-lang-spanish\
+      texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
 
 ## Windows
-En Windows NT y sus versiones derivadas se deberá descargar [CygWin](https://cygwin.com/install.html) en su respectiva arquitectura (x86 ó x86_64). Junto con este entorno se 
-deberan instalar los siguientes paquetes:
+En Windows NT y sus versiones derivadas se deberá descargar
+[CygWin](https://cygwin.com/install.html) en su respectiva arquitectura
+(x86 ó x86_64). Durante la instalación de este entorno se presentará la
+posibilidad de instalar paquetes adicionales. Para que este proyecto
+funcione se deberán seleccionar las siguientes dependencias:
 
 * git
+* make
 * textlive
 * textlive-collection-basic
 * texlive-collection-latex
