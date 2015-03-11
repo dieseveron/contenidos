@@ -1,0 +1,57 @@
+\section{Repaso general}
+
+\textit{El objetivo de esta primera parte de la práctica es repasar los
+  conceptos de \textbf{shell scripting} aprendidos en la materia
+  \textbf{Introducción a los Sistemas Operativos}. Se realizará un repaso
+  general sobre comandos los comandos más comunes y su uso en
+  \textbf{scripts}}.
+
+\begin{questions}
+\question Hello world
+\question Good bye cruel world!
+\end{questions}
+
+\subsubsection{Preguntas de repaso}
+
+\begin{questions}
+\question ¿Qué es la shell? y para que sirve?
+
+\question ¿Qué implementaciones de la shell existen?
+
+\question ¿En qué espacio (usuario/kernel) la ubicaría?
+
+\question Cuándo abre una terminal y tipea comandos, ¿qué shell es la encargada de interactuar?
+ 
+\question Si pensamos en el funcionamiento de una shell básica podríamos
+detallarlos secuencialmente de la siguiente manera:
+\begin{itemize}
+\item Esperar a que el usuario ingrese un comando
+\item Parsear lo que el usuario tipeo para obtener el comando con sus respectivos argumentos
+\item Crear un nuevo proceso para ejecutar el comando ingresado por el usuario
+\item En el nuevo proceso ejecutar el comando y retornar con el estado de dicha ejecución
+\item En el proceso padre, esperar a que el proceso hijo termine
+\item Volver a empezar.
+\end{itemize}
+
+\question Investigue las system call \textit{fork}:
+\begin{parts}
+  \part Que es lo que realiza?
+  \part ¿Que retorna?
+  \part ¿Para que podrian servir los valores que retorna?
+  \part ¿Por que invocaria a la misma al implementar una shell?
+\end{parts}
+
+\question Investigue la system call \textit{exec}:
+\begin{parts}
+  \part ¿Para qué sirve?
+  \part ¿Comó se comporta?
+  \part ¿Cuáles son sus diferentes declaraciones POSIX?
+\end{parts}
+  
+\question Investigue la system call \textit{wait}:
+\begin{parts}
+\part ¿Para qué sirve?
+\part Sin ella, ¿qué sucedería, pensando en la implementación de la shell?
+\end{parts}
+
+\end{questions}
