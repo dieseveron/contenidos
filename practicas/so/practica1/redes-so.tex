@@ -1,9 +1,21 @@
 \section{Redes y Sistemas Operativos}
 
 \textit{En esta sección se aprenderá cómo integrar conceptos del sistema
-  operativo, como redirecciones y \textbf{pipes}, con una red TCP/IP.}
+  operativo, como redirecciones y \textbf{pipes}, con una red TCP/IP. Para
+  ello se utilizará principalmente la herramienta
+  \texttt{nc}. Investigue su funcionamiento y responda. \textbf{Tip:} \texttt{man nc}}
 
 \begin{questions}
-\question Hello world
-\question Good bye cruel world!
+  \question Desarrolle un \textit{script} que permita al usuario chatear
+  con otra instancia del \textbf{mismo} \textit{script}. Para ello, el
+  \textit{script} deberá recibir como parámetro si va a funcionar como
+  \textbf{(c)}liente o como \textbf{(s)}ervidor. También deberá recibir
+  como parámetro un \textit{nickname} para el usuario. Por ejemplo, para
+  invocar el \textit{script} en modo servidor con el \textit{nick}
+  \textbf{jvg}, debería ejecutar:
+  \begin{lstlisting}
+
+$ ./nc-chat.sh s jvg
+  \end{lstlisting}
+
 \end{questions}
