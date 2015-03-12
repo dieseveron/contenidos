@@ -13,9 +13,18 @@
   como parámetro un \textit{nickname} para el usuario. Por ejemplo, para
   invocar el \textit{script} en modo servidor con el \textit{nick}
   \textbf{jvg}, debería ejecutar:
+
   \begin{lstlisting}
 
-$ ./nc-chat.sh s jvg
-  \end{lstlisting}
+ ./nc-chat.sh s jvg
+\end{lstlisting}
+
+Además, los mensajes transmitidos deben comenzar con la fecha, hora y
+\textit{nick} del emisor. Por ejemplo:
+\begin{lstlisting}
+  
+Thu Mar 12 13:03:14 ART 2015, jvg says:
+Knock knock Neo.
+\end{lstlisting}  
 
 \end{questions}
