@@ -2,10 +2,49 @@
 
 \textit{En esta sección se aprenderá cómo integrar conceptos del sistema
   operativo, como redirecciones y \textbf{pipes}, con una red TCP/IP. Para
-  ello se utilizará principalmente la herramienta
-  \texttt{nc}. Investigue su funcionamiento y responda. \textbf{Tip:} \texttt{man nc}}
+  ello se utilizará principalmente la herramienta \texttt{netcat}, también
+  conocida como \texttt{nc}. Investigue
+  su funcionamiento y resuelva. \textbf{Tip:} \texttt{man nc}}
 
 \begin{questions}
+  \question La herramienta \texttt{netcat} provee una forma sencilla de
+  establecer una conexión TCP/IP. En una terminal levante una sesión de
+  \texttt{netcat} en modo servidor, que escuche en la IP 127.0.0.1
+  (localhost) en un puerto a elección. En otra terminal conéctese, también
+  vía \texttt{netcat}, al servidor recién levantado. Interactúe y
+  experimente con ambas terminales.
+
+  \question \texttt{netcat} también es bueno al momento de transmitir
+  archivos sobre una red TCP/IP. Utilizando dos terminales como se hizo en
+  el ejercicio anterior, transmita el archivo \texttt{/etc/passwd} desde
+  una sesión de \texttt{netcat} hacia la otra.
+
+  \textbf{Tip:} recordar \textit{pipes} y redirecciones.
+
+  \question Desarrolle un \textit{script} que reciba como parámetro una
+  lista de \textit{hosts} con el puerto 80 abierto y, para cada uno,
+  realice un requerimiento HTTP GET a la URI raíz y devuelva el valor del
+  campo \texttt{Content-Length} de la respuesta.
+  \begin{lstlisting}
+./so-contentlength.sh www.google.com www.debian.org www.linti.unlp.edu.ar
+www.google.com: 262
+www.debian.org: 470
+www.linti.unlp.edu.ar: 223
+  \end{lstlisting}
+
+  \textbf{Tip:} \texttt{printf "GET / HTTP/1.0\textbackslash
+    r\textbackslash n\textbackslash r\textbackslash n" | ... }
+
+  \question Interprete y describa qué es lo que hace el siguiente fragmento
+  de código extraído de la \textit{man page} de \texttt{netcat}.
+  \begin{lstlisting}
+
+$ rm -f /tmp/f; mkfifo /tmp/f
+$ cat /tmp/f | /bin/sh -i 2>&1 | nc -l 127.0.0.1 1234 > /tmp/f
+  \end{lstlisting}
+
+  \textbf{Tip:} \texttt{man mkfifo}
+
   \question Desarrolle un \textit{script} que permita al usuario chatear
   con otra instancia del \textbf{mismo} \textit{script}. Para ello, el
   \textit{script} deberá recibir como parámetro si va a funcionar como
@@ -17,7 +56,7 @@
   \begin{lstlisting}
 
  ./nc-chat.sh s jvg
-\end{lstlisting}
+  \end{lstlisting}
 
 Además, los mensajes transmitidos deben comenzar con la fecha, hora y
 \textit{nick} del emisor. Por ejemplo:
