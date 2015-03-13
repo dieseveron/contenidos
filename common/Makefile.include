@@ -1,6 +1,7 @@
 NAME = main
 PDFDIR = ../../../pdf
 TEXC = pdflatex
+COMMONDEPS = ../../../common/listing.tex ../../../common/include.tex
 
 TMP      := $(shell dirname $(CURDIR))
 TYPE     := $(shell basename `dirname $(TMP)`)
@@ -9,7 +10,7 @@ DOCUMENT := $(notdir $(CURDIR))
 
 all: pdf
 pdf: $(NAME).pdf
-$(NAME).pdf: $(NAME).tex $(DEPS)
+$(NAME).pdf: $(NAME).tex $(COMMONDEPS) $(DEPS)
 	$(TEXC) $(NAME)
 	$(TEXC) $(NAME) # HACK: run twice for generating TOC. Will fix soon.
 

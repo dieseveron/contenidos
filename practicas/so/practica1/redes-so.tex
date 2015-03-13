@@ -1,9 +1,82 @@
 \section{Redes y Sistemas Operativos}
 
 \textit{En esta sección se aprenderá cómo integrar conceptos del sistema
-  operativo, como redirecciones y \textbf{pipes}, con una red TCP/IP.}
+  operativo, como redirecciones y \textbf{pipes}, con una red TCP/IP. Para
+  ello se utilizará principalmente la herramienta \texttt{netcat}, también
+  conocida como \texttt{nc}. Investigue
+  su funcionamiento y resuelva. \textbf{Tip:} \texttt{man nc}}
 
 \begin{questions}
-\question Hello world
-\question Good bye cruel world!
+  \question La herramienta \texttt{netcat} provee una forma sencilla de
+  establecer una conexión TCP/IP. En una terminal levante una sesión de
+  \texttt{netcat} en modo servidor, que escuche en la IP 127.0.0.1
+  (localhost) en un puerto a elección. En otra terminal conéctese, también
+  vía \texttt{netcat}, al servidor recién levantado. Interactúe y
+  experimente con ambas terminales.
+
+  \question \texttt{netcat} también es bueno al momento de transmitir
+  archivos sobre una red TCP/IP. Utilizando dos terminales como se hizo en
+  el ejercicio anterior, transmita el archivo \texttt{/etc/passwd} desde
+  una sesión de \texttt{netcat} hacia la otra.
+
+  \textbf{Tip:} recordar \textit{pipes} y redirecciones.
+
+  \question Desarrolle un script que reciba en su entrada estándar una
+  lista de \textit{hosts} e imprima en su salida estándar únicamente
+  aquellos que tienen el puerto 80 abierto. Cuando un \textit{host} no
+  tiene el puerto 80 abierto, \texttt{netcat} tardará varios segundos en
+  determinar que la conexión no se puede establecer.
+
+  \textbf{Tip:} utilizar la opción \texttt{-w} de \texttt{netcat} para
+  disminuir el tiempo de \textit{timeout}.
+
+  \question Desarrolle un \textit{script} que reciba en su entrada estándar
+  una lista de \textit{hosts} con el puerto 80 abierto y, para cada uno,
+  realice un requerimiento HTTP GET a la URI raíz y devuelva el valor del
+  campo \texttt{Content-Length} de la respuesta. Deberá ser posible
+  utilizar como entrada estándar la salida estándar del \textit{script}
+  anterior.
+  \begin{lstlisting}
+
+echo www.google.com www.debian.org www.linti.unlp.edu.ar | ./cl.sh
+www.google.com: 262
+www.debian.org: 470
+www.linti.unlp.edu.ar: 223
+
+  \end{lstlisting}
+
+  \textbf{Tip:} \texttt{printf "GET / HTTP/1.0\textbackslash
+    r\textbackslash n\textbackslash r\textbackslash n" | ... }
+
+  \question Interprete y describa qué es lo que hace el siguiente fragmento
+  de código extraído de la \textit{man page} de \texttt{netcat}.
+  \begin{lstlisting}
+
+$ rm -f /tmp/f; mkfifo /tmp/f
+$ cat /tmp/f | /bin/sh -i 2>&1 | nc -l 127.0.0.1 1234 > /tmp/f
+  \end{lstlisting}
+
+  \textbf{Tip:} \texttt{man mkfifo}
+
+  \question Desarrolle un \textit{script} que permita al usuario chatear
+  con otra instancia del \textbf{mismo} \textit{script}. Para ello, el
+  \textit{script} deberá recibir como parámetro si va a funcionar como
+  \textbf{(c)}liente o como \textbf{(s)}ervidor. También deberá recibir
+  como parámetro un \textit{nickname} para el usuario. Por ejemplo, para
+  invocar el \textit{script} en modo servidor con el \textit{nick}
+  \textbf{jvg}, debería ejecutar:
+
+  \begin{lstlisting}
+
+ ./nc-chat.sh s jvg
+  \end{lstlisting}
+
+Además, los mensajes transmitidos deben comenzar con la fecha, hora y
+\textit{nick} del emisor. Por ejemplo:
+\begin{lstlisting}
+  
+Thu Mar 12 13:03:14 ART 2015, jvg says:
+Knock knock Neo.
+\end{lstlisting}  
+
 \end{questions}
