@@ -9,12 +9,79 @@
 \subsubsection{\textit{Scripts}}
 
 \begin{questions}
-\question Relizá un script que guarde en el archivo \texttt{/tmp/usuarios} los
+\question Relice un \textit{script} que guarde en el archivo \texttt{/tmp/usuarios} los
 nombres de los usuarios del sistema cuyo \textit{UID} sea mayor a 1000.
-\question Implementá un script que reciba como parámetro el nombre de un
+\question Implemente un \textit{script} que reciba como parámetro el nombre de un
 proceso e informe cada 15 segundos cuántas instancias de ese proceso están en
 ejecución.
-\question 
+\question Desarrolle un \textit{script} que guarde en un arreglo todos los archivos del
+directorio actual (incluyendo sus subdirectorios) para los cuales el usuario que ejecuta
+el \textit{script} tiene permisos de \textbf{ejecución}. Luego, implemente las siguientes
+funciones:
+\begin{parts}
+  \part \texttt{cantidad}: Imprime la cantidad de archivos que se encontraron
+  \part \texttt{archivos}: Imprime los nombres de los archivos encontrados en orden alfabético
+\end{parts}
+\question Se le ha encomendado organizar las fotos (en formato \texttt{jpg}) de todos los eventos
+de los que su empresa ha participado en el último año, los cuales se encuentran organizados en
+directorios con el nombre del evento. Para facilitar su búsqueda posterior, los archivos deben
+tener nombres que sigan el siguiente patrón: \texttt{EVENTO-N.jpg}, donde:
+\begin{itemize}
+  \item \texttt{EVENTO} es el nombre del evento (el del directorio que se está procesando)
+  \item \texttt{N} es un índice de foto, comenzando en \texttt{1}
+\end{itemize}
+
+Realice un \textit{script} que renombre los archivos de cada subdirectorio del directorio actual
+siguiendo lo especificado en el párrafo anterior.
+
+\textbf{Ejemplo:} dada la siguiente estructura de archivos y directorios:
+
+\begin{lstlisting}
+
+bashconf-15/
+  DSC01050.jpg
+  DSC01051.jpg
+  DSC01052.jpg
+  DSC01053.jpg
+  DSC01054.jpg
+jsconf-14/
+  DSC01230.jpg
+  DSC01231.jpg
+  DSC01232.jpg
+  DSC01235.jpg
+  DSC01236.jpg
+oktoberfest-14/
+  DSC02229.jpg
+  DSC02230.jpg
+  DSC02231.jpg
+  DSC02232.jpg
+
+\end{lstlisting}
+
+Se desea terminar con la siguiente estructura luego de ejecutar su \textit{script}:
+
+\begin{lstlisting}
+
+bashconf-15/
+  bashconf-15-1.jpg
+  bashconf-15-2.jpg
+  bashconf-15-3.jpg
+  bashconf-15-4.jpg
+  bashconf-15-5.jpg
+jsconf-14/
+  jsconf-14-1.jpg
+  jsconf-14-2.jpg
+  jsconf-14-3.jpg
+  jsconf-14-4.jpg
+  jsconf-14-5.jpg
+oktoberfest-14/
+  oktoberfest-14-1.jpg
+  oktoberfest-14-2.jpg
+  oktoberfest-14-3.jpg
+  oktoberfest-14-4.jpg
+
+\end{lstlisting}
+
 \end{questions}
 
 \subsubsection{Preguntas de repaso}
@@ -26,12 +93,12 @@ ejecución.
 \question Si pensamos en el funcionamiento de una shell básica podríamos
 detallarlos secuencialmente de la siguiente manera:
 \begin{itemize}
-\item Esperar a que el usuario ingrese un comando
-\item Parsear lo que el usuario tipeo para obtener el comando con sus respectivos argumentos
-\item Crear un nuevo proceso para ejecutar el comando ingresado por el usuario
-\item En el nuevo proceso ejecutar el comando y retornar con el estado de dicha ejecución
-\item En el proceso padre, esperar a que el proceso hijo termine
-\item Volver a empezar.
+  \item Esperar a que el usuario ingrese un comando
+  \item Parsear lo que el usuario tipeo para obtener el comando con sus respectivos argumentos
+  \item Crear un nuevo proceso para ejecutar el comando ingresado por el usuario
+  \item En el nuevo proceso ejecutar el comando y retornar con el estado de dicha ejecución
+  \item En el proceso padre, esperar a que el proceso hijo termine
+  \item Volver a empezar.
 \end{itemize}
 
 \question Investigue las system call \textit{fork}:
