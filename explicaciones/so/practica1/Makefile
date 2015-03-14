@@ -1,3 +1,3 @@
-DEPS = explicacion.tex
+DEPS = repaso.tex
 
 include ../../../common/Makefile.include
