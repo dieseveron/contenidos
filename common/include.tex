@@ -12,18 +12,31 @@
 \usepackage{xcolor}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
+\usepackage{graphicx} % needed for logo and pictures
 
 % Header and footer decorations
 \pagestyle{headandfoot}
 \runningheadrule
-\runningheader{UNLP \textbar \textsc{Facultad de Informática}}{}{\subjectshort\ \textbar
+\runningheader{UNLP \textbar \textsc{Facultad de
+    Informática}}{}{\subjectshort\ \the\year\ \textbar
 \hspace{0.1cm} Práctica \pracnum}
 \firstpagefooter{}{Pág. \thepage}{}
 \footrule
 \runningfooter{}{Pág. \thepage}{}
 \title{Práctica \pracnum}
-\author{\subject\ -\ UNLP}
+\author{\subject}
 \date{\the\year}
 \renewcommand{\thesection}{}
 \setcounter{secnumdepth}{0}
 
+% Let's write a fancy title
+\makeatletter
+\renewcommand\maketitle{
+    \begin{center}
+        {\includegraphics[width=35mm]{../../../common/logo-unlp}\par}
+        {\huge\textsc{\@author}\par}
+        {\Large\@title\par}
+        \vspace*{2ex}
+    \end{center}
+}
+\makeatother
