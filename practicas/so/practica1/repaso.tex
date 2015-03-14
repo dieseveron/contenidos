@@ -10,33 +10,36 @@
 
 \begin{questions}
 \question Relice un \textit{script} que guarde en el archivo \texttt{/tmp/usuarios} los
-nombres de los usuarios del sistema cuyo \textit{UID} sea mayor a 1000.
+  nombres de los usuarios del sistema cuyo \textit{UID} sea mayor a 1000.
+
 \question Implemente un \textit{script} que reciba como parámetro el nombre de un
-proceso e informe cada 15 segundos cuántas instancias de ese proceso están en
-ejecución.
+  proceso e informe cada 15 segundos cuántas instancias de ese proceso están en
+  ejecución.
+
 \question Desarrolle un \textit{script} que guarde en un arreglo todos los archivos del
-directorio actual (incluyendo sus subdirectorios) para los cuales el usuario que ejecuta
-el \textit{script} tiene permisos de \textbf{ejecución}. Luego, implemente las siguientes
-funciones:
-\begin{parts}
-  \part \texttt{cantidad}: Imprime la cantidad de archivos que se encontraron
-  \part \texttt{archivos}: Imprime los nombres de los archivos encontrados en orden alfabético
-\end{parts}
+  directorio actual (incluyendo sus subdirectorios) para los cuales el usuario que ejecuta
+  el \textit{script} tiene permisos de \textbf{ejecución}. Luego, implemente las siguientes
+  funciones:
+  \begin{parts}
+    \part \texttt{cantidad}: Imprime la cantidad de archivos que se encontraron
+    \part \texttt{archivos}: Imprime los nombres de los archivos encontrados en orden alfabético
+  \end{parts}
+
 \question Se le ha encomendado organizar las fotos (en formato \texttt{jpg}) de todos los eventos
-de los que su empresa ha participado en el último año, los cuales se encuentran organizados en
-directorios con el nombre del evento. Para facilitar su búsqueda posterior, los archivos deben
-tener nombres que sigan el siguiente patrón: \texttt{EVENTO-N.jpg}, donde:
-\begin{itemize}
-  \item \texttt{EVENTO} es el nombre del evento (el del directorio que se está procesando)
-  \item \texttt{N} es un índice de foto, comenzando en \texttt{1}
-\end{itemize}
+  de los que su empresa ha participado en el último año, los cuales se encuentran organizados en
+  directorios con el nombre del evento. Para facilitar su búsqueda posterior, los archivos deben
+  tener nombres que sigan el siguiente patrón: \texttt{EVENTO-N.jpg}, donde:
+  \begin{itemize}
+    \item \texttt{EVENTO} es el nombre del evento (el del directorio que se está procesando)
+    \item \texttt{N} es un índice de foto, comenzando en \texttt{1}
+  \end{itemize}
 
-Realice un \textit{script} que renombre los archivos de cada subdirectorio del directorio actual
-siguiendo lo especificado en el párrafo anterior.
+  Realice un \textit{script} que renombre los archivos de cada subdirectorio del directorio actual
+  siguiendo lo especificado en el párrafo anterior.
 
-\textbf{Ejemplo:} dada la siguiente estructura de archivos y directorios:
+  \textbf{Ejemplo:} dada la siguiente estructura de archivos y directorios:
 
-\begin{lstlisting}
+  \begin{lstlisting}
 
 bashconf-15/
   DSC01050.jpg
@@ -51,16 +54,16 @@ jsconf-14/
   DSC01235.jpg
   DSC01236.jpg
 oktoberfest-14/
-  DSC02229.jpg
+  DSC0d2229.jpg
   DSC02230.jpg
   DSC02231.jpg
   DSC02232.jpg
 
-\end{lstlisting}
+  \end{lstlisting}
 
-Se desea terminar con la siguiente estructura luego de ejecutar su \textit{script}:
+  Se desea terminar con la siguiente estructura luego de ejecutar su \textit{script}:
 
-\begin{lstlisting}
+  \begin{lstlisting}
 
 bashconf-15/
   bashconf-15-1.jpg
@@ -80,7 +83,80 @@ oktoberfest-14/
   oktoberfest-14-3.jpg
   oktoberfest-14-4.jpg
 
+  \end{lstlisting}
+
+\question Escriba un \textit{script} que liste en orden alfabético inverso el contenido
+  del directorio actual. Es decir, si el contenido son los archivos:
+
+  \begin{lstlisting}
+
+archivo_1.txt articulo.doc directorio directorio_2 script.sh
+
+  \end{lstlisting}
+
+  se espera que el \textit{script} los liste de la siguiente manera:
+
+  \begin{lstlisting}
+
+script.sh directorio_2 directorio articulo.doc archivo_1.txt
+
+  \end{lstlisting}
+
+\question Realice un \textit{script} que \textbf{copie} todos los archivos del directorio home
+  del usuario que lo ejecuta, a un subdirectorio del mismo llamado \texttt{backup} cambiándoles
+  el nombre para que esté en \textbf{mayúsculas}. \textbf{No se deben procesar los subdirectorios
+  del home del usuario}, únicamente los archivos ubicados directamente en este. Si el directorio
+  \texttt{backup} existe al iniciar el script, el contenido del mismo debe borrarse antes de
+  copiar los archivos.
+
+  \textbf{Ejemplo:} si el home del usuario actual contiene:
+
+  \begin{lstlisting}
+
+/
+  home/
+    mi_usuario/
+      so/
+        practica1.pdf
+        ejercicios/
+          ejercicio-1.sh
+          ejercicio-2.sh
+      archivo1.txt
+      mi-script.sh
+      otro_archivo.txt
+
+  \end{lstlisting}
+
+se espera tener lo siguiente luego de la ejecución del \textit{script}:
+
+\begin{lstlisting}
+
+/
+  home/
+    mi_usuario/
+      backup/
+        ARCHIVO1.TXT
+        MI-SCRIPT.SH
+        OTRO_ARCHIVO.TXT
+      so/
+        practica1.pdf
+        ejercicios/
+          ejercicio-1.sh
+          ejercicio-2.sh
+      archivo1.txt
+      mi-script.sh
+      otro_archivo.txt
+
 \end{lstlisting}
+
+\question Un escritor tiene organizados los capítulos de su próximo libro en distintos archivos
+  de texto plano en un mismo directorio, y le ha solicitado ayuda para \textbf{concatenar}
+  el contenido de cada uno de ellos en un único archivo final llamado \texttt{libro.txt},
+  de modo tal que éste último contenga el texto de todos los otros archivos, uno luego del otro.
+  Puede asumir que los archivos de los capítulos tienen nombres alfabéticamente ordenados:
+  \texttt{capitulo-01.txt}, \texttt{capitulo-02.txt}, ..., \texttt{capitulo-48.txt}, por ejemplo.
+
+  \textbf{Tip:} \texttt{man cat}.
 
 \end{questions}
 
