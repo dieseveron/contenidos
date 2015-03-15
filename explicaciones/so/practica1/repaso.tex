@@ -1,0 +1,475 @@
+\section{Repaso}
+\subsection{Definiciones}
+\begin{frame}
+  \frametitle{Definiciones}
+  \begin{itemize}
+    \item Una \textit{shell} es un intérprete de comandos
+    \item Interactiva o \textit{batch}
+    \item En *nix: shells configurables e intercambiables
+    \begin{itemize}
+      \item \texttt{sh}
+      \item \texttt{bash} (nos basaremos en esta para la materia)
+      \item \texttt{dash}
+      \item \texttt{csh}
+      \item \texttt{zsh}
+      \item ...entre otras...
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Elementos de una shell}
+
+\subsubsection{Comandos}
+
+\begin{frame}
+  \frametitle{Comandos internos}
+  \begin{itemize}
+    \item Embebidos en la shell
+    \item \texttt{man bash} para listarlos
+    \item \texttt{help COMANDO} para ver su documentación
+    \item Hemos visto en ISO:
+    \begin{itemize}
+      \item \texttt{cd}, \texttt{source}, \texttt{for}, \texttt{if}, \texttt{while},
+        \texttt{continue}, \texttt{break}, \texttt{echo}, \texttt{exit}, \texttt{return}, \texttt{export},
+        \texttt{bg}, \texttt{fg}, \texttt{help}, \texttt{kill}, \texttt{let}, \texttt{local},
+        \texttt{pwd}, \texttt{read}, \texttt{text} (o \texttt{[ ]})
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comandos externos}
+  \begin{itemize}
+    \item Cualquier binario que instalemos
+    \item ¡Cualquier script que hagamos nosotros mismos!
+    \item \texttt{man COMANDO} para ver su documentación
+    \item Hemos visto en ISO:
+    \begin{itemize}
+      \item \texttt{grep}, \texttt{cat}, \texttt{cut}, \texttt{ln}, \texttt{ls},
+        \texttt{find}, \texttt{expr}, \texttt{rm}, \texttt{mv}, \texttt{cp}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comentarios}
+  \begin{itemize}
+    \item Comienzan con numeral
+%    \begin{lstlisting}
+%  # Esto es un comentario
+%  ls /etc # Y esto también
+%    \end{lstlisting}
+    \item Son útiles para documentar nuestro código para futura referencia
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Estructuras de control}
+
+\begin{frame}
+  \frametitle{Estructuras de control}
+  \begin{itemize}
+    \item Son comandos internos de bash
+    \begin{itemize}
+      \item \texttt{if}
+      \item \texttt{for}
+      \item \texttt{while}
+      \item ...
+    \end{itemize}
+    \item Ejemplo:
+%    \begin{lstlisting}
+%  if [ 4 -gt 3 ]
+%  then
+%    echo 4 es mayor que 3
+%  else
+%    echo algo esta roto
+%  fi
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Variables}
+
+\begin{frame}
+  \frametitle{Variables - Strings}
+  \begin{itemize}
+    \item \textbf{Strings}
+    \begin{itemize}
+      \item \texttt{hola}
+      \item \texttt{\string"hola\string"}
+      \item \texttt{\string'hola\string'}
+      \item \texttt{\string"string con espacios que reemplaza valores\string"}
+      \item \texttt{\string'string con espacios que no reemplaza valores\string'}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variables - Arreglos}
+  \begin{itemize}
+    \item \textbf{Arreglos}
+    \begin{itemize}
+      \item \texttt{()}
+      \item \texttt{(esto es un arreglo con 7 elementos)}
+      \item \texttt{(este tiene \string"tres elementos\string")}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variables - Asignación y acceso - Strings}
+  \begin{itemize}
+    \item \textbf{Asignación} (\texttt{=})
+    \begin{itemize}
+      \item \texttt{mi\_variable=valor}
+      \item \texttt{variable=\string'un texto\string'}
+      \item \texttt{arreglo=(uno dos tres)}
+    \end{itemize}
+    \item \textbf{Acceso} (\texttt{\${}})
+    \begin{itemize}
+      \item \texttt{echo \$mi\_variable}
+      \item \texttt{echo \string"imprimo \$variable en pantalla\string"}
+      \item \texttt{echo \string'imprimo \$variable en pantalla\string'}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variables - Asignación y acceso - Arreglos}
+  \begin{itemize}
+    \item \textbf{Asignación} (\texttt{=})
+    \begin{itemize}
+      \item \texttt{arreglo=(1 2 3)}
+      \item \texttt{arreglo[3]=cuatro}
+      \item \texttt{arreglo[1]=dos}
+      \item \texttt{unset arreglo[0]}
+    \end{itemize}
+    \item \textbf{Acceso} (\texttt{\${}})
+    \begin{itemize}
+      \item \texttt{echo \$\{arreglo[0]\}}
+      \item \texttt{echo \$\{arreglo[*]\}}
+      \item \texttt{echo \$\{\#arreglo[*]\}}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variables - Alcance}
+  \begin{itemize}
+    \item Por defecto, todas las variables son \textbf{globales} al script
+    \item Se pueden definir variables \textit{locales} mediante \texttt{local}
+    \item Existen variables globales a la sesión, llamadas \textbf{variables de entorno}
+    \begin{itemize}
+      \item \texttt{export MI\_VARIABLE=\string"su valor\string"}
+      \item Ejemplos: \texttt{\$HOME}, \texttt{\$PATH}, \texttt{\$PWD}
+      \item Se pueden consultar las variables de entorno definidas mediante \texttt{export}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Funciones}
+
+\begin{frame}
+  \frametitle{Funciones}
+  \begin{itemize}
+    \item Encapsulan lógica
+    \item Una vez definidas, funcionan como nuevos comandos
+    \item Para definirlas:
+%    \begin{lstlisting}
+%  function imprimir() {
+%    echo $*
+%  }
+%
+%  imprimir Bienvenidos a SO
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Redirecciones y pipes}
+
+\begin{frame}
+  \frametitle{Redirecciones}
+  \begin{itemize}
+    \item Son unidireccionales
+    \item Toman la salida de un comando y la pasan a un archivo
+    \item Pueden ser destructivas o no
+    \item Por ejemplo:
+%    \begin{lstlisting}
+%  echo hola > /tmp/salida.txt
+%  echo chau >> /tmp/salida.txt
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Redirecciones \textit{inversas}}
+  \begin{itemize}
+    \item Son unidireccionales
+    \item Toman el contenido de un archivo y lo pasan a la entrada de un comando
+    \item Por ejemplo:
+%    \begin{lstlisting}
+%  mysql basededatos < dump.sql
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Pipes (\texttt{|})}
+  \begin{itemize}
+    \item Son unidireccionales
+    \item Toman la salida de un comando y se la hacen entrada del siguiente
+    \item Son un mecanismo de \textbf{IPC}
+    \item Utilizan \textit{buffering}
+    \item Por ejemplo:
+%    \begin{lstlisting}
+%  cat /etc/passwd | cut -d: -f2 | grep a | wc -l
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Shebang}
+
+\begin{frame}
+  \frametitle{\textit{Shebang}}
+  \begin{itemize}
+    \item Primer línea (opcional) de un script
+    \item Indica qué comando se usará para ejecutar el script
+    \item Pueden ser destructivas o no
+    \begin{itemize}
+      \item \texttt{\#!/bin/bash}
+      \item \texttt{\#!/usr/bin/env ruby}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Funcionamiento}
+
+\subsubsection{Parámetros}
+
+\begin{frame}
+  \frametitle{Pasaje de parámetros}
+  \begin{itemize}
+    \item Se los accede posicionalmente, a partir del índice \texttt{1}:
+    \begin{itemize}
+      \item \texttt{\$1} a \texttt{\$n}
+      \item \texttt{\$0}
+      \item \texttt{\$*}
+      \item \texttt{\$\#}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Estado de los comandos}
+
+\begin{frame}
+  \frametitle{Estado de los comandos - \textit{exit status}}
+  \begin{itemize}
+    \item Denotan si la operación realizada por un comando o una función
+      fue exitosa o no
+      \begin{itemize}
+        \item \texttt{0} en caso de éxito
+        \item \texttt{1} a \texttt{255} en caso de error
+      \end{itemize}
+    \item Se retornan con comandos internos:
+    \begin{itemize}
+      \item \texttt{exit} en el contexto de un comando/script
+      \item \texttt{return} en el contexto de una función
+    \end{itemize}
+    \item Se consultan con una variable especial: \texttt{\$?}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Sustitución de comandos}
+
+\begin{frame}
+  \frametitle{Sustitución de comandos}
+  \begin{itemize}
+    \item Reemplaza un comando por su salida estándar
+    \item Literalmente coloca la salida de un comando en el lugar que
+      este ocupa
+    \item Se realiza con cadenas especiales:
+    \begin{itemize}
+      \item \texttt{`}: \texttt{echo \string"mi nombre es `whoami`\string"}
+      \item \texttt{\$()}: \texttt{echo \string"mi nombre es \$(whoami)\string"}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Ejecución}
+
+\begin{frame}
+  \frametitle{Ejecución de scripts}
+  \begin{itemize}
+    \item Si se tienen permisos de ejecución:
+    \begin{itemize}
+      \item \texttt{./script.sh}
+    \end{itemize}
+    \item Especificando el binario a utilizar
+    \begin{itemize}
+      \item \texttt{bash script.sh}
+    \end{itemize}
+    \item En modo de depuración
+    \begin{itemize}
+      \item \texttt{bash -x script.sh}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{En *nix todo es un archivo}
+
+\begin{frame}
+  \frametitle{En *nix todo es un archivo}
+  \begin{itemize}
+    \item Cada comando tiene \textit{al menos} 3 archivos abiertos:
+    \begin{itemize}
+      \item \texttt{stdin} (\texttt{0}): entrada estándar
+      \item \texttt{stdout} (\texttt{1}): salida estándar
+      \item \texttt{stderr} (\texttt{2}): salida de error estándar
+    \end{itemize}
+    \item Como son archivos, podemos leer de y escribir en ellos
+    \begin{itemize}
+      \item \texttt{read variable} lee de \texttt{stdin}
+      \item \texttt{read variable < ARCHIVO} escribe el contenido de \texttt{ARCHIVO} en \texttt{stdin}
+        para el comando \texttt{read}
+      \item \texttt{echo Un mensaje} escribe en \texttt{stdout} (equivale a \texttt{echo Un mensaje >\&1})
+      \item \texttt{echo Un mensaje >\&2} escribe en \texttt{stderr}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Comandos útiles}
+
+\begin{frame}
+  \frametitle{Imprimir texto}
+  \begin{itemize}
+    \item Imprimir texto
+%    \begin{lstlisting}
+%  echo Shell scripting es sencillo
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Imprimir el contenido de un archivo}
+  \begin{itemize}
+    \item Imprimir el contenido de un archivo
+%    \begin{lstlisting}
+%  cat archivo
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Leer de teclado}
+  \begin{itemize}
+    \item Leer de entrada estándar (teclado) en una variable
+%    \begin{lstlisting}
+%  read variable
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Leer archivos estructurados}
+  \begin{itemize}
+    \item Leer el primer campo delimitado por :
+%    \begin{lstlisting}
+%  cut -d: -f1 # lee de stdin
+%  cut -d: -f1 archivo # lee desde archivo
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Traducir (intercambiar) caracteres}
+  \begin{itemize}
+    \item Traducir (intercambiar) caracteres
+%    \begin{lstlisting}
+%  echo hola | tr a-z A-Z # traduce las minúsculas por mayúsculas
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contar la cantidad de líneas}
+  \begin{itemize}
+    \item Contar la cantidad de líneas
+%    \begin{lstlisting}
+%  wc -l # de stdin
+%  wc -l archivo # de archivo
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Buscar archivos}
+  \begin{itemize}
+    \item Buscar recursivamente archivos por su nombre en el directorio actual (\texttt{.})
+%    \begin{lstlisting}
+%  find . -name "*.sh"
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Buscar un patrón}
+  \begin{itemize}
+    \item Buscar un patrón
+%    \begin{lstlisting}
+%  grep shell # en stdin
+%  grep shell archivo # en archivo
+%  grep shell * # en todos los archivos del directorio actual
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Empaquetado}
+  \begin{itemize}
+    \item Empaquetado de archivos
+%    \begin{lstlisting}
+%  tar -cf destino.tar origen1 origen2 # empaqueta en destino.tar
+%  tar -xf destino.tar # desempaqueta destino.tar
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Compresión de archivos}
+  \begin{itemize}
+    \item Compresión de archivos
+%    \begin{lstlisting}
+%  gzip destino.tar # comprime destino.tar en destino.tar.gz
+%  gzip -d destino.tar.gz # descomprime destino.tar.gz
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Empaquetado y compresión con tar}
+  \begin{itemize}
+    \item Empaquetado y compresión con \texttt{tar}
+%    \begin{lstlisting}
+%  tar -cfz destino.tar.gz origen1 origen2 # invoca gzip automáticamente
+%  tar -xfz destino.tar.gz # descomprime y desempaqueta destino.tar.gz
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Listado de procesos}
+  \begin{itemize}
+    \item Listado de procesos
+%    \begin{lstlisting}
+%  ps -aux # lista los procesos en ejecución de todos los usuarios
+%    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\subsection{Ejemplos}
+
+\begin{frame}
+  \frametitle{Ejemplos}
+  \begin{itemize}
+    \item https://github.com/ncuesta/ep3-shell-scripting
+  \end{itemize}
+\end{frame}
