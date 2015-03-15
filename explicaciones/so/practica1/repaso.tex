@@ -51,21 +51,21 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Comentarios}
   \begin{itemize}
     \item Comienzan con numeral
-%    \begin{lstlisting}
-%  # Esto es un comentario
-%  ls /etc # Y esto también
-%    \end{lstlisting}
+    \begin{lstlisting}
+# Esto es un comentario
+ls /etc # Y esto también
+    \end{lstlisting}
     \item Son útiles para documentar nuestro código para futura referencia
   \end{itemize}
 \end{frame}
 
 \subsubsection{Estructuras de control}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Estructuras de control}
   \begin{itemize}
     \item Son comandos internos de bash
@@ -76,14 +76,14 @@
       \item ...
     \end{itemize}
     \item Ejemplo:
-%    \begin{lstlisting}
-%  if [ 4 -gt 3 ]
-%  then
-%    echo 4 es mayor que 3
-%  else
-%    echo algo esta roto
-%  fi
-%    \end{lstlisting}
+   \begin{lstlisting}
+ if [ 4 -gt 3 ]
+ then
+   echo 4 es mayor que 3
+ else
+   echo algo esta roto
+ fi
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
@@ -168,51 +168,51 @@
 
 \subsubsection{Funciones}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Funciones}
   \begin{itemize}
     \item Encapsulan lógica
     \item Una vez definidas, funcionan como nuevos comandos
     \item Para definirlas:
-%    \begin{lstlisting}
-%  function imprimir() {
-%    echo $*
-%  }
-%
-%  imprimir Bienvenidos a SO
-%    \end{lstlisting}
+   \begin{lstlisting}
+ function imprimir() {
+   echo $*
+ }
+
+ imprimir Bienvenidos a SO
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
 \subsubsection{Redirecciones y pipes}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Redirecciones}
   \begin{itemize}
     \item Son unidireccionales
     \item Toman la salida de un comando y la pasan a un archivo
     \item Pueden ser destructivas o no
     \item Por ejemplo:
-%    \begin{lstlisting}
-%  echo hola > /tmp/salida.txt
-%  echo chau >> /tmp/salida.txt
-%    \end{lstlisting}
+   \begin{lstlisting}
+echo hola > /tmp/salida.txt
+echo chau >> /tmp/salida.txt
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Redirecciones \textit{inversas}}
   \begin{itemize}
     \item Son unidireccionales
     \item Toman el contenido de un archivo y lo pasan a la entrada de un comando
     \item Por ejemplo:
-%    \begin{lstlisting}
-%  mysql basededatos < dump.sql
-%    \end{lstlisting}
+   \begin{lstlisting}
+ mysql basededatos < dump.sql
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Pipes (\texttt{|})}
   \begin{itemize}
     \item Son unidireccionales
@@ -220,9 +220,9 @@
     \item Son un mecanismo de \textbf{IPC}
     \item Utilizan \textit{buffering}
     \item Por ejemplo:
-%    \begin{lstlisting}
-%  cat /etc/passwd | cut -d: -f2 | grep a | wc -l
-%    \end{lstlisting}
+   \begin{lstlisting}
+ cat /etc/passwd | cut -d: -f2 | grep a | wc -l
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
@@ -338,130 +338,130 @@
 
 \subsection{Comandos útiles}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Imprimir texto}
   \begin{itemize}
     \item Imprimir texto
-%    \begin{lstlisting}
-%  echo Shell scripting es sencillo
-%    \end{lstlisting}
+   \begin{lstlisting}
+ echo Shell scripting es sencillo
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Imprimir el contenido de un archivo}
   \begin{itemize}
     \item Imprimir el contenido de un archivo
-%    \begin{lstlisting}
-%  cat archivo
-%    \end{lstlisting}
+   \begin{lstlisting}
+ cat archivo
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Leer de teclado}
   \begin{itemize}
     \item Leer de entrada estándar (teclado) en una variable
-%    \begin{lstlisting}
-%  read variable
-%    \end{lstlisting}
+   \begin{lstlisting}
+ read variable
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Leer archivos estructurados}
   \begin{itemize}
     \item Leer el primer campo delimitado por :
-%    \begin{lstlisting}
-%  cut -d: -f1 # lee de stdin
-%  cut -d: -f1 archivo # lee desde archivo
-%    \end{lstlisting}
+   \begin{lstlisting}
+ cut -d: -f1 # lee de stdin
+ cut -d: -f1 archivo # lee desde archivo
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Traducir (intercambiar) caracteres}
   \begin{itemize}
     \item Traducir (intercambiar) caracteres
-%    \begin{lstlisting}
-%  echo hola | tr a-z A-Z # traduce las minúsculas por mayúsculas
-%    \end{lstlisting}
+   \begin{lstlisting}
+ echo hola | tr a-z A-Z # traduce las minúsculas por mayúsculas
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Contar la cantidad de líneas}
   \begin{itemize}
     \item Contar la cantidad de líneas
-%    \begin{lstlisting}
-%  wc -l # de stdin
-%  wc -l archivo # de archivo
-%    \end{lstlisting}
+   \begin{lstlisting}
+ wc -l # de stdin
+ wc -l archivo # de archivo
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Buscar archivos}
   \begin{itemize}
     \item Buscar recursivamente archivos por su nombre en el directorio actual (\texttt{.})
-%    \begin{lstlisting}
-%  find . -name "*.sh"
-%    \end{lstlisting}
+   \begin{lstlisting}
+ find . -name "*.sh"
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Buscar un patrón}
   \begin{itemize}
     \item Buscar un patrón
-%    \begin{lstlisting}
-%  grep shell # en stdin
-%  grep shell archivo # en archivo
-%  grep shell * # en todos los archivos del directorio actual
-%    \end{lstlisting}
+   \begin{lstlisting}
+ grep shell # en stdin
+ grep shell archivo # en archivo
+ grep shell * # en todos los archivos del directorio actual
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Empaquetado}
   \begin{itemize}
     \item Empaquetado de archivos
-%    \begin{lstlisting}
-%  tar -cf destino.tar origen1 origen2 # empaqueta en destino.tar
-%  tar -xf destino.tar # desempaqueta destino.tar
-%    \end{lstlisting}
+   \begin{lstlisting}
+ tar -cf destino.tar origen1 origen2 # empaqueta en destino.tar
+ tar -xf destino.tar # desempaqueta destino.tar
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Compresión de archivos}
   \begin{itemize}
     \item Compresión de archivos
-%    \begin{lstlisting}
-%  gzip destino.tar # comprime destino.tar en destino.tar.gz
-%  gzip -d destino.tar.gz # descomprime destino.tar.gz
-%    \end{lstlisting}
+   \begin{lstlisting}
+ gzip destino.tar # comprime destino.tar en destino.tar.gz
+ gzip -d destino.tar.gz # descomprime destino.tar.gz
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Empaquetado y compresión con tar}
   \begin{itemize}
     \item Empaquetado y compresión con \texttt{tar}
-%    \begin{lstlisting}
-%  tar -cfz destino.tar.gz origen1 origen2 # invoca gzip automáticamente
-%  tar -xfz destino.tar.gz # descomprime y desempaqueta destino.tar.gz
-%    \end{lstlisting}
+   \begin{lstlisting}
+ tar -cfz destino.tar.gz origen1 origen2 # invoca gzip automáticamente
+ tar -xfz destino.tar.gz # descomprime y desempaqueta destino.tar.gz
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Listado de procesos}
   \begin{itemize}
     \item Listado de procesos
-%    \begin{lstlisting}
-%  ps -aux # lista los procesos en ejecución de todos los usuarios
-%    \end{lstlisting}
+   \begin{lstlisting}
+ ps -aux # lista los procesos en ejecución de todos los usuarios
+   \end{lstlisting}
   \end{itemize}
 \end{frame}
 
