@@ -9,8 +9,9 @@
 ]{mdframed}
 
 \usepackage{etoolbox}% >= v2.1 2011-01-03
-\BeforeBeginEnvironment{lstlisting}{\begin{mdframed}\vspace{-0.7em}}
-\AfterEndEnvironment{lstlisting}{\vspace{-0.5em}\end{mdframed}}
+% \BeforeBeginEnvironment{lstlisting}{\begin{mdframed}\vspace{-0.7em}}
+% \AfterEndEnvironment{lstlisting}{\vspace{-0.5em}\end{mdframed}}
+
 
 % needed for \lstcapt
 \def\ifempty#1{\def\temparg{#1}\ifx\temparg\empty}
@@ -35,8 +36,8 @@
 }
 
 \lstset{
-    basicstyle=\fontfamily{pcr}\selectfont\footnotesize\color{white},
-    keywordstyle=\color{yellow}\bfseries, % style for keywords
+    basicstyle=\fontfamily{pcr}\selectfont\footnotesize,%\color{white},
+    keywordstyle=\bfseries, % style for keywords
     numbers=none, % where to put the line-numbers
     numberstyle=\tiny, % the size of the fonts that are used for the line-numbers     
     showspaces=false, % show spaces adding particular underscores
