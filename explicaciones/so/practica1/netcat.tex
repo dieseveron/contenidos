@@ -1,0 +1,85 @@
+\section{Pipes y Netcat}
+\subsection{Pipes}
+
+\subsubsection{Unnamed Pipes}
+\begin{frame}[fragile]
+  \frametitle{Unnamed Pipes}
+  \begin{itemize}
+    \item Son los que se utilizaron para realizar los scripts en ISO (\texttt{|})
+    \item ¿Cuántos procesos actuan en la siguiente linea ejecutada en una terminal?
+    \begin{lstlisting}
+ls | grep x
+    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\subsubsection{Named Pipes}
+\begin{frame}[fragile]
+  \frametitle{Named Pipes}
+  \begin{itemize}
+    \item También conocidas con el nombre de \textit{FIFO}
+    \item Se representan mediante archivos
+    \item Se crean con el comando \textit{mkfifo}
+    \item Se identifican con la letra \textit{p}
+    \begin{lstlisting}
+$ ls -l
+prw-r--r--   1 root root    0 Jan 22 23:11 named_pipe
+    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Ejemplo con Named Pipes}
+  \begin{itemize}
+   \item Si en una terminal ejecutamos lo siguiente
+   \begin{lstlisting}
+mkfifo pipe_so; ls -l > pipe_so
+   \end{lstlisting}
+   \item Y en otra terminal ejecutamos los siguiente
+   \begin{lstlisting}
+cat < pipe_so
+   \end{lstlisting}
+   \item ¿Qué sucede?
+  \end{itemize}
+\end{frame}
+
+\subsection{Netcat}
+\begin{frame}[fragile]
+  \frametitle{Netcat}
+  \begin{itemize}
+    \item Es una utilidad de red destacada
+    \item Permite leer y escribir datos a través de conexiones \textit{TCP}
+      \begin{lstlisting}
+# En el servidor
+nc -l port_number
+
+# En el cliente
+nc host_name port_number
+      \end{lstlisting}
+    \item También permite utilizar \textit{UDP} (parametro \textit{-u})
+    \item Tunneling
+    \item Escaneo de puertos (parametro \textit{-z})
+      \begin{lstlisting}	
+nc -zv host_name port_number
+      \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\subsection{Netcat con Pipes y Redirecciones}
+\begin{frame}[fragile]
+  \frametitle{Netcat con Pipes y Redirecciones}
+  \begin{itemize}
+    \item Transferencia de datos, como el contenido de un archivo
+      \begin{lstlisting}	
+nc -l port_number < /home/so/archivo_a_enviar
+      \end{lstlisting}
+    \item ¿Cuál es el comportamiento el siguiente código?
+      \begin{lstlisting}
+# En el servidor
+cat named_pipe | nc -l 1500 > named_pipe
+
+# En el cliente
+nc localhost 1500
+      \end{lstlisting}
+  \end{itemize}
+\end{frame}
