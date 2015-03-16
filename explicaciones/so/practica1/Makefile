@@ -1,3 +1,3 @@
-DEPS = repaso.tex netcat.tex
+DEPS = repaso.tex redes-so.tex
 
 include ../../../common/Makefile.include
