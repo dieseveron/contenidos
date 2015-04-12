@@ -1,0 +1,236 @@
+\section{Requisisitos}
+\textit{
+Para poder agregar una nueva System Call al sistema es necesario contar con el 
+código fuente del núcleo del sistema operativo. Cuando utilicemos el termino 
+<kernel\_code> haremos referencia al directorio donde se encuentra el código fuente 
+del Kernel.  Por convención el mismo es colocado en /usr/src/linux.  Para realizar 
+la practica debe utilizarse el código utilizado en la practica 1.}
+\section{Conceptos Generales}
+\begin{questions}
+  \question ¿Qué es una \textit{System Call?}, ¿para que se utiliza?
+
+  \question ¿Para qué sirve la macro syscall?. Describa el propósito de cada uno 
+            de sus parámetros. 
+            Ayuda: http://www.gnu.org/software/libc/manual/html\_mono/libc.html\#System-Calls
+
+   \question ¿Para que sirven los archivo <kernel\_code>/arch/x86/syscalls/syscall\_32.tbl y 
+             <kernel\_code>/arch/x86/syscalls/syscall\_64.tbl?
+   \question ¿Para qué sirve la macro asmlinkage?
+   \question ¿Para qué sirve la herramienta strace?, ¿Cómo se usa?
+\end{questions}
+\section{System Calls}
+
+La System Call que vamos a implementar accederá a la estructura rq(runqueue), que es la estructura
+de datos básica del planificador de procesos (scheduler). Esta estructura es definida en 
+<kernel\_code>/kernel/sched.c. Hay una rq por cada procesador y cada proceso del sistema estará sólo 
+en una rq. Esta estructura mantiene información adicional por cada procesador, la cual será el objetivo
+de la syscall.
+
+Definición de la estructura runqueue rq:
+\begin{verbatim}
+#include <linux/cpu.h>
+/*
+ * This is the main, per-CPU runqueue data structure.
+ */
+struct rq {
+ unsigned long nr_uninterruptible;
+ task_struct *curr, *idle, *stop;
+         unsigned long next_balance;
+ .
+ .
+ struct task_struct *curr;
+ unsigned long nr_uninterruptible;
+ task_struct *curr, *idle, *stop;
+ long next_balance;
+\end{verbatim}
+
+
+
+Intentaremos acceder con nuestra llamada al sistema a dos datos almacenados en los campos de la estructura runqueue:
+nr\_running: contiene el número de tareas en estado de ejecución para este procesador, es decir, tareas en estado TASK\_RUNNING.
+nr\_uninterruptible: número de tareas en estado no interrumpible, TASK\_UNINTERRUMPIBLE. Es decir, tareas esperando por un evento de entrada/salida no activables por la llegada de una señal
+
+Por tanto al utilizar nuestra llamada al sistema, que denominaremos a partir de este momento rqinfo, obtendremos los datos antes comentados del espacio kernel en el espacio de usuario de nuestra aplicación.
+
+\section{Agregamos una nueva System Call}
+1°) Añadir una entrada al final de la tabla que contiene todas las System Calls, la syscall table. En nuestro caso, vamos a dar soporte para nuestra syscall sólo a la arquitectura x86. Notar que usamos la nomenclatura oficial para denominar la syscall, esto es, el nombre de la syscall precedido con el prefijo sys\_
+
+<kernel\_code>/arch/x86/syscalls/syscall\_32.tbl
+\begin{verbatim}
+ 343     i386    clock_adjtime           sys_clock_adjtime               
+ 344     i386    syncfs                  sys_syncfs
+ 345     i386    sendmmsg                sys_sendmmsg                    
+ 346     i386    setns                   sys_setns
+ 347     i386    process_vm_readv        sys_process_vm_readv            
+ 348     i386    process_vm_writev       sys_process_vm_writev           
+ 349     i386    kcmp                    sys_kcmp
+ 350     i386    finit_module            sys_finit_module
+ 351     i386    rqinfo                  sys_rqinfo
+\end{verbatim}
+
+
+2°)Ahora incluir la declaración de nuestra system call
+
+
+<kernel\_code>/include/linux/syscalls.h
+\begin{verbatim}
+asmlinkage long sys_rqinfo(unsigned long *ubuff, long len);
+#endif
+\end{verbatim}
+
+3°) El próximo paso es incluir el código de nuestra syscall en algún punto del árbol de fuentes ya sea añadiendo un nuevo archivo al conjunto del kernel o incluyendo nuestra implementación en algún archivo ya existente. La primera opción obligará a modificar los makefiles del kernel para incluir el nuevo archivo fuente. Por simplicidad añadiremos el código de nuestra syscall en algún punto del código ya existente. Esta segunda opción es la que utilizaremos, pero ¿dónde colocamos nuestro código?. En nuestro ejemplo, un buen sitio para implementar la syscall inforq en el archivo kernel/sched/core.c, donde podemos acceder a la estructura que nos interesa con facilidad, en este mismo archivo se implementan otra syscalls relacionadas con el planificador de CPU y el scheduler del sistema operativo.
+
+<kernel\_code>/kernel/sched/core.c
+
+\begin{verbatim}
+asmlinkage long sys_rqinfo(unsigned long *ubuff, long len){
+        struct rq *rqs;
+        unsigned long flags;
+        unsigned long kbuff[2];
+
+        /*
+        * Si el buffer size del usuario
+        * es distinto al nuestro devolvemos error.
+        */
+        if (len != sizeof(kbuff))
+                return -EINVAL;
+
+        /*
+        * Delimitamos la region critica para
+        * acceder al recurso compartido.
+        */
+        rqs = task_rq_lock(current, &flags);
+
+        kbuff[0] = rqs->nr_running;
+        kbuff[1] = rqs->nr_uninterruptible;
+
+        task_rq_unlock(rqs,current,&flags);
+
+        if (copy_to_user(ubuff, &kbuff, len))
+                return -EFAULT;
+
+        return len;
+}
+\end{verbatim}
+
+
+Notas:
+\begin{itemize}  
+\item El valor “current” utilizado es una macro definida en el Kernel la cual retorna una estructura que representa el proceso actual (el que ejecuto el llamado a la System Call). Esta estructura, llamada task\_struct, se encuentra definida en <kernel\_code>/include/linux/sched.h.
+\item Bloqueo del recurso: es importante destacar esto!!, ya que en el código hemos bloqueado la estructura rq antes de acceder a ella, para ello hemos usado funciones que nos proporciona el propio código del planificador. Es común y necesario conseguir acceso exclusivo a este tipo de recursos, pues son compartidos por muchas partes del sistema y tenemos que mantenerlos consistentes. En especial, puesto que las syscall son interrumpibles, tenemos que tener mucho cuidado a la hora de acceder a este tipo de recursos.
+\item Notar que nuesta system call debe exportar de alguna manera los datos obtenidos al espacio de usuario, es decir al programa o librería que utlizará nuestra system call, es por eso que tenemos la función copy\_to\_user para llevar a cabo esta tarea.
+\end{itemize}  
+
+4°) Lo próximo que debemos realizar es compilar el Kernel con nuestros cambios. Una vez seguidos todos los pasos de la compilación como lo vimos en el trabajo práctico 1, acomodamos la imagen generada y arrancamos el sistema con el nuevo Kernel
+
+5°) Nuestro último paso es realizar un programa que llame a la System Call. Para ello crearemos un archivo, por ejemplo syscall.c, con el siguiente contenido:
+
+\begin{verbatim}
+#include <stdio.h>
+#include <errno.h>
+#include <sys/syscall.h>
+
+#define NR_rqinfo 351
+
+int main(int argc, char **argv)
+{
+     long ret;
+     unsigned long buf[2];
+     printf("invocando syscall ..\n");
+
+     if ((ret = syscall(NR_rqinfo, buf, 2*sizeof(long))) < 0){
+                perror("ERROR");
+                return -1;
+     }
+     printf("runnables           : %lu\n", buf[0]);
+     printf("uninterruptibles    : %lu\n", buf[1]);
+     return 0;
+}
+\end{verbatim}
+
+
+Notas:
+\begin{itemize}  
+\item Cuando utilizamos llamadas al sistema, por ejemplo open() que permite abrir un archivo, no es necesario invocarlas de manera explícita, ya que por defecto la librería libc tiene funciones que encapsulan las llamadas al sistema. 
+\end{itemize}  
+
+Luego lo compilamos para obtener nuestro programa. Para ello ejecutamos:
+\begin{verbatim}
+gcc prueba_inforq.c
+\end{verbatim}
+
+Por ultimo nos queda ejecutar nuestro programa y ver el resultado.
+\begin{verbatim}
+./a.out
+\end{verbatim}
+
+Aclaración: 
+\begin{itemize}  
+\item Para más opciones de compilación de programas en C se sugiere la lectura del manual de compilador de c.
+\end{itemize}  
+
+
+\section{Monitoreando System Calls}
+1°)Implemente el siguiente programa.
+\begin{verbatim}
+#include <stdio.h>
+ 
+ int main() {
+    printf("¡Hola, mundo!\n");
+    return 0;
+ }
+\end{verbatim}
+
+
+Ejecútelo utilizando el comando strace.
+
+\begin{verbatim}
+# strace mi_programa
+\end{verbatim}
+
+
+Analice que System Calls son invocadas.
+Aclaración: 
+Es posible que el programa strace no esté instalado en su equipo. Para ello deberá instalarlo. Si estamos en debian podemos hacerlo ejecutando lo siguiente:
+
+\begin{verbatim}
+#sudo apt-get install strace
+\end{verbatim}
+
+O bien bajando el paquete e instalándolo manualmente:
+
+\begin{verbatim}
+#wget http://ftp.us.debian.org/debian/pool/main/s/strace/strace_4.5.20-2_i386.deb
+
+# dpkg -i strace_4.5.20-2_i386.deb
+\end{verbatim}
+
+2°) Compile y ejecute los siguientes programas. Realice un trace de los mismos utilizando la herramienta strace. ¿Existe alguna diferencia?
+
+Invocando getpid a través de libc:
+
+\begin{verbatim}
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(void) {
+ int p_id= (int) getpid();
+ printf("El pid es %d\n",p_id);
+ return 0;
+}
+\end{verbatim}
+
+Invocando getpid a través de syscall:
+\begin{verbatim}
+#include <syscall.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+
+ 
+int main(void) {
+ int p_id= syscall(SYS_getpid);
+ printf("El pid es %d\n",p_id);
+ return 0;
+}
+\end{verbatim}

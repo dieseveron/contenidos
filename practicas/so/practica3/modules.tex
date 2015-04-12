@@ -1,0 +1,319 @@
+\section{Módulos y Drivers}
+
+Referencia de lectura obligatoria: http://tldp.org/LDP/lkmpg/2.6/html/c38.html
+
+\section{Conceptos Generales}
+\begin{questions}
+\question a. ¿Cómo se denomina en Gnu/Linux a la porción de código que se agrega al kernel en tiempo de ejecución? ¿Es necesario reiniciar el sistema al cargarlo?.  Si no se pudiera utilizar esto. ¿Cómo deberíamos hacer para proveer la misma funcionalidad en Gnu/Linux?
+\question b. ¿Qué es un driver? ¿para que se utiliza?
+\question c. ¿Porque es necesario escribir drivers?
+\question d. ¿Cuál es la relación entre modulo y driver en Gnu/Linux?
+\question e. ¿Qué implicancias puede tener un bug en un driver o módulo?
+\question f. ¿Qué tipos de drivers existen en Gnu/Linux?
+\question g) ¿Que hay en el directorio /dev? ¿qué tipos de archivo encontramos en esa ubicación?
+\question h) ¿Para qué sirven el archivos /lib/modules/<version>/modules.dep utilizado por el comando modprobe
+
+\end{questions}
+\section{System Calls}
+
+\section{Agregando un módulo a nuestro kernel}
+El objetivo de este ejercicio es crear un módulo sencillo y poder cargarlo en nuestro kernel con el fin de consultar que el mismo se haya registrado correctamente
+
+1°) Crear el archivo memory.c con el siguiente código
+
+\begin{verbatim}
+#include <linux/module.h>
+MODULE_LICENSE("Dual BSD/GPL");	
+\end{verbatim}
+
+2°) Crear el archivo Makefile con el siguiente contenido
+
+\begin{verbatim}
+obj-m := memory.o
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item Explique brevemente cual es la utilidad del archivo Makefile en la organización de un proyecto de linux.
+\item ¿Para qué sirve la macro MODULE\_LICENSE? ¿Es obligatoria?
+\end{itemize} 
+
+3°) Ahora es necesario compilar nuestro modulo usando el mismo kernel en que correrá el mismo, utilizaremos el que instalamos en el primer paso del ejercicio guiado.
+
+\begin{verbatim}
+make -C <KERNEL_CODE> M=`pwd` modules
+\end{verbatim}
+
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Cuál es la salida del comando anterior? 
+\item ¿Qué tipos de archivo se generan? Explique para qué sirve cada uno.
+\end{itemize}  
+
+
+4°) El paso que resta el agregar y eventualmente quitar nuestro modulo al kernel en tiempo de ejecución. Ejecutamos:
+\begin{verbatim}
+sudo insmod memory.ko
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Para qué sirve comando insmod., y el comando modprobe?, ¿en qué se diferencian?
+\end{itemize}  
+
+5°)  Ahora ejecutamos 
+\begin{verbatim}
+lsmod | grep memory
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Cuál es la salida del comando? Explique cuál es la utilidad del comando lsmod.
+\item ¿Qué información encuentra en el archivo /proc/modules?
+\item Si ejecutamos more /proc/modules encontramos los siguientes fragmentos
+
+\begin{verbatim}
+parport_pc 37412 0 - Live 0xf8b02000
+lp 12580 0 - Live 0xf8ae1000
+parport 37448 3 ppdev,parport_pc,lp, Live 0xf8ae9000
+.memory 3844 0 - Live 0xf89fe000
+\end{verbatim}
+
+\item ¿Qué información obtenemos de aquí?
+\item ¿Con qué comando eliminamos el módulo de nuestro kernel?
+\end{itemize}  
+
+6°) Elimine el modulo recién agregado al kernel. Para corroborar que efectivamente el mismo ha sido eliminado del kernel ejecute lo siguiente
+\begin{verbatim}
+lsmod | grep memory
+\end{verbatim}
+
+7°) Modifique el archivo memory.c de la siguiente manera
+\begin{verbatim}
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
+MODULE_LICENSE("Dual BSD/GPL");
+
+static int hello_init(void) {
+printk("<1> Hello world!\n");
+return 0;
+}
+
+static void hello_exit(void) {
+printk("<1> Bye, cruel world\n");
+}
+module_init(hello_init); 
+module_exit(hello_exit);
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Para qué sirven las funciones module\_init y module\_exit?. ¿Cómo haría para ver la información del log que arrojan las mismas?.
+\item Hasta aquí hemos desarrollado, compilado, cargado y descargado un módulo en nuestro kernel. En este punto y sin mirar lo que sigue. ¿Qué nos falta para tener un driver completo?.  
+\item Clasifique los tipos de dispositivos en Linux. Explique las características de cada uno. 
+\end{itemize}  
+
+\section{Desarrollando un Driver}
+Ahora completaremos nuestro modulo para agregarle la capacidad de escribir y leer un dispositivo. En nuestro caso el dispositivo a leer será la memoria de nuestra CPU, pero podría ser cualquier otro dispositivo.
+Pasos.
+
+1°) Modifique el archivo memory.c de la siguiente manera
+\begin{verbatim}
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/kernel.h> /* printk() */
+#include <linux/slab.h> /* kmalloc() */
+#include <linux/fs.h> /* everything... */
+#include <linux/errno.h> /* error codes */
+#include <linux/types.h> /* size_t */
+#include <linux/proc_fs.h>
+#include <linux/fcntl.h> /* O_ACCMODE */
+#include <asm/uaccess.h> /* copy_from/to_user */
+
+MODULE_LICENSE("Dual BSD/GPL");
+
+int memory_open(struct inode *inode, struct file *filp);
+int memory_release(struct inode *inode, struct file *filp);
+ssize_t memory_read(struct file *filp, char *buf, size_t count, loff_t *f_pos);
+ssize_t memory_write(struct file *filp, char *buf, size_t count, loff_t *f_pos);
+void memory_exit(void);
+int memory_init(void);
+
+/* Structure that declares the usual file */
+/* access functions */
+struct file_operations memory_fops = {
+read: memory_read,
+write: memory_write,
+open: memory_open,
+release: memory_release
+};
+
+/* Declaration of the init and exit functions */
+module_init(memory_init);
+module_exit(memory_exit);
+
+/* Global variables of the driver */
+/* Major number */
+int memory_major = 60;
+
+/* Buffer to store data */
+char *memory_buffer;
+int memory_init(void) {
+int result;
+
+/* Registering device */
+result = register_chrdev(memory_major, "memory", &memory_fops);
+if (result < 0) {
+	printk("<1>memory: cannot obtain major number %d\n", memory_major);
+	return result;
+}
+
+/* Allocating memory for the buffer */	
+memory_buffer = kmalloc(1, GFP_KERNEL);
+if (!memory_buffer) {
+result = -ENOMEM;	
+goto fail;
+}
+memset(memory_buffer, 0, 1);
+printk("<1>Inserting memory module\n");
+return 0;
+fail:
+memory_exit();
+return result;
+}
+
+void memory_exit(void) {
+/* Freeing the major number */
+unregister_chrdev(memory_major, "memory");
+/* Freeing buffer memory */
+if (memory_buffer) {
+kfree(memory_buffer);
+}
+printk("<1>Removing memory module\n");
+}
+
+int memory_open(struct inode *inode, struct file *filp) {
+/* Success */
+return 0;
+}
+
+int memory_release(struct inode *inode, struct file *filp) {
+/* Success */
+return 0;
+}
+
+ssize_t memory_read(struct file *filp, char *buf,
+size_t count, loff_t *f_pos) {
+
+/* Transfering data to user space */
+copy_to_user(buf,memory_buffer,1);
+
+/* Changing reading position as best suits */
+if (*f_pos == 0) {
+*f_pos+=1;
+return 1;
+} else {
+return 0;
+}
+}
+
+ssize_t memory_write( struct file *filp, char *buf,
+size_t count, loff_t *f_pos) {
+char *tmp;
+tmp=buf+count-1;
+copy_from_user(memory_buffer,tmp,1);
+return 1;
+}
+
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Para qué sirve la estructura ssize\_t y memory\_fops? ¿Y las funciones register\_chrdev y unregister\_chrdev?
+\item ¿Cómo sabe el kernel que funciones del driver invocar para leer y escribir al dispositivo?
+\item ¿Cómo se accede desde el espacio de usuario a los dispositivos en Linux?
+\item ¿Cómo se asocia el modulo que implementa nuestro driver con el dispositivo?
+\end{itemize}  
+
+
+2) Ahora ejecutamos lo siguiente:
+\begin{verbatim}
+sudo mknod /dev/memory c 60 0
+\end{verbatim}
+
+3) y luego:
+\begin{verbatim}
+sudo insmod memory.ko
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Para qué sirve el comando mknod? ¿qué especifican cada uno de sus parámetros?. ¿Qué son el “major” y el “minor” number? ¿Qué referencian cada uno?
+\end{itemize}  
+
+4) Ahora escribimos a nuestro dispositivo
+\begin{verbatim}
+echo -n abcdef > /dev/memory
+\end{verbatim}
+
+5) Ahora leemos desde nuestro dispositivo
+\begin{verbatim}
+more /dev/memory
+\end{verbatim}
+
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Qué salida tiene el anterior comando?, ¿Porque? (ayuda: siga la ejecución de las funciones memory\_read y memory\_write) 
+\item ¿Cuantas invocaciones a memory\_write se realizaron?
+\item ¿Cuál es el efecto del comando anterior?,¿porque?
+\item Hasta aquí hemos desarrollado un ejemplo de un driver muy simple pero de manera completa, en nuestro caso hemos escrito y leído desde un dispositivo que en este caso es la propia memoria de nuestro equipo.
+\item En el caso de un driver que lee un dispositivo como puede ser un file system, un dispositivo usb,etc. ¿Qué otros aspectos deberíamos considerar que aquí hemos omitido? ayuda: semáforos, ioctl, inb,outb.
+\end{itemize}  
+
+\section{Crashing}
+
+\texttt{Atención: guarde cualquier información y cierre todos los programas antes hacer el siguiente ejercicio.}
+
+
+1) Compile  y cargue el siguiente módulo.
+
+\begin{verbatim}
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+
+MODULE_LICENSE( "GPL" );
+
+static int initP(void) {
+    printk("SO2015!\n");
+    for(;;);
+    return 0;
+}
+
+static void exitP(void) {
+    printk("SO2015!\n");
+}
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Cuál es el resultado?, ¿puede hacer algo al respecto?(ej.: matar el proceso, logearse en otra terminal para llevar a cabo alguna acción,etc.),  ¿porque ocurre esto?
+\end{itemize}  
+
+2) Ahora escribimos el siguiente programa en C llamado user\_process.c, con casi el mismo código que el anterior pero en un programa que se ejecutará como un proceso de usuario.
+
+\begin{verbatim}
+int main(){
+  for(;;);
+  return 0;
+}
+\end{verbatim}
+
+Responda lo siguiente:
+\begin{itemize}  
+\item ¿Cuál es el resultado en este caso?, ¿puede hacer algo al respecto?(ej.: matar el proceso, logearse en otra terminal para llevar a cabo alguna acción,etc.),  ¿porque ocurre esto? 
+\end{itemize}  
+
