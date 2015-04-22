@@ -1,0 +1,87 @@
+\textbf{Modo de entrega:} A través de la plataforma (de sebe subir el archivo a la actividad que se creará para tal fin)
+
+\renewcommand{\labelenumiii}{\roman{enumiii})}
+
+\begin{enumerate}
+ \item Desarrollo de una \textit{shell}:
+      \begin{enumerate}
+	    \item En base al comportamiento típico y conocido como \textbf{REPL} y los conceptos vistos en la Práctica 1 desarrolle una \textit{shell} teniendo en cuenta las siguientes pautas:
+	    \begin{enumerate}
+	      \item El formato de la \textit{shell} debería respetar la siguiente estructura: 
+	      \begin{lstlisting}
+		  while true; do
+		  
+		    #print promp
+		    echo -n _____________
+		    
+		    #read command and params
+		    read line
+		    
+		    #execute command in background mode if it exists
+		    
+		    #waits until command finish
+		    
+		  done
+	      \end{lstlisting}
+	      
+	      \item El \textit{prompt} del usuario debe ser el siguiente: \textbf{@nombre\_usuario\_logueado}
+	      
+	      \item Para cada comando ingresado, se deberá ejecutar el mismo en modo \textit{background}, de manera que se cree un sub-proceso de la \textit{shell}. Se deberá esperar por la terminación del comando ejecutado. \textbf{Nota}: investigue a que hace referencia la variable especial \textbf{\$!} y los comandos internos de \textbf{bash} con los que podría utilizarla. 
+	    \end{enumerate}
+	    
+	    \item La shell deberá disponer de los siguientes comandos \textit{built-in}:
+	    \begin{enumerate}
+	     \item \textbf{ls}: Tiene el mismo comportamiento que un ls de bash, a diferencia que cuando se ejecuta un ls en bash, este muestra los resultados en formato de columnas, mientras que el ls que se debe implementar deberá mostrar los resultados en una única columna (un resultado bajo el otro) Deberá ser capaz de recibir el parámetro -l: El resultado de la ejecución de este comando con el parámetro -l devolverá un listado similar al de un ls -l tradicional, con la salvedad de que los permisos serán mostrados utilizando notación octal. Por ejemplo:
+	     \begin{table}[th]
+		    \centering
+		    \begin{tabular}{| c | c |}
+			    \hline
+			    \bf ls -l de bash & \bf ls -l del intérprete a desarrollar \\
+			    \hline
+			    -rw-r--r-- 1 root root 2389 feb 18 12:28 bind.keys & -644 1 root root 2389 feb 18 12:28 bind.keys \\ 
+			    \hline
+			    -rw-r--r-- 1 root root 237 feb 18 12:28 db.0 & -644 1 root root 237 feb 18 12:28 db.0 \\
+			    \hline
+			    -rw-r--r-- 1 root root 271 feb 18 12:28 db.127 & -r644 1 root root 271 feb 18 12:28 db.127 \\
+			    \hline
+			    drwxr-xr-x 2 bind bind 4096 abr 14 09:28 local & d755 2 bind bind 4096 abr 14 09:28 local \\
+			    \hline
+			    -rw-rw-r-- 1 root bind 673 abr 14 09:21 named.conf & -664 1 root bind 673 abr 14 09:21 named.conf \\
+			    \hline
+		    \end{tabular}
+	     \end{table}
+	     
+	     \item \textbf{sl}: Devuelve el mismo resultado que un ls, pero en orden inverso (la primer línea la mostrará última).
+
+	     \item \textbf{cat}: Tiene el mismo comportamiento que un cat de bash.
+
+	     \item \textbf{tac}: Devuelve el mismo resultado que un cat, pero en orden inverso (la primer línea la mostrará última).
+	     
+	     \item \textbf{pwd}: Tiene el mismo comportamiento que un pwd de bash.
+	     
+	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Si el usuario que lo ejecuta no tiene permiso para escribir en la estructura del FileSystem, deberá devolver el mensaje de error “No tenés permiso!”, sin mostrar otro error en la pantalla.
+	    \end{enumerate}
+
+	    \item En \textbf{bash} y \textit{shells} similares, todo comando ingresado es buscado en los directorios configurados en la variable de entorno \textbf{PATH}. El valor de esta variable consiste en directorios separados por el caracter \textbf{":"}. Por ejemplo:
+	    \begin{lstlisting}
+		  $ echo $PATH
+		  /usr/local/bin:/usr/bin:/bin
+	    \end{lstlisting}
+	    \begin{frame}	
+		\begin{lstlisting}
+	    ls | grep x | local
+		\end{lstlisting}
+	    \end{frame}
+	    
+	    Entonces, si se ingresa el comando \textbf{cat}, bash primero comprobará si el comando es \textit{built-in}. Si no lo es, lo buscará en \textbf{/usr/local/bin}, si no lo encuentra lo buscará en \textbf{/usr/bin} y finalmente en \textbf{/bin}.
+	    
+	    
+	    Implemente una solución similar para la shell que se está desarrollando. Utilice una variable de entorno con nombre \textbf{RUTA} que separe cada directorio con el caracter \textbf{``;``}, y que busque el comando ingresado de atrás hacia delante. Por ejemplo:
+	    \begin{lstlisting}
+		$ echo $RUTA
+		/bin;/usr/bin;/usr/local/bin
+	    \end{lstlisting}
+	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando built-in. Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir "No se pudo encontrar el programa 'tree'".
+
+      \end{enumerate}
+\end{enumerate}
