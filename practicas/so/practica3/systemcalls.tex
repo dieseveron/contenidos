@@ -13,8 +13,11 @@ la practica debe utilizarse el código utilizado en la practica 1.}
             de sus parámetros. 
             Ayuda: http://www.gnu.org/software/libc/manual/html\_mono/libc.html\#System-Calls
 
-   \question ¿Para que sirven los archivo <kernel\_code>/arch/x86/syscalls/syscall\_32.tbl y 
-             <kernel\_code>/arch/x86/syscalls/syscall\_64.tbl?
+   \question ¿Para que sirven los siguientes archivos? 
+   \begin{itemize}  
+   \item <kernel\_code>/arch/x86/syscalls/syscall\_32.tbl
+   \item <kernel\_code>/arch/x86/syscalls/syscall\_64.tbl
+   \end{itemize}
    \question ¿Para qué sirve la macro asmlinkage?
    \question ¿Para qué sirve la herramienta strace?, ¿Cómo se usa?
 \end{questions}
@@ -22,7 +25,7 @@ la practica debe utilizarse el código utilizado en la practica 1.}
 
 La System Call que vamos a implementar accederá a la estructura rq(runqueue), que es la estructura
 de datos básica del planificador de procesos (scheduler). Esta estructura es definida en 
-<kernel\_code>/kernel/sched.c. Hay una rq por cada procesador y cada proceso del sistema estará sólo 
+<kernel\_code>/kernel/sched.h Hay una rq por cada procesador y cada proceso del sistema estará sólo 
 en una rq. Esta estructura mantiene información adicional por cada procesador, la cual será el objetivo
 de la syscall.
 
@@ -47,13 +50,22 @@ struct rq {
 
 
 Intentaremos acceder con nuestra llamada al sistema a dos datos almacenados en los campos de la estructura runqueue:
-nr\_running: contiene el número de tareas en estado de ejecución para este procesador, es decir, tareas en estado TASK\_RUNNING.
-nr\_uninterruptible: número de tareas en estado no interrumpible, TASK\_UNINTERRUMPIBLE. Es decir, tareas esperando por un evento de entrada/salida no activables por la llegada de una señal
+\begin{itemize}  
+\item nr\_running: contiene el número de tareas en estado de ejecución para este procesador, es decir, tareas en estado TASK\_RUNNING.
+\item nr\_uninterruptible: contiene el número de tareas en estado no interrumpible, 
+ TASK\_UNINTERRUMPIBLE.
+ Es decir, tareas esperando por un evento de entrada/salida no activables por la llegada de una señal
+\end{itemize}
 
 Por tanto al utilizar nuestra llamada al sistema, que denominaremos a partir de este momento rqinfo, obtendremos los datos antes comentados del espacio kernel en el espacio de usuario de nuestra aplicación.
 
 \section{Agregamos una nueva System Call}
-1°) Añadir una entrada al final de la tabla que contiene todas las System Calls, la syscall table. En nuestro caso, vamos a dar soporte para nuestra syscall sólo a la arquitectura x86. Notar que usamos la nomenclatura oficial para denominar la syscall, esto es, el nombre de la syscall precedido con el prefijo sys\_
+1°) Añadir una entrada al final de la tabla que contiene todas las System Calls, la syscall table. En nuestro caso, vamos a dar soporte para nuestra syscall sólo a la arquitectura x86. 
+Atención: 
+\begin{itemize}  
+\item Usamos la nomenclatura oficial para denominar la syscall, esto es, el nombre de la syscall precedido con el prefijo sys\_
+\item Debemos asignar un número único a nuestra system call, de modo que aumentaremos en 1 el número de la última existente.
+\end{itemize}
 
 <kernel\_code>/arch/x86/syscalls/syscall\_32.tbl
 \begin{verbatim}
@@ -68,8 +80,7 @@ Por tanto al utilizar nuestra llamada al sistema, que denominaremos a partir de 
  351     i386    rqinfo                  sys_rqinfo
 \end{verbatim}
 
-
-2°)Ahora incluir la declaración de nuestra system call
+\noindent 2°)Ahora incluir la declaración de nuestra system call
 
 
 <kernel\_code>/include/linux/syscalls.h
@@ -79,6 +90,8 @@ asmlinkage long sys_rqinfo(unsigned long *ubuff, long len);
 \end{verbatim}
 
 3°) El próximo paso es incluir el código de nuestra syscall en algún punto del árbol de fuentes ya sea añadiendo un nuevo archivo al conjunto del kernel o incluyendo nuestra implementación en algún archivo ya existente. La primera opción obligará a modificar los makefiles del kernel para incluir el nuevo archivo fuente. Por simplicidad añadiremos el código de nuestra syscall en algún punto del código ya existente. Esta segunda opción es la que utilizaremos, pero ¿dónde colocamos nuestro código?. En nuestro ejemplo, un buen sitio para implementar la syscall inforq en el archivo kernel/sched/core.c, donde podemos acceder a la estructura que nos interesa con facilidad, en este mismo archivo se implementan otra syscalls relacionadas con el planificador de CPU y el scheduler del sistema operativo.
+Otro motivo(forzoso) por el cual colocar aquí nuestra system call es porque muchas funciones que necesitamos están en este archivo y no son
+reexportadas.
 
 <kernel\_code>/kernel/sched/core.c
 
