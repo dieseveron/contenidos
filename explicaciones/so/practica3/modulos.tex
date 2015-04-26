@@ -1,8 +1,327 @@
 \section{Módulos}
 
 \begin{frame}{¿Que son los \textit{Módulos} del Kernel?}
+  \begin{itemize}
+  \item “Pedazos de código” que pueden ser cargados y descargados bajo demanda 
+  \item Extienden la funcionalidad del kernel
+  \item Sin ellos el kernel sería 100% monolítico   
+  \begin{itemize}
+    \item Monolítico "hibrido"
+  \end{itemize} 
+ \item No recompilar ni rebootear   
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Comandos relacionados}
+  \begin{itemize}
+  \item lsmod 
+  	\begin{itemize}
+  	  \item Lista los módulos cargados (es equivalente a cat /proc/modules) 
+  	\end{itemize} 
+  \item rmmod
+  	\begin{itemize}
+  	  \item Descarga uno o más módulos 
+  	\end{itemize} 
+  \item modinfo   
+	  \begin{itemize}
+	    \item  Muestra información sobre el módulo 
+	  \end{itemize} 
+ \item insmod
+	  \begin{itemize}
+	    \item Trata de cargar el módulo especificado 
+	  \end{itemize} 
+ \item depmod
+	  \begin{itemize}
+	    \item Permite calcular las dependencias de un módulo
+             \item depmod -a escribe las dependencias en el archivo /lib/modules/version/modules.emp  
+	  \end{itemize} 
+ \item modprobe    
+ 	\begin{itemize}
+             \item Emplea la información generada por depmod e información de /etc/modules.conf 
+             para cargar el módulo especificado. 
+  	\end{itemize} 
+  \end{itemize}
 
 \end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{¿Como creamos un módulo?}
+  \begin{itemize}
+  \item Debemos proveer dos funciones:
+ 	 \begin{itemize}
+ 	   \item Inicialización: Ejecutada cuando ejecutamos insmod.
+ 	 \end{itemize} 
+	 \begin{itemize}
+ 	   \item Descarga: Ejecutada cuando ejecutamos rmmod.
+ 	 \end{itemize} 
+  \end{itemize}
+
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+#include <linux/module.h> 
+#include <linux/kernel.h> 
+int init_module(void){
+	printk(KERN_INFO "Hello world 1.\n");
+return 0;
+}
+
+void cleanup_module(void){
+	printk(KERN_INFO "Goodbye world 1.\n");
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{¿Como creamos un módulo?(cont.)}
+  \begin{itemize}
+  \item También podemos indicarle otras funciones.
+ 	 \begin{itemize}
+ 	   \item module\_init
+	   \item module\_exit
+ 	 \end{itemize} 
+  \end{itemize}
+
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+static int hello_2_init(void){
+	printk(KERN_INFO "Hello, world 2\n");
+return 0;}
+
+static void hello_2_exit(void){
+printk(KERN_INFO "Goodbye, world 2\n");}
+
+module_init(hello_2_init);
+module_exit(hello_2_exit);
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{¿Como compilamos un módulo?}
+  \begin{itemize}
+  \item Construimos el Makefile
+  \end{itemize}
+\begin{lstlisting}
+obj-m += hello.o
+all:
+make -C /lib/modules/$(shell uname -r)/build M=$(pwd) modules
+clean:
+make -C /lib/modules/$(shell uname -r)/build M=$(pwd) clean
+\end{lstlisting}
+  \begin{itemize}
+  \item Compilamos make
+  \end{itemize}
+\begin{lstlisting}
+make -C <KERNEL_CODE> M=$(pwd) modules
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}{¿Que son los \textit{Dispositivos}?}
+  \begin{itemize}
+	\item Entendemos por dispositivo a cualquier dispositivo de hard: discos, memoria, mouse, etc
+	\item Cada operación sobre un dispositivo es llevada por código específico para el dispositivo
+	\item Este código se denomina “driver” y se implementa como un módulo
+        \item Cada dispositivo de hardware es un archivo (abstracción)
+ 	\item Ejemplo: /dev/hda
+	\begin{itemize}
+		\item En realidad no es un archivo.
+		\item Si leemos/escribimos desde él lo hacemos sobre datos “crudos” del disco (bulk data).
+	\end{itemize}
+         \item Accedemos a estos archivos mediante operaciones básicas (espacio del kernel).
+	\begin{itemize}
+		\item read, write: escribir y recuperar bulk data
+		\item ioctl: configurar el dispositivo 
+
+	\end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{¿Que son los \textit{Dispositivos}?(Cont)}
+  \begin{itemize}
+	\item Podemos clasificar el hard en varios tipos.
+	\begin{itemize}
+		\item Dispositivos de acceso aleatorio(ej. discos). 
+		\item Dispositivos seriales(ej. Mouse, sonido,etc).
+	\end{itemize}	
+	\item Acorde a esto los drivers se clasifican en:
+     	\begin{itemize}
+		\item Drivers de bloques: son un grupo de bloques de datos persistentes. Leemos y escribimos de a bloques, generalmente de 			1024 bytes. 
+		\item Drivers de carácter: Se accede de a 1 byte a la vez y 1 byte sólo puede ser leído por única vez.
+		\item Drivers de red: tarjetas ethernet, WIFI, etc.
+	\end{itemize}	
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{\textit{Dispositivos} en UNIX}  
+  \begin{itemize}
+	\item Major y Minor device number.
+	\begin{itemize}
+		\item Los dispositivos se dividen en números llamados major device number. Ej: los discos SCSI tienen el major number 8.
+		\item Cada dispositivo tiene su minor device number. Ejemplo: /dev/sda major number 8 y minor number 0 
+	\end{itemize}	
+	\item Con el major y el minor number el kernel identifica un dispositivo.
+	\item kernel\_code/linux/Documentation/devices.txt
+  \end{itemize}
+\begin{lstlisting}
+# ls -l /dev/hda[1-3]
+brw-rw---- 1 root disk 3, 1 Abr 9 15:24 /dev/hda1
+brw-rw---- 1 root disk 3, 2 Abr 9 15:24 /dev/hda2
+brw-rw---- 1 root disk 3, 3 Abr 9 15:24 /dev/hda3
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Archivos de dispositivos en UNIX}  
+  \begin{itemize}
+	\item Representación de los dispositivos(device files)
+	\item Por convención están en el /dev
+	\item Se crean mediante el comando mknod.
+  \end{itemize}
+\begin{lstlisting}
+mknod [-m <mode>] file [b|c] major  minor
+\end{lstlisting}
+  \begin{itemize}
+	\item b o c: según se trate de dispositivos de caracter o de bloque.
+	\item El minor y el major number lo obtenemos de kernel\_code/linux/Documentation/devices.txt
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Dispositivos en UNIX}
+  \begin{itemize}
+  \item Necesitamos decirle al kernel: 
+  \begin{itemize}
+    \item Que hacer cuando se escribe al device file.
+    \item Que hacer cuando se lee desde el device file..
+  \end{itemize} 
+ \item Todo esto lo hacemos en un módulo.
+ \item La struct \alert{file\_operations}: 
+  \begin{itemize}
+    \item Sirve para decirle al kernel como leer y/o escribir al dispositivo.
+    \item Cada variable posee un puntero a las funciones que implementan las operaciones sobre el dispositivo.
+  \end{itemize}   
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{¿Como creamos un driver?}
+  \begin{itemize}
+  \item Mediante la struct \alert{file\_operations} especifico que funciones leen/escriben al dispositivo. 
+  \end{itemize}
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+struct file_operations my_driver_fops = {
+read: myDriver_read,
+write: myDriver_write,
+open: myDriver_open,
+release: mydriver_release};
+\end{lstlisting}
+\begin{itemize}
+ \item En la función module\_init registro mi driver. 
+\end{itemize}
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+register_chrdev(major_number, "myDriver", &my_driver_fops);
+\end{lstlisting}
+
+\begin{itemize}
+ \item En la función module\_exit desregistro mi driver. 
+\end{itemize}
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+unregister_chrdev(major_number, "myDriver");
+\end{lstlisting}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{¿Como creamos un driver?(Cont..)}
+  \begin{itemize}
+  \item Operaciones sobre el dispositivo  
+  \begin{itemize}
+    \item Escritura del archivo de dispositivo (Ej. echo "hi" > /dev/myDeviceFile) 
+  \end{itemize}	
+  \end{itemize}
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+ssize_t myDriver_write(struct file *filp, char *buf,size_t count, loff_t *f_pos);
+\end{lstlisting}
+
+\begin{itemize}
+  \item Lectura del archivo de dispositivo  (Ej. cat /dev/myDeviceFile)  
+ \end{itemize}
+
+\lstset{language=C,
+                basicstyle=\ttfamily,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+ssize_t myDriver_read(struct file *filp, char *buf,size_t count, loff_t *f_pos)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{¿Como creamos un driver?(Cont...)}
+  \begin{itemize}
+  \item Parámetros de las funciones funciones:
+ 	 \begin{itemize}
+ 	   \item Struct file: Estructura del kernel que representa un archivo abierto.
+	   \item char *buf: El dato a leído o a escribir desde/hacia el dispositivo(espacio de usuario) 
+	   \item size\_t count: La longitud de buf. 
+           \item loff\_t *f\_pos count: La posición manipulada
+ 	 \end{itemize}  
+  \end{itemize}
+\end{frame}
+
+	
 
 %%% Local Variables: 
 %%% mode: latex
