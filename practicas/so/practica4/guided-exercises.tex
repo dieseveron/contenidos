@@ -1,0 +1,136 @@
+\section{Ejercicios prácticos}
+
+\subsection{Requisitos}
+Para poder realizar los ejercicios prácticos debera contar con las siguientes herramientas:
+\begin{itemize}
+ \item El \textit{SDK} de Android. Descargue la última versión desde \href{https://developer.android.com/sdk/index.html\#Other}{esta}\footnote{https://developer.android.com/sdk/index.html\#Other} página:
+ \begin{itemize}
+      \item Desempaquete y descomprima el archivo. 
+      
+      \item Para facilitar el desarrollo de los ejercicios, agregue a algún directorio de la varaible de entorno \textit{PATH}, el \textit{path absoluto} de las siguientes herramientas:
+      \begin{itemize}
+	\item \textit{<android-sdk-dorectory>/platform-tools/adb}.
+	\item \textit{<android-sdk-dorectory>/platform-tools/fastboot}.
+	\item \textit{<android-sdk-dorectory>/platform-tools/sqlite3}.
+	\item \textit{<android-sdk-dorectory>/tools/android}.
+	\item \textit{<android-sdk-dorectory>/tools/emulator-x86}.
+      \end{itemize}
+      
+      \item Acceda al \textit{Android SDK Manager}:
+      \begin{lstlisting}
+# android sdk
+      \end{lstlisting}
+     
+      \item Descargue e instale/actualice los siguientes paquetes:
+      \begin{itemize}
+	\item \textit{Android SDK Tools}.
+	\item \textit{Android SDK Platform-tools}.
+	\item \textit{Android SDK Build-tools}.
+	\item Android 4.2.2 (API 17) $\rightarrow$ \textit{SDK Platform}.
+	\item Android 4.2.2 (API 17) $\rightarrow$ \textit{Intel x86 Atom System Image}.
+      \end{itemize}
+ \end{itemize}
+ 
+ \item \textit{Linux image tools} para crear una imagen \textit{boot.img}. Descargue las mismas desde \href{http://dl.miniand.com/allwinnera10/system/image/tools.tar.gz}{esté}\footnote{http://dl.miniand.com/allwinnera10/system/image/tools.tar.gz} link:
+ \begin{itemize}
+      \item Desempaquete y descomprima el archivo.
+
+      \item Para facilitar el desarrollo de los ejercicios, agregue a algún directorio de la varaible de entorno \textit{PATH}, el \textit{path absoluto} de la herramienta:
+      \begin{itemize}
+	\item \textit{<linux-image-tools-directory>/mkbootimg}.
+      \end{itemize}
+ \end{itemize}
+ 
+ \item Herramienta para separar una imagen \textit{boot.img}. Descargue la última versión desde \href{http://whiteboard.ping.se/Android/Unmkbootimg}{esté}\footnote{http://whiteboard.ping.se/Android/Unmkbootimg} sitio:
+ \begin{itemize}
+      \item Descomprima el archivo.
+
+      \item Para facilitar el desarrollo de los ejercicios, agregue a algún directorio de la varaible de entorno \textit{PATH}, el \textit{path absoluto} de la herramienta:
+      \begin{itemize}
+	\item \textit{<Unmkbootimg-directory>/unmkbootimg}.
+      \end{itemize}
+ \end{itemize}
+ 
+ \item Una \textit{custom ROM} de Android. Descargue la del \textbf{Samsung Galaxy S III (Cricket)} desde \href{https://download.cyanogenmod.org/get/jenkins/57776/cm-10.2.1-d2cri.zip}{esté}\footnote{https://download.cyanogenmod.org/get/jenkins/57776/cm-10.2.1-d2cri.zip} link:
+ \begin{itemize}
+      \item Descomprima el archivo.
+ \end{itemize} 
+\end{itemize}
+
+
+\subsection{Puesta a punto}
+\begin{itemize}
+    \item Cree una maquina virtual ingresando la letra \textit{n} cuando se le realice la pregunta ``Do you wish to create a custom hardware profile [no]'':
+    \begin{lstlisting}
+# android create avd --target 1 --name emulador-so
+    \end{lstlisting}
+
+    \item Inicie el emulador (\textit{avd - android virtual device}):
+    \begin{lstlisting}
+# emulador-x86 -avd emulador-so
+    \end{lstlisting}
+
+    \item Acceda a la shell del dispositivo:
+    \begin{lstlisting}
+# adb shell
+    \end{lstlisting}
+    Esto creara un cliente \textit{adb} e iniciara el servidor \textit{adb}, el cual se comunicará con el demonio \textit{adbd} del dispositivo ejecutandose en \textit{background}.
+\end{itemize}
+
+\subsection{SQLite}
+Para su ayuda, ejecute:
+\begin{lstlisting}
+		      # sqlite3
+		      sqlite> .help
+\end{lstlisting}
+
+\begin{itemize}
+    \item Acceda a la configuración del dispositivo:
+    \begin{lstlisting}
+# sqlite3 /data/data/com.android.providers.settings/databases/settings.db
+    \end{lstlisting}
+
+    \item Liste todos los valores de la tabla \emph{system}:
+    \begin{lstlisting}
+sqlite> select * from system;
+    \end{lstlisting}
+    
+    \begin{itemize}
+	\item Se puede apreciar el volumen del tono de llamada, el de las notificaciones, etc.    
+    \end{itemize}
+    
+    \begin{questions}
+	\question ¿Qué pasa si abrimos la configuración del dispositivo desde la interface gráfica (\emph{Menu -> Settings -> Sound}) y modificamos el volumen del tono de llamada o de notificaciones?
+	
+	\question ¿Y qué pasa si ejecutamos el comando \textit{delete from system;}?, ¿Sigue funcionando el sistema operativo?, ¿Qué pasa con las configuraciones?
+    \end{questions}
+\end{itemize}
+
+\subsection{Aplicaciones}
+En Android, la forma de ejecutar aplicaciones es mediante la herramienta \textit{am}. La misma provee la funcionalidad necesaria para ejecutar activities, services, entre otras cosas.
+Para su ayuda, ejecute:
+\begin{lstlisting}
+		      # am
+\end{lstlisting}
+
+\begin{itemize}
+    \item Ejecute la actividad \textit{main} de la aplicación \emph{com.android.browser}:
+    \begin{lstlisting}
+# am start -a android.intent.action.MAIN -n com.android.browser/.BrowserActivity
+    \end{lstlisting}
+    \begin{itemize}
+	\item ¿Cómo funciona?:
+	\begin{itemize}
+	    \item El primer parámetro inica que se va a hacer. En este caso, se ejecuta una aplicación (\emph{start}).
+	    
+	    \item El segundo parámetro inica el tipo de acción que se ejecutará (\emph{android.intent.action.MAIN}). \textbf{Nota}: para ver más tipos de acciones visite \href{http://developer.android.com/guide/topics/intents/intents-filters.html}{está}\footnote{http://developer.android.com/guide/topics/intents/intents-filters.html} página.
+	    
+	    \item El tercer parámetro es la actividad que se desea mostrar (\emph{com.android.browser/.BrowserActivity}).
+	\end{itemize}
+    \end{itemize}
+
+    \item Inicie la aplicación \emph{settings} del dispositivo:
+    \begin{lstlisting}
+# am start -a android.intent.action.MAIN -n com.android.settings/.Settings
+    \end{lstlisting}    
+\end{itemize}

@@ -19,7 +19,7 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Eimología e Historia}
+\subsection{Etimología e Historia}
 \begin{frame}
   \frametitle{Eimología e Historia}
   \begin{itemize}
@@ -35,7 +35,7 @@
     
     \item OHA (Open Handset Alliance) $\rightarrow$ 2007.
     
-    \item Primer version estable (v1.0) $\rightarrow$ 2008.
+    \item Versión 1.0 (\emph{Apple Pie}) estable $\rightarrow$ 2008.
   \end{itemize}
 \end{frame}
 
@@ -78,7 +78,7 @@
 \begin{frame}
   \frametitle{Procesos e Hilos - Clasificación}
   \begin{itemize}
-    \item Android elimina procesos bajo demanda ante la ausencia de memoria.
+    \item Android elimina procesos bajo demanda ante la ausencia de memoria $\rightarrow$ no cuenta con área de intercambio.
     
     \item Decición en base a Jerarquía de procesos clasificados en:
     \begin{itemize}
@@ -92,7 +92,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Procesos e Hilos - Clasificación (cont.)}
+  \frametitle{Procesos e Hilos - Seudo swapping}
   \begin{figure}
       \centering
       \includegraphics[scale=0.5]{images/restore-instance.png}
@@ -160,6 +160,14 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Aplicaciones - Installing}
+  \begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{images/install-app.png}
+  \end{figure} 
+\end{frame}
+
+\begin{frame}
   \frametitle{Aplicaciones - Launching}
     \begin{figure}
       \centering
@@ -188,7 +196,7 @@
     
     \item Dos aplicaciones con el mismo \textit{userId} son tratadas como la misma aplicación.
     
-    \item Mismo \textit{userId} = Mismo usuario Linux = Misma aplicación = Mismos permisos sobre los archivos de la aplicación.
+    \item Mismo \textit{userId} = Mismo usuario Linux = Misma aplicación = Mismos permisos (\textit{UGO}) sobre los archivos de la aplicación.
     
     \item Las aplicaciones que comparten el \textit{userId} tienen que compartir la firma. Es decir que deben ser firmados por la misma clave privada.        
   \end{itemize}
@@ -256,7 +264,9 @@
    
    \item A nivel de las aplicaciones y sus archivos $\rightarrow$ certificado, \textit{userId} y permisos \textit{UGO} (aplicado por el \textit{sandbox}).
    
-   \item A nivel de file system $\rightarrow$ particiones \textit{read-only} (/system).   
+   \item A nivel de file system $\rightarrow$ particiones \textit{read-only} (/system).
+   
+   \item A nivel de \textit{Linux} (\textit{RPC}) y la \textit{DVM} (aislamiento de aplicaciones).
   \end{itemize}
 \end{frame}
 
@@ -390,6 +400,6 @@ userdata -> /dev/block/mmcblk0p40
 	  \item \textit{GPL} para el espacio de kernel.
       \end{itemize}
       
-      \item Además de tamaño y optimización, esta fue otra de las razones por las que implementaron su propia version de \textit{libc} (\textit{BIONIC}).
+      \item Además de tamaño y optimización, esta fue otra de las razones por las que implementaron su propia versión de \textit{libc} (\textit{BIONIC}).
   \end{itemize}
 \end{frame}

@@ -1,0 +1,122 @@
+\section{Preguntas teóricas}
+
+\subsection{Conceptos generales}
+\begin{questions}
+  \question ¿Qué es \textbf{Android}?
+  
+  \question ¿Qué versión del \textit{kernel} de \textbf{Linux} se esta utilizando para desarrollar Android?
+
+  \question ¿Qué aprovecha Android de Linux?
+
+  \question ¿Cuál es la mascota de Android?, ¿Cual es su etimología?
+  
+  \question ¿Cuándo y por quién nació Android?
+  
+  \question ¿Cuándo fue comprado por la empresa \textbf{Google}?
+  
+  \question ¿Cuándo fue presentada su versión \textit{beta}?, ¿Qué es la \textbf{OHA}?
+  
+  \question ¿En qué año se lanzo la primer versión estable?
+  
+  \question ¿Cuál es la última versión estable de Android?
+  
+  \question ¿Con qué frecuencia se lanzan las versiones del \textit{SDK} de Android?
+  
+  \question Lea \href{http://www.eazytutz.com/android/android-architecture/}{esta}\footnote{http://www.eazytutz.com/android/android-architecture/} página y conteste:
+  \begin{parts}
+      \part ¿Qué rol cumple la capa del \textit{kernel de Linux}?
+      
+      \part ¿Qué rol cumple la capa de \textit{librerias}?
+      
+      \part ¿Qué rol cumple la capa de \textit{Android Runtime}?
+      
+      \part ¿Por qué fue reemplazada la \textit{DVM}?, ¿Qué mejora?
+      
+      \part ¿Qué rol cumple la capa de \textit{Application Framework}?
+  \end{parts}
+\end{questions}
+
+\subsection{Procesos}
+\begin{questions}
+  \question ¿Qué comandos de GNU/Linux tenemos disponibles en Andoid?
+  
+  \question ¿Android cuenta con un área de intercambio?, ¿Por qué?
+  
+  \question ¿Qué alternativa tiene a la hora liberar memoria?, ¿Cómo se clasifica los procesos?
+  
+  \question Lea \href{http://developer.android.com/guide/components/processes-and-threads.html}{este}\footnote{http://developer.android.com/guide/components/processes-and-threads.html} artículo y responda:
+  \begin{parts}
+    \part Por defecto, ¿en cuántos procesos/threads corren los componentes de una aplicación?
+    
+    \part ¿Los componentes de las aplicaciones pueden correr en procesos separados y/o en el mismo proceso?
+    
+    \part ¿Se pueden crear \textit{n} threads de un proceso?
+    
+    \part ¿Los componente de la vista de una aplicación son \textit{thread-safe}?, ¿Qué reglas sigue el \textit{Android's single thread model}?
+  \end{parts}
+
+  \question ¿Qué es \textit{DVM}?, ¿Por qué fue diseñada?. Compare este concepto con el de \textit{JVM}. Adicional mente compare el concepto de \textit{DVM} con el de \textit{ART} en base a \href{http://www.addictivetips.com/android/art-vs-dalvik-android-runtime-environments-explained-compared/}{este}\footnote{http://www.addictivetips.com/android/art-vs-dalvik-android-runtime-environments-explained-compared/} artículo.
+  
+  \question ¿Qué es y de qué se encarga \textit{Zygote}?
+\end{questions}
+
+\subsection{Aplicaciones}
+\begin{questions}
+  \question ¿Qué es \textit{Gradle}?, ¿Qué tarea permite realizar?
+  
+  \question ¿Todas las aplicaciones tiene que estar firmadas digitalmente para ejecutar en un dispositivo?, ¿A través de que mecanismo se realiza la firma digital?, ¿A través de que herramienta se lo puede hacer?
+  
+  \question ¿Qué es el \textit{application sandbox}?
+  
+  \question ¿Existe la posibilidad de que dos aplicaciones compartan el \textit{userId}?, ¿Qué debe respetarse?
+  
+  \question ¿Qué alternativas tienen las aplicaciones para compartir su datos?.
+  
+  \question ¿Dónde se define el acceso a los recursos por parte de las aplicaciones?, ¿Pueden realizarce cambios en tiempo de ejecución?, ¿Qué excepcion se lanza si una aplicación intenta acceder a un recurso sobre el cual no definio permisos?
+  
+  \question ¿En que momento el usuario le da permiso a la aplicación para que esta utilice los recursos del dispositivo?
+\end{questions}
+
+\subsection{Almacenamiento}
+\begin{questions}
+  \question ¿Qué alternativas tiene una aplicación para almacenar sus datos?. Detalle cada una.
+
+  \question ¿En dónde se almacenan las \textit{shared preferences} de las aplicaciones?, ¿De qué tipo pueden ser?, ¿Una aplicación podría acceder a las \textit{shared preferences} de otra diferente?
+  
+  \question ¿En dónde se almacenan las bases de datos de las aplicaciones?
+\end{questions}
+
+\subsection{File system}
+\begin{questions}
+  \question ¿Cuáles son los puntos de montaje principales del File System de Android?, ¿Qué contiene cada uno?
+
+  \question ¿Con qué tipos de memoria cuenta un dispositivo móvil generalemten?. Detalle cada uno y luego relacionelos con los tipos de file system que cada tipo podría soportar.
+  
+  \question ¿Analice las principales características del file system utilizado hasta, generalmente, la versión 2.2 de Android? \textbf{Nota}: licencia, versiones y comparación entre ellas, tratamiento de archivos, \textit{theading}, etc.
+  
+  \question ¿Qué tipo de file system se tiende a utilizar desde la versión 2.3 de Android?, ¿Por qué?
+\end{questions}
+
+\subsection{Licencia}
+\begin{questions}
+  \question ¿Bajo qué licencias esta el \textit{stack} de Android?, ¿Por qué?
+
+  \question ¿Por qué compañias como \textbf{Samsung} pueden cambiar la interface de sus propias versiones de Android?
+  
+  \question ¿Cómo se llama la \textit{libc} de Android?, ¿Por qué fue implementada?
+\end{questions}
+
+\subsection{Rooteo}
+\begin{questions}
+  \question ¿Qué significa rootear un dispositivo Android?
+
+  \question ¿Qué es el bootloader?, ¿De qué se encarga?, ¿Qué tipos existen?, ¿Qué consecuencias trae desbloquearlo?
+  
+  \question Un \textit{bootloader} bloqueado permite cargar un sistema operativo particular, ¿Cómo se realiza esta identificación?
+  
+  \question ¿Qué es el \textit{fastboot}?, ¿Qué acciones permite realizar?
+  
+  \question ¿Qué es la \textit{boot.img}?, ¿Con qué herramienta se la puede dividir y con cuál crear?, ¿Qué contiene?, ¿Qué nombre tiene la imagen del \textit{kernel} de \textit{Linux}?, ¿En qué formato está empaquetado y comprimido el \textit{initramfs}?
+  
+  \question ¿Para qué sirve el archivo \textit{default.prop} que esta dentro del \textit{initramfs}?, ¿Qué significa el prefijo \textit{ro}?, ¿A qué hace referencia la propiedad \textit{ro.secure}?
+\end{questions}
