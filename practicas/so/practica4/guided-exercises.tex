@@ -3,6 +3,11 @@
 \subsection{Requisitos}
 Para poder realizar los ejercicios prácticos debera contar con las siguientes herramientas:
 \begin{itemize}
+ \item El \textit{Java SE Development Kit}. Descarguelo desde la versión \emph{7u79} desde \href{http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html}{esté}\footnote{http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html} link. Elija la arquitectura correspondiente y el formato que desee:
+ \begin{itemize}
+      \item Instálelo. Puede guiarse con \href{https://www.java.com/en/download/help/download\_options.xml}{esté}\footnote{https://www.java.com/en/download/help/download\_options.xml} sitio.      
+ \end{itemize}
+
  \item El \textit{SDK} de Android. Descargue la última versión desde \href{https://developer.android.com/sdk/index.html\#Other}{esta}\footnote{https://developer.android.com/sdk/index.html\#Other} página:
  \begin{itemize}
       \item Desempaquete y descomprima el archivo. 
@@ -26,8 +31,8 @@ Para poder realizar los ejercicios prácticos debera contar con las siguientes h
 	\item \textit{Android SDK Tools}.
 	\item \textit{Android SDK Platform-tools}.
 	\item \textit{Android SDK Build-tools}.
-	\item Android 4.2.2 (API 17) $\rightarrow$ \textit{SDK Platform}.
-	\item Android 4.2.2 (API 17) $\rightarrow$ \textit{Intel x86 Atom System Image}.
+	\item Android 4.4.2 (API 19) $\rightarrow$ \textit{SDK Platform}.
+	\item Android 4.4.2 (API 19) $\rightarrow$ \textit{Intel x86 Atom System Image}.
       \end{itemize}
  \end{itemize}
  
@@ -64,7 +69,11 @@ Para poder realizar los ejercicios prácticos debera contar con las siguientes h
     \begin{lstlisting}
 # android create avd --target 1 --name emulador-so
     \end{lstlisting}
-
+    \textbf{Nota}: podra ver la lista de \textit{targets} ejecutando:
+    \begin{lstlisting}
+# android list targets
+    \end{lstlisting}
+    
     \item Inicie el emulador (\textit{avd - android virtual device}):
     \begin{lstlisting}
 # emulador-x86 -avd emulador-so
@@ -94,16 +103,34 @@ Para su ayuda, ejecute:
     \begin{lstlisting}
 sqlite> select * from system;
     \end{lstlisting}
+    Se puede apreciar el volumen del tono de llamada, el de las notificaciones, etc.    
     
-    \begin{itemize}
-	\item Se puede apreciar el volumen del tono de llamada, el de las notificaciones, etc.    
-    \end{itemize}
-    
+    \item Responda:
     \begin{questions}
 	\question ¿Qué pasa si abrimos la configuración del dispositivo desde la interface gráfica (\emph{Menu -> Settings -> Sound}) y modificamos el volumen del tono de llamada o de notificaciones?
 	
 	\question ¿Y qué pasa si ejecutamos el comando \textit{delete from system;}?, ¿Sigue funcionando el sistema operativo?, ¿Qué pasa con las configuraciones?
     \end{questions}
+\end{itemize}
+
+\subsection{Almacenamiento}
+\begin{itemize}
+    \item Acceda, mediante \textit{SQLite}, a la información persistida por el browser. Analice la misma y borre los \textit{bookmarks}.
+
+    \item Identifique la página de inicio del browser (\textbf{Tip:} se encuentra almacenada a través de las \textit{shared preferences}).    
+\end{itemize}
+
+\subsection{Tipo de memoria y File system}
+\begin{itemize}
+    \item ¿Qué tipo de memoria tiene el dispositivo virtual creado? (\textbf{Tip}: utilice el comando \textit{mount})
+    
+    \item Agreguele almacenamiento \textit{SD} (\emph{Edit $\rightarrow$ SD Card $\rightarrow$ Size}) al dispositivo:
+    \begin{lstlisting}
+# android avd
+    \end{lstlisting}
+    ¿Aprecia algún otro tipo de memoria? ¿Por qué?   
+    
+    \item ¿Qué tipo de file system tiene el dispositivo virtual creado? (\textbf{Tip}: utilice el comando \textit{mount})      
 \end{itemize}
 
 \subsection{Aplicaciones}
@@ -116,21 +143,116 @@ Para su ayuda, ejecute:
 \begin{itemize}
     \item Ejecute la actividad \textit{main} de la aplicación \emph{com.android.browser}:
     \begin{lstlisting}
-# am start -a android.intent.action.MAIN -n com.android.browser/.BrowserActivity
+# am start -a android.intent.action.MAIN 
+  -n com.android.browser/.BrowserActivity
     \end{lstlisting}
+    \item ¿Cómo funciona?:
     \begin{itemize}
-	\item ¿Cómo funciona?:
-	\begin{itemize}
-	    \item El primer parámetro inica que se va a hacer. En este caso, se ejecuta una aplicación (\emph{start}).
-	    
-	    \item El segundo parámetro inica el tipo de acción que se ejecutará (\emph{android.intent.action.MAIN}). \textbf{Nota}: para ver más tipos de acciones visite \href{http://developer.android.com/guide/topics/intents/intents-filters.html}{está}\footnote{http://developer.android.com/guide/topics/intents/intents-filters.html} página.
-	    
-	    \item El tercer parámetro es la actividad que se desea mostrar (\emph{com.android.browser/.BrowserActivity}).
-	\end{itemize}
+	\item El primer parámetro inica que se va a hacer. En este caso, se ejecuta una aplicación (\emph{start}).
+	
+	\item El segundo parámetro inica el tipo de acción que se ejecutará (\emph{android.intent.action.MAIN}). \textbf{Nota}: para ver más tipos de acciones visite \href{http://developer.android.com/guide/topics/intents/intents-filters.html}{está}\footnote{http://developer.android.com/guide/topics/intents/intents-filters.html} página.
+	
+	\item El tercer parámetro es la actividad que se desea mostrar 
+	(\emph{com.android.browser/.BrowserActivity}).
     \end{itemize}
 
     \item Inicie la aplicación \emph{settings} del dispositivo:
     \begin{lstlisting}
-# am start -a android.intent.action.MAIN -n com.android.settings/.Settings
-    \end{lstlisting}    
+# am start -a android.intent.action.MAIN 
+  -n com.android.settings/.Settings
+    \end{lstlisting}
+\end{itemize}
+
+\subsection{Procesos y Usuarios}
+\begin{itemize}
+    \item Abra, desde la interface gráfica, el browser que viene instalado por defecto. ¿Cómo identificamos al proceso? ¿Podemos matarlo? ¿Cómo?
+    
+    \item Ejecute, desde la interface gráfica, mas de una instancia del browser que viene instalado por defecto. ¿Qué puede deducir al respecto? (\textbf{Tip:} utilice el comando \textit{ps})
+    
+    \item Entendiendo el \textit{sandbox}:
+    \begin{enumerate}
+	  \item Cree tres proyectos
+	  \begin{lstlisting}
+# android create project --name soUno --path ./soUno 
+--activity ActividadUno --package unlp.so.android.uno 
+--target 1 -g -v 1.1.3
+
+# android create project --name soDos --path ./soDos 
+--activity ActividadDos --package unlp.so.android.dos 
+--target 1 -g -v 1.1.3
+
+# android create project --name soTres --path ./soTres 
+--activity ActividadTres --package unlp.so.android.tres 
+--target 1 -g -v 1.1.3
+	  \end{lstlisting}
+	  
+	  \item Elimine el bloque, para ámbito de producción, del archivo \textit{build.gradle} dentro del directorio raíz de cada uno de los proyectos:
+	  \begin{lstlisting}
+buildTypes {
+  release {
+      runProguard false
+      proguardFile getDefaultProguardFile('proguard-android.txt')
+  }
+}
+	  \end{lstlisting}
+	  
+	  \item Agregue, al \textit{tag manifest} del archivo \textit{AndroidManifest.xml} 
+	  
+	  (\emph{<directorio-raíz-proyecto>/src/main/AndroidManifest.xml}), el atributo \textit{sharedUserId} con el mismo valor a las aplicaciones uno y dos:
+	  \begin{lstlisting}
+android:sharedUserId="unlp.so.android.uno"
+	  \end{lstlisting}
+	  
+	  \item Adcionalmente agregue, al archivo \textit{AndroidManifest.xml},  permisos de \emph{Internet} para la aplicación uno:
+	  \begin{lstlisting}
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="unlp.so.android.uno" >
+    ...
+    <uses-permission android:name="android.permission.INTERNET" />
+    ...
+</manifest>
+	  \end{lstlisting}
+	  
+	  \item Construya las aplicaciones mediante la herramienta \textit{Gradle}, posicionandose en el directorio raíz de cada proyecto (requiere conexión a Internet):
+	  \begin{lstlisting}
+# gradle assembleDebug
+	  \end{lstlisting}
+	  Podrá ver los \textit{.apk} generados en \emph(<directorio-raíz-proyecto>/build/output/apk/). 
+	  
+	  Además podrá saber que tareas puede realizar a través de \textit{Gradle} ejecutando lo siguiente:
+	  \begin{lstlisting}
+# gradle tasks
+	  \end{lstlisting}
+	   
+	  \item Instale las aplicaciones en el dispositivo (requiere que el dispositivo este iniciado):
+	  \begin{lstlisting}
+# adb install <directorio-apk-generados-proyecto-uno>/soUno-debug.apk
+# adb install <directorio-apk-generados-proyecto-dos>/soDos-debug.apk
+# adb install <directorio-apk-generados-proyecto-tres>/soTres-debug.apk
+	  \end{lstlisting}
+	  
+	  \item Ejecute cada una de las aplicaciones.
+	  
+	  \item Acceda al dispositivo mediante el \textit{adb} y responda:
+	  \begin{questions}
+	      \question ¿Qué se información puede extraer como resultado de ejecutar los siguientes comandos?:
+	      \begin{lstlisting}
+# ps	      
+# dumpsys package unlp.so.android.uno
+# dumpsys package unlp.so.android.dos
+# dumpsys package unlp.so.android.tres
+	      \end{lstlisting}
+	  \end{questions}
+	  
+	  \item Como posiblemente ya sepa, el \textit{userId} del usuario \textit{root} en Linux es el \emph{0}. En la explicación se dijo que cada aplicación Android es un usuario Linux, es decir que tiene un \textit{userId} único. Debera acceder a un archivo en el cual, entre otras cosas se define la configuración de usuarios y grupos para el sistema operativo Android. Acceda a la siguiente \href{https://android.googlesource.com/platform/system/core.git/+/master/include/private/android\_filesystem\_config.h}{página}\footnote{https://android.googlesource.com/platform/system/core.git/+/master/include/private/android\_filesystem\_config.h} y responda:
+	  \begin{questions}
+	      \question ¿Cuál es el \textit{userId} del usuario \emph{system}?
+	      
+	      \question ¿A partir de qué \textit{userId} Android concede indentificación para las aplicaciones de usuario?
+	      
+	      \question ¿Qué \textit{userId} se le asigna al demonio adb (\textit{adbd})?
+	  \end{questions}
+	  
+	  \textbf{Nota}: El que desee hacerlo puede leer, no necesariamente todo, \href{http://users.encs.concordia.ca/~clark/papers/2012\_spsm.pdf}{esté}\footnote{http://users.encs.concordia.ca/~clark/papers/2012\_spsm.pdf} artículo en donde se explica intrínsecamente la asignación del \textit{userId} al momento de instalar un aplicación en Android.
+    \end{enumerate}
 \end{itemize}

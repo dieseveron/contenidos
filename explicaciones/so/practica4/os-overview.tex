@@ -83,9 +83,9 @@
     \item Decición en base a Jerarquía de procesos clasificados en:
     \begin{itemize}
      \item \textit{Foreground process}
-     \item \textit{Visible process}
-     \item \textit{Service process}
-     \item \textit{Background process}
+     \item \textit{Visible process} $\rightarrow$ \textit{onPause()}
+     \item \textit{Service process} $\rightarrow$ \textit{LRU}
+     \item \textit{Background process} $\rightarrow$ \textit{onStop()}
      \item \textit{Empty process}
     \end{itemize}       
   \end{itemize}
@@ -223,6 +223,7 @@
     package="com.android.app.myapp" >
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
     ...
 </manifest>
     \end{lstlisting}    
@@ -354,7 +355,7 @@ userdata -> /dev/block/mmcblk0p40
 	
 	\item Single-theading.
 	
-	\item Hasta \textbf{Froyo} (v2.2).
+	\item Por lo general, hasta \textbf{Froyo} (v2.2).
 	
 	\item Especializado para funcionar en memorias de tipo raw NAND.
       \end{itemize}
