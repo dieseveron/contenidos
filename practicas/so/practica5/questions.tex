@@ -1,17 +1,123 @@
 \section{Preguntas teóricas}
 
 \begin{questions}
-\question bla
+\question ¿A qué hace referencia el término Virtualización? Investigue cual
+fue una de las primeras implementaciones que se realizó.
+
+\question ¿Qué diferencia existe entre Virtualización y Emulación?
+
+\question ¿Qué es un Hypervisor? Investigue cuando se realizó la primer
+implementación de esta tecnología.
+
+\question ¿Qué beneficios traen los Hypervisors?
+
+\question ¿Cómo se clasifican los Hypervisors? 
+
+\question Arme un cuadro comparativo de las características de Hypervisors
+entre las clasificaciones existentes
+
+\question Indique por qué un hypervisor 1, no podría correr en una
+arquitectura sin tecnología de virtualización. ¿Y un Hypervisor 2 en
+Hardware sin tecnología de virtualización?
+
+\question Describa brevemente el concepto de paravirtualización.
+
+\question ¿Sería posible utilizar paravirtualización en sistemas como
+Windows o iOS? ¿Por qué?
+
+\question Mencione algún sistema que implemente paravirtualización.
+
+\question ¿A qué hace alusión el término VMI?
+
+\question ¿Qué beneficios trae con respecto al resto de los modos de
+virtualización?
+
+\question Realice un diagrama que muestre cómo interactúa un SO guest, con
+un sistema (HW y Soft) que implemente VMI.
+
+\question Investigue si VMI podría correr sobre Hypervisors 1 o 2, y de una
+justificación del por qué.
+
+\question Investigue el término UML en la virtualización, y qué diferencias
+encuentra con los modos de virtualización anteriores.
+
 \end{questions}
 
 \section{Virtualización por hardware}
 
 \begin{questions}
-  \question bla
+
+  \question
+\begin{itemize}  
+\item qemu
+\item kvm
+\item vmware
+\item microsoft
+\item oracle
+\item xen
+\item bochs
+  \end{itemize}
 \end{questions}
 
 \section{Containers}
 
 \begin{questions}
-  \question bla
+\question ¿En qué se diferencia la virtualización tipo VirtualBox de los containers?
+\question Ejercicio guiado:
+
+\begin{itemize}
+\item Instalar LinuX Containers (LXC) con el comando:
+\begin{verbatim}
+  	apt-get install lxc
+\end{verbatim}
+\item Comprobar mediante el siguiente comando que el \textit{kernel} soporta LXC.
+\begin{verbatim}
+  	lxc-checkconfig
+\end{verbatim}
+  \textbf{Nota}: puede que no todas las opciones estén habilitadas
+\item Para ver los templates que soporta (a partir de donde se crean los containers)
+\begin{verbatim}
+  	ls /usr/lib/lxc/templates
+\end{verbatim}
+\item Crear un nuevo container desde el template de Ubuntu con el nombre
+  \texttt{soubuntu}:
+\begin{verbatim}
+  	lxc-create -t ubuntu -n soubuntu
+\end{verbatim}
+  \textbf{Nota}: durante la instalación se muestra el user/pass para
+  ingresar al container. Este comando puede tomar un tiempo porque debe
+  bajar muchos componentes la primera vez.
+\item Una vez creado el container, el siguiente paso es iniciarla:
+\begin{verbatim}
+  	lxc-start -n soubuntu -d
+\end{verbatim}
+  \textbf{Nota}: \texttt{-n} para ingresar el nombre del container que
+  queremos iniciar, \texttt{-d} para que corra como daemon
+\item Usar el comando \texttt{lxc-list} para ver el estado de los
+  containers. ¿En qué estado se encuentra el \textit{container}
+  \texttt{soubuntu}?
+\item Para ingresar al \textit{container} como si fuese una terminal:
+\begin{verbatim}
+  	lxc-console -n soubuntu
+\end{verbatim}
+  
+\item Clonar un \textit{container} a usando el comando \texttt{lxc-clone}.
+\item Ver el estado de los \textit{containers} con el comando
+  \textit{lxc-list}.
+\item Detenga el \textit{container} \texttt{soubuntu}.
+\begin{verbatim}
+  	lxc-shutdown -n soubuntu
+\end{verbatim}
+\item Usando el archivo \texttt{/var/lib/lxc/soubuntu/config} modificar la
+  dirección MAC del \textit{containerx}.
+
+  \textbf{Nota}: puede que tenga que modificar el permiso del directorio
+  
+\item Para eliminar definitivamente un \textit{container},
+\begin{verbatim}
+   	lxc-destroy -n soubuntu
+\end{verbatim}
+  
+\end{itemize}
+
 \end{questions}
