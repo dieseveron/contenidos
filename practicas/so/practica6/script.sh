@@ -5,7 +5,8 @@ while true; do
     echo "Hostname: $(hostname)\n"
     echo "/home directory contents:\n"
     ls -l /home
-    echo "\nRunning process: $(ps -e | wc -l)"
+    echo "\nSome processes:\n$(ps -e | tail)"
+    echo "\nProcess quantity:\n$(ps -e | wc -l)"
     sleep 1
 done
 

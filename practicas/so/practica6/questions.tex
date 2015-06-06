@@ -68,6 +68,51 @@ encuentra con los modos de virtualización anteriores.
 \end{questions}
 
 \subsection{chroot}
+Uno de los métodos más simples para aislar servicios es \texttt{chroot},
+que consiste simplemente en cambiar lo que un proceso junto con sus hijos
+consideran que es el directorio raíz, limitando de esta forma lo que pueden
+ver en el sistema de archivos. En esta sección de la práctica se preparará
+un árbol de directorios que sirva como directorio raíz para una nueva
+\textit{shell}.
+
+\begin{questions}
+  \question ¿Cuál es la finalidad de la herramienta \texttt{debootstrap}?
+  Instálela en un sistema operativo basado en Debian.
+
+  \question La sintaxis de \texttt{debootstrap} para crear un sistema base
+  es: \texttt{debootstrap\ <suite>\ <target>\ <mirror>}. Utilice como
+  \textit{suite} la versión estable de Debian, \texttt{stable}, como
+  \textit{target} el directorio donde alojará el árbol de directorios y
+  como \textit{mirror} \texttt{http://httpredir.debian.org/debian}.
+
+  \question Para que un \texttt{chroot} funcione correctamente en Linux se
+  deben montar ciertos sistemas de archivos API que necesita el sistema
+  operativo.
+\begin{verbatim}
+# mount --bind /dev/ target/dev/
+# mount --bind /proc/ target/proc/
+# mount --bind /sys/ target/sys/
+\end{verbatim}
+
+  Tenga en cuenta que debe reemplazar \texttt{target/} por el directorio
+  donde inicializó su \textit{debootstrap}.
+
+  \question Copie el \textit{script} que ejecutó en la sección anterior a
+  un directorio accesible desde el \texttt{chroot}. Por ejemplo,
+  \texttt{target/bin/script.sh}.
+
+  \question Ejecute una \textit{shell} cuyo directorio raíz sea
+  \texttt{target/}. Para tal fin, utilice con privilegios de \texttt{root}
+  el comando \texttt{chroot}.
+
+  \question Ejecute el \textit{script} instalado previamente y analice los
+  resultados. ¿Puede ver los procesos que corren en el sistema operativo
+  base? ¿Por qué?
+
+  \question ¿Qué desventajas encuentra en el uso de \texttt{chroot} como
+  medida de seguridad?
+
+\end{questions}
 
 \subsection{Containers - LXC}
 \begin{questions}
