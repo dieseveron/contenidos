@@ -135,64 +135,77 @@ un árbol de directorios que sirva como directorio raíz para una nueva
   estudiaremos una de las primeras, \textbf{LXC (Linux Containers)}.}
 
 \begin{questions}
-\question ¿En qué se diferencia la virtualización tipo VirtualBox de los containers?
+\question ¿En qué se diferencia la virtualización tipo VirtualBox de los \textit{containers}?
 \question Ejercicio guiado:
 
-\begin{itemize}
-\item Instalar LinuX Containers (LXC) con el comando:
-\begin{verbatim}
-  	apt-get install lxc
-\end{verbatim}
-\item Comprobar mediante el siguiente comando que el \textit{kernel} soporta LXC.
-\begin{verbatim}
-  	lxc-checkconfig
+\begin{parts}
+  \part Instale LXC mediante el comando:
+  \begin{verbatim}
+apt-get install lxc
+  \end{verbatim}
+  \part Compruebe mediante el siguiente comando si su \textit{kernel} soporta
+  LXC:
+  \begin{verbatim}
+lxc-checkconfig
 \end{verbatim}
   \textbf{Nota}: puede que no todas las opciones estén habilitadas
-\item Para ver los templates que soporta (a partir de donde se crean los containers)
-\begin{verbatim}
-  	ls /usr/share/lxc/templates
-\end{verbatim}
-\item Crear un nuevo container desde el template de Ubuntu con el nombre
-  \texttt{soubuntu}:
-\begin{verbatim}
-  	lxc-create -t ubuntu -n soubuntu
-\end{verbatim}
-  \textbf{Nota}: durante la instalación se muestra el user/pass para
-  ingresar al container. Este comando puede tomar un tiempo porque debe
-  bajar muchos componentes la primera vez.
-\item Una vez creado el container, el siguiente paso es iniciarla:
-\begin{verbatim}
-  	lxc-start -n soubuntu -d
-\end{verbatim}
+
+  \part Compruebe los \textit{templates} que dispone (a partir de donde se
+  crean los \textit{containers}):
+  \begin{verbatim}
+ls /usr/share/lxc/templates
+  \end{verbatim}
+  
+  \part Cree un nuevo \textit{container} desde el \textit{template} de Debian
+  con el nombre \texttt{sodebian}:
+  \begin{verbatim}
+lxc-create -t debian -n sodebian
+  \end{verbatim}
+  \textbf{Nota}: durante la instalación se muestra el usuario y la
+  contraseña utilizados para ingresar al \textit{container}. Este comando
+  puede demorar varios minutos la primera vez que es ejecutado ya que debe
+  descargar muchos componentes.
+  
+  \part Una vez creado el \textit{container} inícielo mediante el siguiente
+  comando:
+  \begin{verbatim}
+lxc-start -n sodebian -d
+  \end{verbatim}
   \textbf{Nota}: \texttt{-n} para ingresar el nombre del container que
-  queremos iniciar, \texttt{-d} para que corra como daemon
-\item Usar el comando \texttt{lxc-list} para ver el estado de los
-  containers. ¿En qué estado se encuentra el \textit{container}
-  \texttt{soubuntu}?
-\item Para ingresar al \textit{container} como si fuese una terminal:
-\begin{verbatim}
-  	lxc-console -n soubuntu
-\end{verbatim}
+  queremos iniciar, \texttt{-d} para que corra como \textit{daemon}.
   
-\item Clonar un \textit{container} a usando el comando \texttt{lxc-clone}.
-\item Ver el estado de los \textit{containers} con el comando
-  \textit{lxc-list}.
-\item Detenga el \textit{container} \texttt{soubuntu}.
-\begin{verbatim}
-  	lxc-shutdown -n soubuntu
-\end{verbatim}
-\item Usando el archivo \texttt{/var/lib/lxc/soubuntu/config} modificar la
-  dirección MAC del \textit{containerx}.
-
-  \textbf{Nota}: puede que tenga que modificar el permiso del directorio
+  \part Utilice el comando \texttt{lxc-list} para comprobar el estado de
+  los \textit{containers}. ¿En qué estado se encuentra el
+  \textit{container} \texttt{sodebian}?
   
-\item Para eliminar definitivamente un \textit{container},
-\begin{verbatim}
-   	lxc-destroy -n soubuntu
-\end{verbatim}
+  \part Mediante el siguiente comando ingrese al \textit{container} y
+  ejecute el \textit{script} utilizado en los ejercicios anteriores.
+  \begin{verbatim}
+lxc-console -n sodebian
+  \end{verbatim}
+
+  \begin{parts}
+    \part ¿Puede acceder al \texttt{/home} del sistema operativo base?
+    \part ¿Puede ver los procesos que están corriendo en el sistema
+    operativo base?
+  \end{parts}
   
-\end{itemize}
+  \part Clone un \textit{container} utilizando el comando
+  \texttt{lxc-clone}.
 
-\subsection{Virtualización por hardware}
+  \part Vuelva a ejecutar \textit{lxc-list} y analice su salida.
 
+  \part Detenga el \textit{container} \texttt{sodebian}.
+  \begin{verbatim}
+lxc-shutdown -n sodebian
+\end{verbatim}
+
+  \part Edite el archivo \texttt{/var/lib/lxc/sodebian/config} y modifique
+  la dirección MAC del \textit{container}. 
+ 
+  \part Elimine definitivamente el \textit{container} mediante el comando:
+  \begin{verbatim}
+lxc-destroy -n sodebian
+  \end{verbatim}  
+\end{parts}
 \end{questions}
