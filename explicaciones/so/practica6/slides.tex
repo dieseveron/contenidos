@@ -1,0 +1,87 @@
+\section{Virtualización}
+\begin{frame}
+  \vfill
+  ¿Para qué utilizamos virtualización?
+  \vfill
+\end{frame}
+
+\section{Service isolation}
+\begin{frame}[fragile]
+  \frametitle{chroot}
+
+\begin{lstlisting}[language=sh]
+debootstrap stable jessie/ http://httpredir.debian.org
+mount --bind /dev/ target/dev/
+mount --bind /proc/ target/proc/
+mount --bind /sys/ target/sys/
+chroot target/
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Containers}
+  \begin{itemize}
+    
+  \item     Kernel namespaces (ipc, uts, mount, pid, network and user)
+  \item     Chroots (using \texttt{pivot\_root})
+  \item     Kernel capabilities
+  \item     CGroups (control groups)
+
+  \end{itemize}
+\end{frame}
+
+\section{Service isolation con systemd}
+\begin{frame}[fragile]
+  \frametitle{Pequeña introducción a systemd}
+
+  \begin{lstlisting}
+[Unit]
+Description=A simple service
+
+[Service]
+ExecStart=/usr/local/bin/script.sh
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{chroot}
+\begin{lstlisting}
+[Unit]
+Description=A simple service
+
+[Service]
+ExecStart=/usr/local/bin/script.sh
+RootDirectory=/home/chroot/sid/
+ExecStartPre=mount --bind /proc/ /home/chroot/sid/proc
+ExecStartPre=mount --bind /sys/ /home/chroot/sid/sys
+ExecStartPre=mount --bind /dev/ /home/chroot/sid/dev
+RootDirectoryStartOnly=yes
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Filesystem namespaces}
+\begin{lstlisting}
+[Unit]
+Description=A simple service
+
+[Service]
+ExecStart=/usr/local/bin/script.sh
+InaccessibleDirectories=/home
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Containers en systemd}
+  \texttt{systemd-nspawn}
+\begin{lstlisting}
+systemd-nspawn -D /home/chroot/sid /usr/local/bin/script.sh
+\end{lstlisting}
+
+\end{frame}
+
+
+
