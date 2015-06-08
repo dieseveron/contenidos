@@ -296,6 +296,48 @@ $ journalctl --user -f $HOME/bin/script.sh
 \end{questions}
 
 \subsection{\texttt{chroot}}
+\texttt{systemd} permite integrar fácilmente a sus servicios la
+funcionalidad que provee \texttt{chroot}.
+
+\textbf{Nota:} debido a que se precisan montar los directorios API, esta
+parte de la práctica la haremos utilizando el usuario \texttt{root}.
+\begin{questions}
+  \question Mediante \texttt{debootstrap} cree un nuevo \texttt{chroot} o
+  utilice el de la sección anterior. Durante el resto del ejercicio se
+  asumirá que lo tiene creado en \texttt{/home/chroot/sid/}.
+
+  \question Copie el \textit{script} utilizado en la sección a una
+  ubicación dentro del \texttt{chroot}, por ejemplo:
+  \texttt{/home/chroot/sid/usr/local/bin/script.sh}
+
+  \question Cree el archivo
+  \texttt{/etc/systemd/system/script-chroot.service} con el siguiente
+  contenido:
+
+  \lstinputlisting[language=sh]{script-chroot.service}
+
+  \question Refresque la lista de servicios disponibles para
+  \texttt{systemd}:
+  \begin{verbatim}
+$ systemctl daemon-reload
+\end{verbatim}
+
+    \question Finalmente, es hora de arrancar el servicio recién configurado:
+\begin{verbatim}
+$ systemctl start script-chroot.service
+\end{verbatim}
+
+    \question Para comprobar la salida estándar del \textit{script} recién
+    ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
+    provee \texttt{systemd} para registrar eventos.
+\begin{verbatim}
+$ journalctl -u script-chroot.service
+\end{verbatim}
+
+    Analice la salida del \textit{script}. ¿Corresponde a la información
+    del sistema operativo base?   
+
+\end{questions}
 
 \subsection{\textit{Filesystem namespaces}}
 

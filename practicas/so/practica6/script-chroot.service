@@ -1,0 +1,10 @@
+[Unit]
+Description=A simple service
+
+[Service]
+ExecStart=/usr/local/bin/script.sh
+RootDirectory=/home/chroot/sid/
+ExecStartPre=mount --bind /proc/ /home/chroot/sid/proc
+ExecStartPre=mount --bind /sys/ /home/chroot/sid/sys
+ExecStartPre=mount --bind /dev/ /home/chroot/sid/dev
+RootDirectoryStartOnly=yes
