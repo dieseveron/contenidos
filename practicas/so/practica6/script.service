@@ -1,0 +1,4 @@
+[Unit]
+Description=A simple service
+[Service]
+ExecStart=/home/rul/bin/script.sh

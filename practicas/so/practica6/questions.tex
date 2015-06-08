@@ -1,4 +1,4 @@
-\section{Conceptos teóricos}
+\section{Parte 1: Conceptos teóricos}
 
 \begin{questions}
   \question Defina \textbf{virtualización}. Investigue cuál fue una de las
@@ -57,7 +57,7 @@
 
 \end{questions}
 
-\section{Ejercicios prácticos}
+\section{Parte 2: \textit{Service isolation}}
 \textit{Se plantea el escenario donde usted es un administrador de sistemas
   que requiere ejecutar un servicio de forma aislada al resto de los
   procesos.}
@@ -81,7 +81,7 @@
   
 \end{questions}
 
-\subsection{chroot}
+\subsection{\texttt{chroot}}
 Uno de los métodos más simples para aislar servicios es \texttt{chroot},
 que consiste simplemente en cambiar lo que un proceso junto con sus hijos
 consideran que es el directorio raíz, limitando de esta forma lo que pueden
@@ -128,84 +128,175 @@ un árbol de directorios que sirva como directorio raíz para una nueva
 
 \end{questions}
 
-\subsection{Containers}
+\subsection{\textit{Containers}}
 
 \textit{En GNU/Linux hay varias implementaciones de la tecnología de
   containers que provee el kernel. En esta sección de la práctica
   estudiaremos una de las primeras, \textbf{LXC (Linux Containers)}.}
 
+Ejercicio guiado:
 \begin{questions}
-\question ¿En qué se diferencia la virtualización tipo VirtualBox de los \textit{containers}?
-\question Ejercicio guiado:
 
-\begin{parts}
-  \part Instale LXC mediante el comando:
-  \begin{verbatim}
-apt-get install lxc
-  \end{verbatim}
-  \part Compruebe mediante el siguiente comando si su \textit{kernel} soporta
+  \question Instale LXC mediante el comando:
+\begin{verbatim}
+# apt-get install lxc
+\end{verbatim}
+  
+  \question Compruebe mediante el siguiente comando si su \textit{kernel} soporta
   LXC:
-  \begin{verbatim}
-lxc-checkconfig
+\begin{verbatim}
+# lxc-checkconfig
 \end{verbatim}
   \textbf{Nota}: puede que no todas las opciones estén habilitadas
 
-  \part Compruebe los \textit{templates} que dispone (a partir de donde se
+  \question Compruebe los \textit{templates} que dispone (a partir de donde se
   crean los \textit{containers}):
-  \begin{verbatim}
-ls /usr/share/lxc/templates
-  \end{verbatim}
+\begin{verbatim}
+# ls /usr/share/lxc/templates
+\end{verbatim}
   
-  \part Cree un nuevo \textit{container} desde el \textit{template} de Debian
+  \question Cree un nuevo \textit{container} desde el \textit{template} de Debian
   con el nombre \texttt{sodebian}:
-  \begin{verbatim}
-lxc-create -t debian -n sodebian
-  \end{verbatim}
+\begin{verbatim}
+# lxc-create -t debian -n sodebian
+\end{verbatim}
   \textbf{Nota}: durante la instalación se muestra el usuario y la
   contraseña utilizados para ingresar al \textit{container}. Este comando
   puede demorar varios minutos la primera vez que es ejecutado ya que debe
   descargar muchos componentes.
   
-  \part Una vez creado el \textit{container} inícielo mediante el siguiente
+  \question Una vez creado el \textit{container} inícielo mediante el siguiente
   comando:
-  \begin{verbatim}
-lxc-start -n sodebian -d
-  \end{verbatim}
+\begin{verbatim}
+# lxc-start -n sodebian -d
+\end{verbatim}
   \textbf{Nota}: \texttt{-n} para ingresar el nombre del container que
   queremos iniciar, \texttt{-d} para que corra como \textit{daemon}.
   
-  \part Utilice el comando \texttt{lxc-list} para comprobar el estado de
-  los \textit{containers}. ¿En qué estado se encuentra el
+  \question Utilice el comando \texttt{lxc-ls --fancy} para comprobar el estado
+  de los \textit{containers}. ¿En qué estado se encuentra el
   \textit{container} \texttt{sodebian}?
   
-  \part Mediante el siguiente comando ingrese al \textit{container} y
+  \question Mediante el siguiente comando ingrese al \textit{container} y
   ejecute el \textit{script} utilizado en los ejercicios anteriores.
-  \begin{verbatim}
-lxc-console -n sodebian
-  \end{verbatim}
+\begin{verbatim}
+# lxc-console -n sodebian
+\end{verbatim}
 
   \begin{parts}
     \part ¿Puede acceder al \texttt{/home} del sistema operativo base?
     \part ¿Puede ver los procesos que están corriendo en el sistema
     operativo base?
   \end{parts}
+
+  \question Detenga el \textit{container} \texttt{sodebian}.
+\begin{verbatim}
+# lxc-stop -n sodebian
+\end{verbatim}
   
-  \part Clone un \textit{container} utilizando el comando
+  \question Clone un \textit{container} utilizando el comando
   \texttt{lxc-clone}.
 
-  \part Vuelva a ejecutar \textit{lxc-list} y analice su salida.
+  \question Vuelva a ejecutar \texttt{lxc-ls} y analice su salida.
 
-  \part Detenga el \textit{container} \texttt{sodebian}.
-  \begin{verbatim}
-lxc-shutdown -n sodebian
+  \question Analice el contenido del directorio \texttt{/var/lib/lxc/sodebian/}.
+  
+  \question Elimine definitivamente el \textit{container} mediante el comando:
+\begin{verbatim}
+# lxc-destroy -n sodebian
+\end{verbatim}  
+\end{questions}
+
+\subsection{Conclusión}
+\begin{questions}
+  \question Mediante los conceptos estudiados describa situaciones donde
+  utilizaría:
+  \begin{parts}
+    \part Virtualización por \textit{hardware}.
+    \part \textit{chroots}.
+    \part \textit{Containers}.
+  \end{parts}
+\end{questions}
+
+\section{Parte 3: \texttt{systemd}}
+\texttt{systemd} es un reemplazo para el clásico inicio de los sistemas
+operativos *nix, System V\footnote{¿recuerdan en ISO los \textit{scripts}
+  en \texttt{/etc/init.d/}, los \textit{runlevels}, los enlaces en los
+  directorios \texttt{/etc/rcX.d/}, etc.?}. Sin embargo, \texttt{systemd}
+apunta a ser mucho más que solo un sistema de arranque de servicios, ya que
+también provee funcionalidad para registrar eventos\footnote{mediante
+  \texttt{\href{http://0pointer.de/blog/projects/journalctl.html}{journalctl}}},
+invocar servicios cada cierto tiempo\footnote{reemplazando \texttt{cron} e
+  incluso \texttt{anacron}}, arrancar servicios solo si se los
+necesita\footnote{mediante una tecnología denominada
+  \texttt{\href{http://0pointer.de/blog/projects/socket-activation.html}{socket
+      activation}}}, entre otras cosas. Se recomienda la lectura del
+artículo
+\textit{\href{http://0pointer.de/blog/projects/systemd.html}{Rethinking PID
+    1}} para profundizar más en \texttt{systemd}. En esta parte de la
+práctica nos centraremos en aprender las capacidades para aislar
+aplicaciones que \texttt{systemd} provee de forma \textit{built-in}.
+
+\subsection{Ejecución normal}
+En primer lugar crearemos un servicio similar al utilizado en la anterior
+sección de la práctica. Aprovecharemos la capacidad que tiene
+\texttt{systemd} de permitir que cada usuario defina sus propios
+servicios. El alumno atento recordará que en System V todos los
+\textit{scripts} de arranque debían definirse en \texttt{/etc/init.d/},
+mientras que en los directorios \texttt{/etc/rcX.d/} se definía si
+arrancaba o no en un determinado \textit{runlevel}.
+\begin{questions}
+  \question Para esta parte de la práctica se precisa un sistema operativo
+  que corra \texttt{systemd} como sistema de arranque. Debian 8
+  (\textit{Jessie}) y Ubuntu 15.04 (\textit{Vivid Vervet}) vienen por
+  defecto con esta configuración. Elija la distribución de su preferencia e
+  instalela en una máquina virtual o física.
+
+  \question Utilizando un usuario que no sea \texttt{root}, cree el
+  directorio donde se instalarán los servicios que serán utilizados durante
+  el resto de la práctica.
+\begin{verbatim}
+$ mkdir -p $HOME/.config/systemd/user
 \end{verbatim}
 
-  \part Edite el archivo \texttt{/var/lib/lxc/sodebian/config} y modifique
-  la dirección MAC del \textit{container}. 
- 
-  \part Elimine definitivamente el \textit{container} mediante el comando:
-  \begin{verbatim}
-lxc-destroy -n sodebian
-  \end{verbatim}  
-\end{parts}
+  \question Copie el \textit{script} utilizado anteriormente en
+  \texttt{\$HOME/bin/}.
+
+  \question Cree un
+  \textit{\href{http://0pointer.de/public/systemd-man/systemd.unit.html}{Unit
+      file}} para el servicio en la ubicación
+  \texttt{\$HOME/.config/systemd/user/script.service} con el siguiente
+  contenido:
+  \lstinputlisting[language=sh]{script.service}
+
+  \textbf{Nota:} reemplace la ruta de \texttt{ExecStart} por donde haya
+  instalado el \textit{script}. % TODO: Hacer andar %h
+  
+  \question Ahora debemos decirle a \texttt{systemd} que refresque la lista
+  de servicios del usuario:
+\begin{verbatim}
+$ systemctl --user daemon-reload
+\end{verbatim}
+
+    \question Finalmente, es hora de arrancar el servicio recién configurado:
+\begin{verbatim}
+$ systemctl --user start script.service
+\end{verbatim}
+
+    \question Para comprobar la salida estándar del \textit{script} recién
+    ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
+    provee \texttt{systemd} para registrar eventos.
+\begin{verbatim}
+$ journalctl --user -f $HOME/bin/script.sh
+\end{verbatim}
+
+    Analice la salida del \textit{script}. ¿Corresponde a la información
+    del sistema operativo base?   
+
 \end{questions}
+
+\subsection{\texttt{chroot}}
+
+\subsection{\textit{Filesystem namespaces}}
+
+\subsection{\textit{Containers}}
