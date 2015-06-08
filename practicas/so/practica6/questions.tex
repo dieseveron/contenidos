@@ -259,15 +259,15 @@ arrancaba o no en un determinado \textit{runlevel}.
 $ mkdir -p $HOME/.config/systemd/user
 \end{verbatim}
 
-  \question Copie el \textit{script} utilizado anteriormente en
-  \texttt{\$HOME/bin/}.
+  \question Copie el \textit{script} utilizado anteriormente en, por
+  ejemplo, \texttt{/usr/local/bin/script.sh}. Agréguele permisos de
+  ejecución.
 
   \question Cree un
   \textit{\href{http://0pointer.de/public/systemd-man/systemd.unit.html}{Unit
       file}} para el servicio en la ubicación
   \texttt{\$HOME/.config/systemd/user/script.service} con el siguiente
-  contenido:
-  \lstinputlisting[language=sh]{script.service}
+  contenido: \lstinputlisting[language=sh]{script.service}
 
   \textbf{Nota:} reemplace la ruta de \texttt{ExecStart} por donde haya
   instalado el \textit{script}. % TODO: Hacer andar %h
@@ -339,6 +339,44 @@ $ journalctl -u script-chroot.service
 
 \end{questions}
 
-\subsection{\textit{Filesystem namespaces}}
+\subsection{\textit{File system namespaces}}
+En esta sección de la práctica dejaremos de lado los \texttt{chroot} para
+dar lugar a una funcionalidad que provee el \textit{kernel} y que aprovecha
+\texttt{systemd}: los \textit{file system namespaces}
+
+\begin{questions}
+  \question Investigue qué son los \textit{file system namespaces} que
+  provee el kernel Linux.
+
+  \question Instale el siguiente \textit{Unit file} en
+  \texttt{\$HOME/.config/systemd/user/script-namespace.service}:
+
+  \lstinputlisting[language=sh]{script-namespace.service}
+
+  \question Investigue cuál es el efecto de utilizar la opción
+  \texttt{InaccessibleDirectories}.
+
+    \question Refresque la lista de servicios disponibles para
+  \texttt{systemd}:
+  \begin{verbatim}
+$ systemctl --user daemon-reload
+\end{verbatim}
+
+    \question Finalmente, es hora de arrancar el servicio recién configurado:
+\begin{verbatim}
+$ systemctl --user start script-namespace.service
+\end{verbatim}
+
+    \question Para comprobar la salida estándar del \textit{script} recién
+    ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
+    provee \texttt{systemd} para registrar eventos.
+\begin{verbatim}
+$ journalctl --user -u script-namespace.service
+\end{verbatim}
+
+    Analice la salida del \textit{script}. ¿Corresponde a la información
+    del sistema operativo base?
+
+\end{questions}
 
 \subsection{\textit{Containers}}
