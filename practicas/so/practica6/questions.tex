@@ -306,7 +306,7 @@ parte de la práctica la haremos utilizando el usuario \texttt{root}.
   utilice el de la sección anterior. Durante el resto del ejercicio se
   asumirá que lo tiene creado en \texttt{/home/chroot/sid/}.
 
-  \question Copie el \textit{script} utilizado en la sección a una
+  \question Copie el \textit{script} utilizado en la sección anterior a una
   ubicación dentro del \texttt{chroot}, por ejemplo:
   \texttt{/home/chroot/sid/usr/local/bin/script.sh}
 
@@ -376,7 +376,35 @@ $ journalctl --user -u script-namespace.service
 
     Analice la salida del \textit{script}. ¿Corresponde a la información
     del sistema operativo base?
-
 \end{questions}
 
 \subsection{\textit{Containers}}
+Finalmente, \texttt{systemd} también provee funcionalidad \textit{built-in}
+para ejecutar aplicaciones en \textit{containers} a través de su
+herramienta \texttt{systemd-nspawn}. Si bien no dispone de tantos
+\textit{features} como otras herramientas de \textit{containers},
+\texttt{systemd-nspawn} es ideal para realizar \textit{testing},
+\textit{debugging}, compilaciones en entornos limpios, etc.
+\begin{questions}
+  \question Mediante \texttt{debootstrap} cree un nuevo \texttt{chroot} o
+  utilice el de la sección anterior. Durante el resto del ejercicio se
+  asumirá que lo tiene creado en \texttt{/home/chroot/sid/}.
+
+  \question Copie el \textit{script} utilizado en la sección anterior a una
+  ubicación dentro del \texttt{chroot}, por ejemplo:
+  \texttt{/home/chroot/sid/usr/local/bin/script.sh}
+
+  \question Ejecute con privilegios de usuario \texttt{root} el siguiente
+  comando:
+\begin{verbatim}
+systemd-nspawn -D /home/chroot/sid /usr/local/bin/script.sh
+\end{verbatim}
+
+  \question Analice la salida del \textit{script}. ¿Corresponde a la
+  información del sistema operativo base?
+
+  \question ¿Es posible ejecutar servicios de la forma que se hizo en las
+  anteriores secciones pero a través de \texttt{systemd-nspawn}? En caso
+  afirmativo, investigue cómo hacerlo.
+
+\end{questions}
