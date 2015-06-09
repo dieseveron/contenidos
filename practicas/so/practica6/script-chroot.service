@@ -1,5 +1,5 @@
 [Unit]
-Description=A simple service
+Description=A chrooted service
 
 [Service]
 RootDirectory=/home/chroot/sid/
