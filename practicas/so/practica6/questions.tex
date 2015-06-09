@@ -316,6 +316,12 @@ parte de la práctica la haremos utilizando el usuario \texttt{root}.
 
   \lstinputlisting[language=sh]{script-chroot.service}
 
+  \question Cree el archivo
+  \texttt{/usr/local/bin/setup-chroot.sh} con el siguiente
+  contenido:
+
+  \lstinputlisting[language=sh]{setup-chroot.sh}
+
   \question Refresque la lista de servicios disponibles para
   \texttt{systemd}:
   \begin{verbatim}
@@ -328,10 +334,9 @@ $ systemctl start script-chroot.service
 \end{verbatim}
 
     \question Para comprobar la salida estándar del \textit{script} recién
-    ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
-    provee \texttt{systemd} para registrar eventos.
+    ejecutado podemos utilizar \texttt{journalctl} de la siguiente forma:
 \begin{verbatim}
-$ journalctl -u script-chroot.service
+$ journalctl -fu script-chroot.service
 \end{verbatim}
 
     Analice la salida del \textit{script}. ¿Corresponde a la información
@@ -349,7 +354,7 @@ dar lugar a una funcionalidad que provee el \textit{kernel} y que aprovecha
   provee el kernel Linux.
 
   \question Instale el siguiente \textit{Unit file} en
-  \texttt{\$HOME/.config/systemd/user/script-namespace.service}:
+  \texttt{/etc/systemd/system/script-namespace.service}:
 
   \lstinputlisting[language=sh]{script-namespace.service}
 
@@ -359,19 +364,19 @@ dar lugar a una funcionalidad que provee el \textit{kernel} y que aprovecha
     \question Refresque la lista de servicios disponibles para
   \texttt{systemd}:
   \begin{verbatim}
-$ systemctl --user daemon-reload
+$ systemctl daemon-reload
 \end{verbatim}
 
     \question Finalmente, es hora de arrancar el servicio recién configurado:
 \begin{verbatim}
-$ systemctl --user start script-namespace.service
+$ systemctl start script-namespace.service
 \end{verbatim}
 
     \question Para comprobar la salida estándar del \textit{script} recién
     ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
     provee \texttt{systemd} para registrar eventos.
 \begin{verbatim}
-$ journalctl --user -u script-namespace.service
+$ journalctl -fu script-namespace.service
 \end{verbatim}
 
     Analice la salida del \textit{script}. ¿Corresponde a la información
