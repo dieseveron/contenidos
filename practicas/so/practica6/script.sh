@@ -1,4 +1,4 @@
-#!/bin/bash -p
+#!/bin/bash
 
 while true; do
     clear
