@@ -10,7 +10,7 @@
   \frametitle{chroot}
 
 \begin{lstlisting}[language=sh]
-debootstrap stable jessie/ http://httpredir.debian.org
+debootstrap stable target/ http://httpredir.debian.org
 mount --bind /dev/ target/dev/
 mount --bind /proc/ target/proc/
 mount --bind /sys/ target/sys/
