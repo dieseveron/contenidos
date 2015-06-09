@@ -1,17 +1,18 @@
 \section{Parte 1: Conceptos teóricos}
 
 \begin{questions}
-  \question Defina \textbf{virtualización}. Investigue cuál fue una de las
-  primeras implementaciones que se realizó.
+  \question Defina \textbf{virtualización}. Investigue cuál fue la primer
+  implementación que se realizó.
 
   \question ¿Qué diferencia existe entre \textbf{virtualización} y
   \textbf{emulación}?
 
-  \question Investigue el concepto de \textit{hypervisor} y responda:
+  \question Investigue el concepto de \textbf{\textit{hypervisor}} y
+  responda:
   \begin{parts}
 
-    \part ¿Qué es un \textbf{\textit{hypervisor}}? Investigue cuándo se
-    realizó la primer implementación de esta tecnología.
+    \part ¿Qué es un \textit{hypervisor}? Investigue cuándo se realizó la
+    primer implementación de esta tecnología.
 
     \part ¿Qué beneficios traen los \textit{hypervisors}? ¿Cómo se
     clasifican?
@@ -25,7 +26,7 @@
   \question Investigue el concepto de \textbf{paravirtualización} y
   responda:
   \begin{parts}
-    \part ¿Qué es la \textbf{paravirtualización}?
+    \part ¿Qué es la paravirtualización?
 
     \part ¿Sería posible utilizar paravirtualización en sistemas operativos
     como Windows o iOS? ¿Por qué?
@@ -60,13 +61,17 @@
 \section{Parte 2: \textit{Service isolation}}
 \textit{Se plantea el escenario donde usted es un administrador de sistemas
   que requiere ejecutar un servicio de forma aislada al resto de los
-  procesos.}
+  procesos. Para tal fin aprenderá distintas metodologías de aislamiento y
+  comparará beneficios y desventajas en distintos contextos.}
 
 \subsection{Ejecución normal}
+La ejecución normal es la forma más directa de lanzar un servicio y
+consiste simplemente en correrlo como cualquier otro proceso.
+
 \begin{questions}
-  \question Es la forma más sencilla de ejecutar un servicio y consiste
-  simplemente en correrlo como cualquier otro proceso. Ejecute el siguiente
-  \textit{script} que símplemente informa al administrador datos básicos
+ 
+  \question Ejecute el siguiente
+  \textit{script} que simplemente informa al administrador datos básicos
   sobre el sistema operativo, lista el contenido del directorio
   \texttt{/home} y muestra la cantidad de procesos corriendo.
   
@@ -76,17 +81,18 @@
   sistema operativo como cualquier otro servicio nativo. Esta información
   consiste en archivos y directorios sobre los cuales se tengan permisos de
   lectura, procesos en ejecución, información sobre particiones, interfaces
-  de red, etc. En algunos casos suele ser conveniente restringir la
-  cantidad de información a la que un proceso puede acceder.
+  de red, etc. 
   
 \end{questions}
 
 \subsection{\texttt{chroot}}
-Uno de los métodos más simples para aislar servicios es \texttt{chroot},
-que consiste simplemente en cambiar lo que un proceso junto con sus hijos
-consideran que es el directorio raíz, limitando de esta forma lo que pueden
-ver en el sistema de archivos. En esta sección de la práctica se preparará
-un árbol de directorios que sirva como directorio raíz para una nueva
+En algunos casos suele ser conveniente restringir la cantidad de
+información a la que un proceso puede acceder. Uno de los métodos más
+simples para aislar servicios es \texttt{chroot}, que consiste simplemente
+en cambiar lo que un proceso junto con sus hijos consideran que es el
+directorio raíz, limitando de esta forma lo que pueden ver en el sistema de
+archivos. En esta sección de la práctica se preparará un árbol de
+directorios que sirva como directorio raíz para la ejecución de una
 \textit{shell}.
 
 \begin{questions}
@@ -134,7 +140,6 @@ un árbol de directorios que sirva como directorio raíz para una nueva
   containers que provee el kernel. En esta sección de la práctica
   estudiaremos una de las primeras, \textbf{LXC (Linux Containers)}.}
 
-Ejercicio guiado:
 \begin{questions}
 
   \question Instale LXC mediante el comando:
@@ -147,7 +152,7 @@ Ejercicio guiado:
 \begin{verbatim}
 # lxc-checkconfig
 \end{verbatim}
-  \textbf{Nota}: puede que no todas las opciones estén habilitadas
+  {\small \textbf{Nota}: puede que no todas las opciones estén habilitadas }
 
   \question Compruebe los \textit{templates} que dispone (a partir de donde se
   crean los \textit{containers}):
@@ -160,18 +165,18 @@ Ejercicio guiado:
 \begin{verbatim}
 # lxc-create -t debian -n sodebian
 \end{verbatim}
-  \textbf{Nota}: durante la instalación se muestra el usuario y la
+  {\small \textbf{Nota}: durante la instalación se muestra el usuario y la
   contraseña utilizados para ingresar al \textit{container}. Este comando
   puede demorar varios minutos la primera vez que es ejecutado ya que debe
-  descargar muchos componentes.
+  descargar muchos componentes. }
   
   \question Una vez creado el \textit{container} inícielo mediante el siguiente
   comando:
 \begin{verbatim}
 # lxc-start -n sodebian -d
 \end{verbatim}
-  \textbf{Nota}: \texttt{-n} para ingresar el nombre del container que
-  queremos iniciar, \texttt{-d} para que corra como \textit{daemon}.
+  {\small \textbf{Nota}: \texttt{-n} para ingresar el nombre del container que
+  queremos iniciar, \texttt{-d} para que corra como \textit{daemon}.}
   
   \question Utilice el comando \texttt{lxc-ls --fancy} para comprobar el estado
   de los \textit{containers}. ¿En qué estado se encuentra el
@@ -250,7 +255,7 @@ arrancaba o no en un determinado \textit{runlevel}.
   que corra \texttt{systemd} como sistema de arranque. Debian 8
   (\textit{Jessie}) y Ubuntu 15.04 (\textit{Vivid Vervet}) vienen por
   defecto con esta configuración. Elija la distribución de su preferencia e
-  instalela en una máquina virtual o física.
+  instálela en una máquina virtual o física.
 
   \question Utilizando un usuario que no sea \texttt{root}, cree el
   directorio donde se instalarán los servicios que serán utilizados durante
@@ -269,8 +274,10 @@ $ mkdir -p $HOME/.config/systemd/user
   \texttt{\$HOME/.config/systemd/user/script.service} con el siguiente
   contenido: \lstinputlisting[language=sh]{script.service}
 
-  \textbf{Nota:} reemplace la ruta de \texttt{ExecStart} por donde haya
-  instalado el \textit{script}. % TODO: Hacer andar %h
+  { \small \textbf{Nota:} reemplace la ruta de \texttt{ExecStart} por donde haya
+    instalado el \textit{script}. }
+
+  \question Investigue cuál es el objetivo de la opción \texttt{ExecStart}.
   
   \question Ahora debemos decirle a \texttt{systemd} que refresque la lista
   de servicios del usuario:
@@ -278,20 +285,26 @@ $ mkdir -p $HOME/.config/systemd/user
 $ systemctl --user daemon-reload
 \end{verbatim}
 
-    \question Finalmente, es hora de arrancar el servicio recién configurado:
+  \question Finalmente, arranque el servicio recién configurado:
 \begin{verbatim}
 $ systemctl --user start script.service
 \end{verbatim}
 
-    \question Para comprobar la salida estándar del \textit{script} recién
-    ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
-    provee \texttt{systemd} para registrar eventos.
+  \question Para comprobar la salida estándar del servicio ejecutado
+  podemos utilizar \texttt{journalctl}, la herramienta que provee
+  \texttt{systemd} para registrar eventos.
 \begin{verbatim}
-$ journalctl --user -f $HOME/bin/script.sh
+$ journalctl --user -f /usr/local/bin/script.sh
 \end{verbatim}
 
     Analice la salida del \textit{script}. ¿Corresponde a la información
-    del sistema operativo base?   
+    del sistema operativo base?
+
+    \question Detenga el servicio:
+\begin{verbatim}
+$ systemctl --user stop script.service
+\end{verbatim}
+    
 
 \end{questions}
 
@@ -299,8 +312,8 @@ $ journalctl --user -f $HOME/bin/script.sh
 \texttt{systemd} permite integrar fácilmente a sus servicios la
 funcionalidad que provee \texttt{chroot}.
 
-\textbf{Nota:} debido a que se precisan montar los directorios API, esta
-parte de la práctica la haremos utilizando el usuario \texttt{root}.
+{ \small \textbf{Nota:} debido a que se precisan montar los directorios API, esta
+parte de la práctica la haremos utilizando el usuario \texttt{root}. }
 \begin{questions}
   \question Mediante \texttt{debootstrap} cree un nuevo \texttt{chroot} o
   utilice el de la sección anterior. Durante el resto del ejercicio se
@@ -311,36 +324,47 @@ parte de la práctica la haremos utilizando el usuario \texttt{root}.
   \texttt{/home/chroot/sid/usr/local/bin/script.sh}
 
   \question Cree el archivo
-  \texttt{/etc/systemd/system/script-chroot.service} con el siguiente
-  contenido:
-
-  \lstinputlisting[language=sh]{script-chroot.service}
-
-  \question Cree el archivo
   \texttt{/usr/local/bin/setup-chroot.sh} con el siguiente
   contenido:
 
   \lstinputlisting[language=sh]{setup-chroot.sh}
 
+  \question Cree el archivo
+  \texttt{/etc/systemd/system/script-chroot.service} con el siguiente
+  contenido:
+
+  \lstinputlisting[language=sh]{script-chroot.service}
+
+  \question Investigue cuál es el objetivo de las opciones
+  \texttt{RootDirectory}, \texttt{RootDirectoryStartOnly} y
+  \texttt{ExecStartPre}.
+  
+  
   \question Refresque la lista de servicios disponibles para
   \texttt{systemd}:
   \begin{verbatim}
-$ systemctl daemon-reload
+# systemctl daemon-reload
 \end{verbatim}
 
     \question Finalmente, es hora de arrancar el servicio recién configurado:
 \begin{verbatim}
-$ systemctl start script-chroot.service
+# systemctl start script-chroot.service
 \end{verbatim}
 
     \question Para comprobar la salida estándar del \textit{script} recién
     ejecutado podemos utilizar \texttt{journalctl} de la siguiente forma:
 \begin{verbatim}
-$ journalctl -fu script-chroot.service
+# journalctl -fu script-chroot.service
 \end{verbatim}
 
     Analice la salida del \textit{script}. ¿Corresponde a la información
-    del sistema operativo base?   
+    del sistema operativo base?
+
+    \question Detenga el servicio:
+\begin{verbatim}
+# systemctl stop script-chroot.service
+\end{verbatim}
+
 
 \end{questions}
 
@@ -364,30 +388,36 @@ dar lugar a una funcionalidad que provee el \textit{kernel} y que aprovecha
     \question Refresque la lista de servicios disponibles para
   \texttt{systemd}:
   \begin{verbatim}
-$ systemctl daemon-reload
+# systemctl daemon-reload
 \end{verbatim}
 
-    \question Finalmente, es hora de arrancar el servicio recién configurado:
+  \question Finalmente, arranque el servicio recién configurado:
 \begin{verbatim}
-$ systemctl start script-namespace.service
+# systemctl start script-namespace.service
 \end{verbatim}
 
     \question Para comprobar la salida estándar del \textit{script} recién
     ejecutado podemos utilizar \texttt{journalctl}, la herramienta que
     provee \texttt{systemd} para registrar eventos.
 \begin{verbatim}
-$ journalctl -fu script-namespace.service
+# journalctl -fu script-namespace.service
 \end{verbatim}
 
     Analice la salida del \textit{script}. ¿Corresponde a la información
     del sistema operativo base?
+
+    \question Detenga el servicio:
+\begin{verbatim}
+# systemctl stop script-namespace.service
+\end{verbatim}
+    
 \end{questions}
 
 \subsection{\textit{Containers}}
 Finalmente, \texttt{systemd} también provee funcionalidad \textit{built-in}
 para ejecutar aplicaciones en \textit{containers} a través de su
-herramienta \texttt{systemd-nspawn}. Si bien no dispone de tantos
-\textit{features} como otras herramientas de \textit{containers},
+herramienta \texttt{systemd-nspawn}. Si bien no dispone de tantas
+funcionalidades como otras herramientas de \textit{containers},
 \texttt{systemd-nspawn} es ideal para realizar \textit{testing},
 \textit{debugging}, compilaciones en entornos limpios, etc.
 \begin{questions}
@@ -397,12 +427,12 @@ herramienta \texttt{systemd-nspawn}. Si bien no dispone de tantos
 
   \question Copie el \textit{script} utilizado en la sección anterior a una
   ubicación dentro del \texttt{chroot}, por ejemplo:
-  \texttt{/home/chroot/sid/usr/local/bin/script.sh}
+  \texttt{/home/chroot/sid/usr/local/bin/script.sh}.
 
   \question Ejecute con privilegios de usuario \texttt{root} el siguiente
   comando:
 \begin{verbatim}
-systemd-nspawn -D /home/chroot/sid /usr/local/bin/script.sh
+# systemd-nspawn -D /home/chroot/sid /usr/local/bin/script.sh
 \end{verbatim}
 
   \question Analice la salida del \textit{script}. ¿Corresponde a la
