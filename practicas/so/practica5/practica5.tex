@@ -1,0 +1,291 @@
+\section{Requisisitos}
+\textit{Para poder realizar la siguiente práctica es necesario tener instalado un sistema operativo Linux con un 
+espacio libre de 2GiB como mínimo. Además, se deberán instalar los paquetes necesarios para poder generar el RAID 
+y LVM.}\\
+Obs. 1: al final de la práctica se encuetran algunos links de referencia para las siguientes preguntas\\
+Obs. 2: en el pdf de la explicación de la práctica, al final de la misma, se encuentran algunas imágenes de como
+realizar un particionado manual. No es necesario seguirlo. Lo importante es que al momento de la instalación quede
+en el disco un espacio libre de 2GB para poder crear las nuevas particiones que se usarán para realizar la
+práctica.
+
+\section{Conceptos Generales}
+\begin{questions}
+  \question ¿Qué es un file system? 
+
+  \question Describa las principales diferencias y similitudes entre los file systems: FAT, NTFS, Ext(2,3,4), XFS, HFS+ y ZFS
+
+  \question ¿Qué función cumple el directorio lost+found en ext3? 
+
+  \question ¿Qué es el particionado? ¿Qué es el UUID? ¿Para qué se lo utiliza? (Hint: ver el comando blkid)
+  
+  \question ¿Qué es el área de swap en Linux? ¿Existe un área similar en Windows?
+
+  \question En Linux, ¿dónde se almacena el nombre y los metadatos de los archivos?
+
+  \question Seleccione uno de sus file systems (una partición) y conteste usando el comando dumpe2fs:
+  \begin{itemize}
+   \item ¿Qué información describe el comando dumpe2fs?
+   \item ¿Cuál es el tamaño de bloque del file system?
+   \item ¿Cuántos inodos en total contiene el file system? ¿Cuántos archivos como máximo se pueden crear
+    con el estado actual del file system? 
+   \item ¿Cuántos grupos de bloques existen? 
+  \end{itemize}
+
+  \question ¿Qué es el directorio /proc? Usando este directorio, contestar: 
+   \begin{itemize}
+    \item ¿Cuál es la versión de SO que tiene instalado?
+    \item ¿Cuál es procesador de su máquina? 
+    \item ¿Cuánta memoria RAM disponible tiene? 
+   \end{itemize}
+ 
+  \question Usando el comando stat, contestar:
+    \begin{itemize}
+     \item ¿Cuándo fue la última vez que se modificó el archivo /etc/group? 
+     \item ¿Cuál es la diferencia entre los datos Cambio (Change) y Modificación (Modify)? 
+     \item ¿Cuál es el inodo que ocupa? 
+     \item ¿Cuántos bloques ocupa?
+    \end{itemize}
+
+  \question ¿Qué es un link simbólico? ¿En qué se diferencia de un hard-link?
+
+  \question Si tengo un archivo llamado prueba.txt y le genero un link simbólico, ¿qué sucede con el link simbólico si
+    elimino el archivo prueba.txt? ¿Y si el link fuese hard-link? (Hint: probar usando el comando ln)
+
+  \question ¿Para qué sirven los permisos especiales en Linux? Analizar el sticky-bit, setuid, setgid
+ 
+  \question ¿Cuáles son los permisos del archivo /etc/passwd? ¿Por qué puedo modificar mi password si no soy usuario root?
+    (Hint.: observe los permisos especiales del archivo ejecutable passwd)
+
+  \question Crear un archivo en el directorio /tmp. Si abre otra consola y se loguea con un usuario distinto, ¿puede borrar 
+    ese archivo? ¿Por qué? (Hint.: ver permisos especiales en Linux)
+
+  \question ¿Qué es un RAID? Explique las diferencias entre los distintos niveles de RAID 
+
+  \question ¿Qué es LVM? ¿Qué ventajas presenta sobre el particionado tradicional de Linux? 
+
+  \question ¿Cómo funcionan los ``snapshots'' en LVM? 
+\end{questions}
+
+\section{RAID}
+
+En este punto se va a crear un RAID Level 5 por software. Para simular los 3 discos necesarios para un RAID de este nivel se deberán
+generar 3 particiones del mismo tamaño. Una vez realizado este paso se generará el RAID. Para esto se utilizará la herramienta mdadm 
+que deberá descargarla con las herramientas apt/yum.
+
+\begin{enumerate}
+ \item  Utilizar el comando parted -l (debe ejecutarlo con sudo) para ver la tabla de particiones. Conteste:
+  \begin{enumerate}  
+   \item ¿Cómo llama Linux al dispositivo físico? ¿Cuál es su tamaño total?
+   \item ¿Cuántas particiones existen? ¿Qué tipo de file-system contiene cada una?
+   \item ¿Qué significa la bandera arranque?
+  \end{enumerate}
+ \item Usando el comando parted crear una nueva partición de tipo extendida (debe seleccionar el dispositivo donde se
+    van a generar las particiones):
+  
+    {\it\small 1) sudo parted}\\
+    {\it\small 2) (parted) print}\\ 
+    {\it\small 3) (parted) mkpart}\\
+    {\it\small 4) Tipo de partición: extendida}\\
+    {\it\small 5) Inicio: \#MB} {\tiny (igual al tamaño de la partición existente más alto}\\
+    {\it\small 6) Fin: \#MB} {\tiny (igual al tamaño máximo del dispositivo físico)}\\
+
+    Dentro de esta partición extendida crear 3 nuevas particiones de 300MB cada una. Para esto utilizar nuevamente 
+    el comando mkpart pero debe seleccionar logical como tipo de partición. Como tipo de sistema de archivos elija ext3.\\
+    Obs.: como las particiones lógicas se crean dentro de una partición extendida, los valores de inicio/fin de 
+     cada partición lógica deben estar dentro de los valores seleccionados en la partición extendida. 
+ 
+ \item ¿Por qué es necesario crear una partición extendida?  
+ \item Mirar nuevamente la tabla de particiones para ver las nuevas particiones y salga del entorno parted
+ \item  Utilizar el comando mdadm para crear un RAID 5 utilizando las 3 particiones lógicas que se generaron en el punto anterior:
+    \begin{verbatim}
+      mdadm –create --verbose /dev/md0 --level5 --raid-devices=3 /dev/sda5 
+                /dev/sda6 /dev/sda7
+    \end{verbatim}
+   (Obs.: md0 es el nombre que le dará al nuevo RAID)
+ \item ¿Qué significan los valores sda5, sda6 y sda7? 
+ \item Ejecutar la siguiente consulta y contestar:
+   \begin{verbatim}
+       mdadm --detail /dev/md0
+   \end{verbatim}
+ \begin{enumerate}
+  \item ¿Cuál es el tamaño total del RAID?
+  \item ¿Cuál es el tamaño total utilizable para almacenar datos?
+ \end{enumerate}
+ \item Analizar el contenido del siguiente comando:
+   \begin{verbatim}
+       cat /proc/mdstat
+   \end{verbatim} 
+ Obs.: puede suceder que al reiniciar la VM el RAID se vea como de solo lectura y con el número 127. Para solucionar esto deben
+  ejecutar los comandos {\it mdadm --stop /dev/md127}, para parar el RAID, y {\it mdadm --assemble --scan} para volverlo a generar
+  como md0 y de lectura/escritura. Esto se debe hacer cada vez que se inicia la VM. Si quiere que quede en forma persistente a 
+  través de los reboots debe guardar la configuración en el archivo mdadm.conf, {\it mdadm --assemble --scan $>>$ /etc/mdadm/mdadm.conf}
+  y luego {\it update-initramfs -u} (esto último puede tardar un poco de tiempo)
+
+ \item Ahora se va a probar la funcionalidad del RAID 5. Para esto completar los siguientes pasos:
+ \begin{enumerate}
+  \item Crear un file system de tipo ext3 en el RAID 5 recién generado
+    \begin{verbatim}
+       mkfs.ext3 /dev/md0
+    \end{verbatim}
+  \item Montar la partición con el file system generado en el directorio /mnt/rd5
+  \item Crear un directorio con dos archivos 
+  \item Quitar una de las particiones del RAID. Para esto ponemos uno de los componentes en falla:
+    \begin{verbatim}
+       mdadm --fail /dev/md0 /dev/sda7 
+    \end{verbatim}
+  \item Observar el estado del RAID y contestar
+  \begin{enumerate} 
+   \item ¿Cuál es el estado del RAID? ¿Cuántos dispositivos activos existen?
+   \item ¿Qué sucedería si se ejecuta el comando anterior sobre una de las particiones restantes?
+  \end{enumerate}
+  \item Quitar del RAID el componente puesto en falla en el paso anterior
+    \begin{verbatim}
+       mdadm -r /dev/md0 /dev/sda7
+    \end{verbatim}
+  \item Observar nuevamente el estado del RAID y contestar:
+  \begin{enumerate}
+   \item ¿Se puede acceder al directorio /mnt/rd5? ¿Están los archivos creados anteriormente?
+   \item ¿Qué hubiese sucedido si teníamos otra partición como ``hot-spare''?
+  \end{enumerate}
+  \item Por último, remover la partición permanentemente del RAID (Obs.: esto es muy importante para que el próximo 
+    booteo mdadm no intente usar a esta partición como parte del RAID, lo que provocaría la pérdida de todos los datos)	 
+    \begin{verbatim} 
+       mdadm --zero-superblock /dev/sda7
+    \end{verbatim}
+    A partir de este momento la partición /dev/sda7 se puede utilizar como una partición común	 		 	
+ \end{enumerate}
+ \item Para evitar la pérdida de datos es fundamental volver al RAID a un estado estable (sacarlo del estado degradado). 
+    Para esto se agregará nuevamente la partición /dev/sda7 que se quitó en el paso anterior
+  \begin{enumerate}
+   \item Ejecutar el comando mdadm --add /dev/md0 /dev/sda7
+   \item Ejecutar el comando mdadm –detail /dev/md0
+   \item ¿Qué hace el RAID con la nueva partición recientemente agregada? ¿Qué significa el estado ``Rebuild Status''?
+   \item ¿Es posible ingresar al recurso /mnt/rd5? ¿Se encuentran disponibles los datos creados en el punto anterior?
+  \end{enumerate}
+  
+ \item Como los datos que mantiene el RAID son muy importantes es neceario tener un disco (partición en nuestro ejemplo) 
+   de respaldo. Para esto se va a agregar una partición como ``hot-spare''. 
+ \item Usando el comando parted generar una nueva partición, /dev/sda8
+ \item Agregar la nueva partición al RAID:
+   \begin{verbatim}
+       mdadm --add /dev/md0 /dev/sda8
+   \end{verbatim}
+   \begin{enumerate}
+     \item ¿Cómo se agregó la nueva partición? ¿Por qué?
+   \end{enumerate}           
+ \item Volver a poner en falla a la partición /dev/sda7. Ver el estado del RAID y contestar   
+   \begin{verbatim}
+       mdadm --detail /dev/mda0 
+   \end{verbatim}
+  \begin{enumerate}
+   \item ¿Qué hace el RAID con la partición que estaba como spare?
+  \end{enumerate} 
+
+ \item Por último, se eliminará el RAID creado en los pasos anteriores:
+  \begin{enumerate}
+   \item Desmontar el RAID (comando umount) 
+   \item Para cada una de las particiones del RAID ejecutar los pasos realizados cuando se quitó una partición del RAID 
+     (mdadm con las opciones -–fail y -r). Por cada partición que se quita ir mirando el estado del RAID para ver como se comporta         
+   \item Remover los superbloques de cada una de las particiones
+    \begin{verbatim} 
+       mdadm --zero-superblock /dev/sda5 /dev/sda6 /dev/sda7
+    \end{verbatim}
+   \item Remover el RAID
+    \begin{verbatim} 
+       mdadm --remove /dev/md0 
+    \end{verbatim}
+   Obs.: si existe, quitar la ĺinea ARRAY... del archivo /etc/mdadm/mdadm.conf
+   \item Reiniciar y comprobar que el RAID ya no existe
+  \end{enumerate}
+\end{enumerate}
+     
+\section{LVM (Logical Volumen Management}
+
+\textit{A continuación se creará un LVM utilizando las particiones /dev/sda5, /dev/sda6 y /dev/sda7 (respetar el tamaño y nombre 
+de los volúmenes y directorios). En principio solo se utilizarán las particiones 5 y 6, luego se agregará la partición 7 
+para incrementar el tamaño de los volúmenes}
+ 
+\begin{enumerate}
+ \item Instalar la herramiento lvm2 con apt/yum
+ \item Indicar que los particiones 5 y 6 funcionarán como volúmenes físicos
+  \begin{verbatim}
+    pvcreate /dev/sda5 /dev/sda6
+  \end{verbatim}
+ \item Mediante el comando pvdisplay observar el estado del volumen físico recientemente creado
+ \item Crear un grupo de volúmenes (volume group, VG) llamado “so\_vg”
+  \begin{verbatim}
+    vgcreate so\_vg /dev/sda5 /dev/sd6
+  \end{verbatim}
+ \item Utilizar el comando vgdisplay para ver el estado del VG
+ \begin{itemize} 
+  \item ¿Cuál es tamaño total del VG?
+  \item ¿Qué significa PE?
+ \end{itemize}
+ \item Crear dos volúmenes lógicos (logical volume, LV) de 8MB y 120MB respectivamente
+  \begin{verbatim}
+       lvcreate -l 2 -n lv\_vol1 so\_vg
+       lvcreate -L 120M -n lv\_vol2 so\_vg
+  \end{verbatim}
+ \item ¿Cuál es la diferencia entre los dos comandos utilizados en el punto anterior?
+ \item Formatear los dos LV generados en el paso anterior con un file system de tipo ext3:
+   \begin{verbatim}
+       mkfs.ext3 /dev/so\_vg/lv\_vol1
+   \end{verbatim}
+ \item Crear dos directorios, vol1 y vol2, dentro de /mnt y montar ambos LG en estos directorios (montar el LV lv\_vol1 en el 
+   directorio vol1 y lv\_vol2 en el directorio vol2)
+ \item Ejecutar el comando {\it proof} (Puede tomar un rato su ejecución. Este comando estará disponible en la plataforma y deberán
+   copiarlo a la VM)
+ \item Crear un nuevo archivo en /mnt/vol1. ¿Es posible? ¿Por qué?
+ \item Es posible solucionar esto incrementando el tamaño del file system. Para esto primero se debe incrementar el tamaño del LV
+   correspondiente:
+ \begin{enumerate}
+  \item Desmontar el LV lv\_vol1
+  \item Extender el LV lv\_vol1 en 20M
+    \begin{verbatim} 
+       lvextend -L +20M /dev/so\_vg/lv\_vol1
+    \end{verbatim}
+  \item Incrementar el tamaño del file system. Antes de incrementar el tamaño es necesario ejecutar el comando e2fsck
+    para comprobar el file system esté correcto:
+     \begin{verbatim}
+       e2fsck -f /dev/so\_vg/lv\_vol1 
+       resize2fs /dev/so\_vg/lv\_vol1	
+     \end{verbatim}
+ \end{enumerate}
+ \item Montar nuevamente el LV en /mnt/vol1
+ \item ¿Siguen estando los datos disponibles?
+ \item Intentar crear un nuevo archivo en /mnt/vol1. ¿Es posible? ¿Por qué?
+ \item Se desea crear un nuevo LV de 500M. ¿Hay suficiente espacio? 
+ \item Para solucionar el punto anterior se debe extender el tamaño del VG, por lo tanto, se agregará la partición sda7 al VG:
+   \begin{verbatim}
+     pvcreate /dev/sda7
+     vgextend so\_vg /dev/sda7
+   \end{verbatim}
+ \item Comprobar con los comando correspondientes que se haya extendido el tamaño del VG
+ \item Generar el nuevo LV de 500M (llamarlo lv\_vol3)
+ \item Montar este nuevo LV en el directorio /mnt/lv\_vol3 y crear un directorio con dos archivos adentros (los nombre pueden ser cualquiera)
+ 
+ En el siguiente paso se intentará reducir el tamaño del LV generado en el punto 18) de 500M a 400M
+
+ \item Desmontar el LV.  
+ \item Reducir el LV lv\_vol3 (decir Sí/Yes al aviso que aparece al ejecutar el siguiente comando)
+  \begin{verbatim}
+    lvreduce -L 400M /dev/mapper/so\_vg-lv\_vol3
+  \end{verbatim}
+ \item Montar el LV reducido en el paso anterior. ¿Es posible ver el directorio y los archivos generados en el paso anterior?
+ \item ¿Cuál es el error en el procedimiento anterior? ¿Cuáles serían los pasos correctos? 
+ \item Ejecute los pasos necesarios y de forma ordenada para poder achicar el LV a 400M (investigar)
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\begin{itemize}
+\item http://www.nongnu.org/ext2-doc/ext2.html
+\item http://e2fsprogs.sourceforge.net/ext2intro.html
+\item http://www.cyberciti.biz/tips/understanding-unixlinux-filesystem-superblock.html
+\item http://www.tldp.org/LDP/tlk/fs/filesystem.html
+\item http://www.geekride.com/hard-link-vs-soft-link/
+\end{itemize}
+
+
+\end{document}
+

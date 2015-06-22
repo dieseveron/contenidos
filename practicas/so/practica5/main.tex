@@ -1,0 +1,19 @@
+\documentclass[a4paper,11pt]{exam}
+
+% Better way of getting the practice number?
+\def\pracnum{5}
+
+% Common includes
+\input{../../../common/include-so}
+
+\newcommand{\KERNELBASEVERSION}{3.13}
+\newcommand{\KERNELVERSION}{\KERNELBASEVERSION.1}
+\newcommand{\PATCHEDKERNELVERSION}{\KERNELBASEVERSION.3}
+\newcommand{\KERNELSOURCEPATH}{\$HOME/kernel}
+
+% May the document begin.
+\begin{document}
+\maketitle
+\input{practica5}
+\input{modules}
+\end{document}
