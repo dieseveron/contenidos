@@ -1,3 +1,3 @@
-DEPS = repaso.tex redes-so.tex
+DEPS = introduction.tex guidelines.tex
 
 include ../../../common/Makefile.include

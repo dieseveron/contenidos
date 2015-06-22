@@ -1,0 +1,8 @@
+[Unit]
+Description=A chrooted service
+
+[Service]
+RootDirectory=/home/chroot/sid/
+ExecStartPre=/usr/local/bin/setup-chroot.sh
+ExecStart=/usr/local/bin/script.sh
+RootDirectoryStartOnly=yes

@@ -1,3 +1,3 @@
-DEPS = systemcalls.tex
+DEPS = modules.tex systemcalls.tex
 
 include ../../../common/Makefile.include

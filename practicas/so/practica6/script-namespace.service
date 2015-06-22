@@ -1,0 +1,6 @@
+[Unit]
+Description=A namespaced service
+
+[Service]
+ExecStart=/usr/local/bin/script.sh
+InaccessibleDirectories=/home

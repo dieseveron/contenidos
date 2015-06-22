@@ -1,3 +1,3 @@
-DEPS = repaso.tex redes-so.tex
+DEPS = slides.tex
 
 include ../../../common/Makefile.include
