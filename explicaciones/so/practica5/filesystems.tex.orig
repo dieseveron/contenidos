@@ -1,0 +1,301 @@
+
+\section{File Systems}
+
+\subsection{Introducción a File Systems}
+
+\begin{frame}{File Systems - Repaso}
+  \begin{itemize}
+  \item Aplicaciones de computadora necesitan almacenar y recuperar información
+  \item Tres requerimientos fundamentales para el almacenamiento de la información:
+    \begin{enumerate}
+      \item Posibilidad de almacenar una gran cantidad de información
+      \item La información debe permanecer disponible aún después que finaliza el proceso que 
+        la está utilizando
+      \item Posibilidad que los procesos accedan concurretemente a la información
+    \end{enumerate}
+  \item Información almacenada en archivos (files). Salvo excepciones, la entrada y salida de los procesos 
+     es mediante archivos
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{File Systems - Repaso}
+  \begin{itemize}
+   \item Un disco debe ser formateado antes de poder almacenar información en él (excepto ``raw partitions'')
+   \item Pequeño porcentaje de disco reservado para metadata del file-system  
+   \item Espacio restante dividido en pequeños segmento de igual tamaño. Linux los llama bloques (``blocks'')
+   \item No existe un único tipo de file-system
+   \item Además, disco pueden ser dividido en partes llamadas ``particiones''
+   \item ¿Por qué particionar un disco?
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{File Systems - Particionado}
+  \begin{itemize}
+   \item Discos pueden ser utilizados completamente por un ``file system'' o pueden ser ``particionado''
+   \item Particiones son subdivisiones de un disco entero. SO las presenta como un dispositivo de bloques (como si fuera el disco entero)
+   \item Están definidas en un área especial del disco llamado ``partition table''
+   \item Cada partición un contiene ``file system'' específico o ``raw partitions''
+   \item Existen varios tipos de tablas de particiones. Dos más utilizados:
+   \begin{itemize}
+     \item {\bf {\it M}aster {\it B}oot {\it R}ecord (MBR)}
+     \item {\bf {\it G}lobally Unified Identifier {\it P}artition {\it T}able (GPT)}
+   \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{File Systems - MBR}
+  \begin{itemize}
+   \item MBR se remonta a 1983. PCs basadas en DOS
+   \item MBR son los primeros 512 bytes de un dispositivo de almacenamiento (primer sector del
+     dispositivo de almancenamiento)
+   \item Contiene el ``bootloader'' del sistema operativo y la tabla de particiones
+   \item BIOS (Basic Input/Output System) es el encargado de llamar al bootloader
+   \item Direccionamiento de hasta 2TB (2,2TB = $2^{32} x 512$ bytes por sector). 
+   \item 4 particiones primarias. Particiones extendidas/lógicas para generar más particiones 
+   \item ``Logical Block Addressing(LBA)'' permitió solucionar problemas de direccionamiento 
+   \item LILO, GRUB, SysLinux son bootloader comunes en Linux
+   \item Sectores de 4096KiB permitían hasta 16TiB
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{File Systems - MBR}
+  \begin{itemize}
+   \item MBR divide los primeros 512 bytes:
+     \begin{\itemize}
+      \item Bootloader ocupa los primeros 446 bytes
+      \item 16 bytes por cada partición
+      \item ``Sentinel'' byte: 0xAA55
+     \end{itemize}
+     \item 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{File Systems - GPT}
+  \begin{itemize}
+   \item Introducida por Intel a finales de los 90 para los Intet Itanium como parte del EFI: 
+     ``Extensible Firmware Interface''.
+   \item EFI cedida por Intet al UEFI Forum. ``Unified Extensible Firmware Interface''
+   \item No más particiones extendidas/lógicas. 128 particiones por defecto.
+   \item Soporta hasta 18 Exabytes (EB).
+   \item Backup de la tabla de particiones al final del disco
+   \item CRC para proteger el contenido de la tabla de particiones
+   \item Cada partición tiene un identificador único GUID 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{File Systems - Particionado}
+  \begin{itemize}
+   \item Principales herramientas en Linux para particionar:
+   \begin{itemize}
+     \item parted 
+     \item gparted
+     \item fdisk
+     \item gdisk
+   \end{itemize}
+  \item Se usará parted porque soporta tanto MBR como GPT
+ \end{itemize}
+\end{frame}
+
+\subsection{RAID}
+
+\begin{frame}{RAID}
+  \begin{itemize}
+   \item Problemas:
+   \begin{itemize}
+    \item ¿Qué pasa si se rompe un disco? ¿Hay backup?
+    \item Si se llena un disco, ¿compro un disco más grande?
+    \item Velocidad de acceso. Operaciones I/O muy lentas
+   \end{itemize}
+   \item Solución: 
+   \begin{itemize}
+    \item RAID - Redundant Array of Independent Disks (originalmente llamado Redundant Array of Inexpensive Disks)
+   \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID}
+  \begin{itemize}
+   \item Problemas:
+   \begin{itemize}
+    \item ¿Qué pasa si se rompe un disco? ¿Hay backup?
+    \item Si se llena un disco, ¿compro un disco más grande?
+    \item Velocidad de acceso. Operaciones I/O muy lentas
+   \end{itemize}
+   \item Solución: 
+   \begin{itemize}
+    \item RAID - Redundant Array of Independent Disks (originalmente llamado Redundant Array of Inexpensive Disks)
+   \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID}
+  \begin{itemize}
+   \item RAID es técnica para usar múltiples discos en forma conjunta con el fin de construir un sistema de discos 
+      más rápido, más grande y más confiable
+   \item Idea propuesta en 1988 en la Universidad de Berkley por los profesores David Patterson y Randy Katz y el 
+      alumno Garth Gibson: ``A case for Redundant Arrays of Inexpensive Disks''
+   \item Originalmente definía los niveles: 1,2,3,4,5
+   \item En 1989, ``Disk System Architectures for High Performance Computing'' introdujo un nuevo nivel: RAID 6
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID Level 0 - Striping}
+  \begin{itemize}
+   \item No es un nivel de RAID en absoluto. No existe redundancia. 
+   \item Array de discos con “striping” a nivel de bloque
+   \item Necesita 2 ó más discos para conformarse
+   \item Provee mejor perfomance, pero no brinda tolerancia a fallos
+   \item Capacidad del RAID: sumatoria de la capacidad de los discos participantes
+ \end{itemize}
+\end{frame} 
+ 
+\begin{frame}{RAID Level 1 - Mirroring}
+ \begin{itemize}
+  \item Asegura redundancia mediante el mirroring (espejado) de datos. 
+  \item No hay stripping de datos
+  \item Almacena datos duplicados en discos separados o independientes
+  \item Mínimo de 2 discos
+  \item Ineficiente por la escritura en espejo
+  \item Desperdicio del 50\% de la capacidad total
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID Level 2}
+ \begin{itemize}
+  \item Striping a nivel de bit y paridad Hamming dedicada
+  \item No muy aceptado por la industria
+  \item Disco dedicados para almacenar información de verificación y corrección de errores
+  \item Se requieren 3 discos como mínimo
+  \item Buena protección de datos en caso de fallas de disco. Tasa de transferencia de datos puede llegar a ser muy elevada
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID Level 3}
+ \begin{itemize}
+  \item Striping a nivel de byte y paridad dedicada
+  \item Disco “dedicado” para almacenar la información de paridad
+  \item Datos se escriben en paralelo entre los disco del array
+  \item 3 discos como mínimo
+  \item Alta tasa de transferencia en escritura y lectura
+  \item Disco de paridad puede convertirse en un cuello de botella  
+  \item No ofrece solución al fallo simultáneo de disco
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID Level 4}
+ \begin{itemize}
+  \item Striping a nivel de bloque y paridad dedicada
+  \item 3 disco requeridos
+  \item Alta tasa de transferencia de datos
+  \item Controladora requerida es compleja, por lo tanto, costosa
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID Level 5}
+ \begin{itemize}
+  \item Striping a nivel de bloque y paridad distribuida
+  \item Una de las implementaciones más utilizadas 
+  \item Distribuye la información de paridad entre todos los discos del array
+  \item 3 discos mínimo
+  \item Alto rendimiento. No hay cuello de botella  
+  \item No ofrece solución al fallo simultáneo de disco
+  \item Modo 5E: discos hot-spare
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID Level 6}
+ \begin{itemize}
+  \item Striping a nivel de bloque y doble paridad distribuida
+  \item Recomendado cuando se tienen varios discos
+  \item Requiere 4 discos como mínimo
+  \item Alta tolerancia a fallos (hasta dos discos)
+  \item Operaciones de escrituras más lentas debido al calculo de la doble paridad
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{RAID - Niveles híbridos}
+ \begin{itemize}
+  \item Es posible combinar los distintos niveles de RAID
+  \item 0+1, 1+0, 5+1
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Configuar RAID Level 5}
+ \begin{itemize}
+  \item Particionar un disco. 3 particiones como mínimo
+  \item Utilizar la herramienta parted para particionar el disco
+  \item Crear 3 nuevas particiones
+  
+ \end{itemize}
+\end{frame}
+
+\subsection{LVM}
+
+\begin{frame}{LVM - Introduccón}
+  \begin{itemize}
+   \item ¿Qué tamaño le voy a dar a una partición?
+   \item Logical Volume Management (LVM) provee un método más flexible que los convencionales esquemas
+     de particionamiento para alocar espacio en los dispositivos de almacenamiento masivo 
+   \item Escrito en 1998 por Heinz Mauelshagen (basó el diseño en el existente en HP-UX)
+   \item Actualmente está en la versión 2
+   \item Permite una administración ``on-line'' de los disco de almacenamiento agregando una capa adicional
+     al subsistema de entrada del kernel
+   \item Snapshots: backup on-line de las particiones  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{LVM - Componentes}
+  \begin{itemize}
+   \item Principales componentes de LVM
+    \begin{itemize}
+      \item {\bf Physical Volume (PV):} dispositivos físico o particiones que serán utilizados por LVM
+      \item {\bf Volume Group (VG):} grupo de PVs. Representa el ``data storage'' 
+      \item {\bf Logical Volume (PV):} cada una de las partes en las que se dividen los VGs
+      \item {\bf Physical Extent (PE):} unidades direccionables en las que LVM divide cada PV
+      \item {\bf Logical Extent (LE):} unidad de alocación básica en los LVs
+    \end{itemize} 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{LVM - Componentes (cont.)}
+  \begin{itemize}
+   \begin{center}
+    \fbox{\includegraphics[width=0.4\textwidth]{images/lvm1.png}}
+   \end{center}
+   \item   
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{LVM - Comandos}
+  \begin{itemize}
+   \item Generar 3 particiones (sean /dev/sda5, /dev/sda6 y /dev/sda7)
+   \item Configurar estas particiones para que pueden trabajar por LVM
+   \item {\it pvcreate /dev/sda5 /dev/sda6 /dev/sda7}  
+   \item {\it pvscan} y {\it pvdisplay} para ver el estado de los PVs
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{LVM - Comandos}
+  \begin{itemize}
+   \item Siguiente paso: generar un VG en el PV creado en el paso anterio
+   \item {\it vgcreate so\_test /dev/sda5 /dev/sda6 /dev/sda7}
+   \item {\it vgscan} y {\it vgdisplay} para ver el estado de los PVs
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{LVM - Comandos}
+  \begin{itemize}
+   \item Generar particiones lógicas en el VG generado en el paso anterior 
+   \item Hay que indicarle el tamaño. Dos formas:
+   \begin{itemize}
+    \item {\it lvcreate -L 120G -n lv\_test so\_test }
+    \item {\it lvcreate -l 25 -n lv\_test so\_test }  
+   \end{itemize}
+   \item {\it lvscan} y {\it lvdisplay} para ver el estado de los PVs
+   \item Formatear el LV: {\it mkfs.ext3 /dev/so\_test/lv\_test}  
+   \item Montar la partición
+  \end{itemize}
+\end{frame}
+
+\end{document}
+
