@@ -1,17 +1,16 @@
-\section{Introducción}
 \begin{frame}
   \frametitle{¿Qué es un Sistema Operativo?}
   \begin{itemize}
-  \item Es parte esencial de cualquier sistema de cómputo
-  \item Es un programa que actúa, en principio, como intermediario entre el usuario y el hardware
-  \item Su propósito: crear un entorno cómodo y eficiente para la ejecución de programas
-  \item Su obligación: garantizar el correcto funcionamiento del sistema
-  \item Sus funciones principales
-	  \begin{itemize}
-		  \item Administrar la memorio
-		  \item Administrar la CPU
-		  \item Administrar los dispositivos
-	  \end{itemize}
+	  \item Es parte esencial de cualquier sistema de cómputo
+	  \item Es un programa que actúa, en principio, como intermediario entre el usuario y el hardware
+	  \item Su propósito: crear un entorno cómodo y eficiente para la ejecución de programas
+	  \item Su obligación: garantizar el correcto funcionamiento del sistema
+	  \item Sus funciones principales
+		  \begin{itemize}
+			  \item Administrar la memorio
+			  \item Administrar la CPU
+			  \item Administrar los dispositivos
+		  \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -82,7 +81,7 @@
 	\frametitle{¿Software libre?}
 	\begin{figure}
 		\centering
-		\includegraphics[scale=0.3]{images/freeSoft.jpg}
+		\fbox{\includegraphics[scale=0.3]{images/freeSoft.jpg}}
 	\end{figure}
 \end{frame}
 
@@ -179,9 +178,9 @@
 	\frametitle{Núcleo - Un poco de historia}
 	\begin{itemize}
 		\item En 1991 Linus Torvalds inicia la programacion de un Kernel \textit{Linux} basado en \textit{Minix} (clon de Unix desarrollado por \emph{Tenembaum} en 1987 con el fin de crear un S.O. de uso didáctico)
-		\item El 5 de Octubre de 1991, se anuncia la primera versión ``oficial'' de Linux (0.02)
+		\item El 5 de octubre de 1991, se anuncia la primera versión ``oficial'' de Linux (0.02)
 		\item En 1992 se combina su desarrollo con GNU, formando GNU/Linux
-		\item La versión 1.0 apareció el 14 de Marzo de 1994
+		\item La versión 1.0 apareció el 14 de marzo de 1994
 		\item Desarrollo continuado por miles de programadores al rededor del mundo
 	\end{itemize}
 \end{frame}
@@ -189,13 +188,13 @@
 \begin{frame}
 	\frametitle{Núcleo - Un poco de historia (cont.)}
 	\begin{itemize}
-		\item En Mayo de 1996 se decide adoptar a \emph{Tux} como mascota oficial de Linux
+		\item En mayo de 1996 se decide adoptar a \emph{Tux} como mascota oficial de Linux
 		\begin{figure}
 			\centering
 			\includegraphics[scale=0.1]{images/tux.png}
 		\end{figure}
-		\item En Julio de 1996 se lanza la versión 2.0 y se define la nomenclatura de versionado. Se desarrolló hasta Febrero de 2004 y terminó con la 2.0.40
-		\item En Enero de 1999 se lanza la versión 2.2, que proveé mejoras de portabilidad entre otras y se desarrolla hasta Febrero de 2004 terminando en la versión 2.2.26
+		\item En julio de 1996 se lanza la versión 2.0 y se define la nomenclatura de versionado. Se desarrolló hasta febrero de 2004 y terminó con la 2.0.40
+		\item En enero de 1999 se lanza la versión 2.2, que proveé mejoras de portabilidad entre otras y se desarrolla hasta febrero de 2004 terminando en la versión 2.2.26
 		\item En 2001 se lanza la versión 2.4 y se deja de desarrollar a fines del 2010 con la 2.4.37.11
 		\begin{itemize}
 			\item La versión 2.4 fue la que catapultó a GNU/Linux como un SO estable y robusto. Durante este período es que se comienza a utilizar Linux más asiduamente
@@ -203,3 +202,136 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Núcleo - Un poco de historia (cont.)}
+	\begin{itemize}
+		\item A fines del 2003 se lanza la versión 2.6		
+		\item Esta versión ha tenido muchas mejoras para el SO dentro de las que se destacan soporte de hilos, mejoras en la planificación y soporte de nuevo hardware
+		\item El 3 de agosto de 2011 se lanza la versión 2.6.39.4
+		anunciándose la misma desde meses previos como la última en su revisión
+		\item El 17 de julio de 2011 se lanza la versión 3.0\footnote{\url{http://kernelnewbies.org/Linux_3.0}}
+			\begin{itemize}
+				\item No agrega mayores cambios. La decisión del cambio son los 20 años del SO y no superar los 40 números de revisión
+				\item Totalmente compatible con 2.6
+				\item La última versión estable es la 4.1.6
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Núcleo - Rama 2.6 y 3.x}
+	\begin{itemize}
+		\item \textbf{A}: Denota versión. Cambia con menor frecuencia. En 1994 (versión 1.0) y en 1996 (versión 2.0)
+		\item \textbf{B}: Denota mayor revisión. Antes de la versión 2.6, los números impares indicaban desarrollo, los pares producción
+		\item \textbf{C}: Denota menor revisión. Solo cambia cuando hay nuevos drivers o características
+		\item \textbf{D}: Cambia cuando se corrige un grave error sin agregar nueva funcionalidad $\leftarrow$ \textcolor{orange}{Casi no se usa en las ramas 3.x y 4.x, viendose reflejado en \textbf{C}}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Iterprete de comandos}
+	\begin{itemize}
+		\item También conocido como CLI (Command Line Interface)
+		\item Modo de comunicación entre el usuario y el SO
+		\item Ejecuta programas a partir del ingreso de comandos
+		\item Cada usuario tiene una interfaz o shell
+		\item Se pueden personalizar
+		\item Son progrables
+		\item Bourne Shell (sh), Korn Shell (ksh), Bourne Again Shell (bash)(autocompletado, history, alias)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Sistemas de archivos}
+	\begin{itemize}
+		\item Organiza la forma en que se almacenan los archivos en dispositivos de almacenamiento (fat, ntfsm ext2, ext3, reiser, etc.)
+		\item El adoptado por GNU/Linux es el Extended (v2, v3, v4)
+		\item Hace un tiempo se está debatiendo el reemplazo de ext por Btrfs (B-tree FS) de Oracle
+		\begin{itemize}
+			\item Soporte de mayor tamaño de archivos
+			\item Más tolerante a fallas y comprobación sin necesidad de desmontar el FS
+			\item Idexación
+			\item Snapshots
+			\item Compresión
+			\item Defragmentación
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Sistemas de archivos - Directorios más importantes}
+	\begin{itemize}
+		\item Directorios más importantes según FHS (Filesystem Hierarchy Standard)
+		\begin{itemize}
+			\item \textcolor{brown}{/} Tope de la estructura de directorios. Es como el C:
+			\item \textcolor{brown}{/home} Se almacenan archivos de usuarios (Mis documentos)
+			\item \textcolor{brown}{/var} Información que varía de tamaño (logs, BD, spools)
+			\item \textcolor{brown}{/etc} Archivos de configuración
+			\item \textcolor{brown}{/bin} Archivos binarios y ejecutables
+			\item \textcolor{brown}{/dev} Enlace a dispositivos
+			\item \textcolor{brown}{/usr} Aplicaciones de usuarios
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Estructura básica del S.O. - Utilidades}
+	\begin{itemize}
+		\item Paquete de software que permite diferenciar una distribución de otra.
+		\item Editores de texto:
+		\begin{itemize}
+			\item vi
+			\item emacs
+			\item joe
+		\end{itemize}
+		\item Herramientas de networking:
+		\begin{itemize}
+			\item wireshark
+			\item tcpdump
+		\end{itemize}
+		\item Paquetes de oficina:
+		\begin{itemize}
+			\item OpenOffice
+		\end{itemize}
+		\item Iterface gráficas:
+		\begin{itemize}
+			\item GNOME / CINNAMON
+			\item KDE
+			\item LXDE
+		\end{itemize}		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Distribuciones}
+	\begin{itemize}
+		\item Una distribución es una customización de GNU/Linux formada por una versión de kernel y determinados programas con sus configuraciones\footnote{\url{http://www.linux.com/directory/Distributions}}
+	\end{itemize}
+	\begin{figure}[h]       
+	    \fbox{\includegraphics[scale=0.1]{images/distros1.jpg}}
+	    \hspace{30px}
+	    \fbox{\includegraphics[scale=0.1]{images/distros2.png}}
+	    \hspace{30px}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Organización física de discos}
+	\begin{figure}
+	    \fbox{\includegraphics[scale=0.5]{images/hdd1.jpg}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Organización física de discos (cont.)}
+	\begin{figure}
+	    \fbox{\includegraphics[scale=0.5]{images/hdd2.jpg}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Organización física de discos (cont.)}
+	\begin{figure}
+	    \fbox{\includegraphics[scale=0.4]{images/hdd3.jpeg}}
+	\end{figure}
+\end{frame}
