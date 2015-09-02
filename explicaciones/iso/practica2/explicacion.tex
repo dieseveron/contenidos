@@ -339,13 +339,91 @@ ca::ctrlaltdel:/sbin/shutdown -t3 -r
 \end{frame}
 
 \begin{frame}
+  \frametitle{Runlevels (cont.)}
+  \begin{itemize}
+	  	\item Existen 7, y permiten iniciar un conjunto de procesos al arranque o apagado del sistema
+	  	\item Según el estándar:
+	  	\begin{itemize}
+	  		\item \textbf{0}: halt (parada)
+	  		\item \textbf{1}: single user mode (monousuario)
+	  		\item \textbf{2}: multiuser, without \textit{NFS} (modo multiusuario sin soperte de red)
+	  		\item \textbf{3}: full multiuser mode console (modo multiusuario completo por consola)
+	  		\item \textbf{4}: No se utiliza
+	  		\item \textbf{5}: X11 (modo multiusuario completo con login gráfico basado en X)
+	  		\item \textbf{6}: reboot
+	  	\end{itemize}	  	
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Runlevels (cont.)}
+  \begin{itemize}
+	  	\item Los scripts que se ejecutan están en /etc/init.d
+	  	\item En /etc/rxC.d (donde X = 0..6) hay links a los archivos del /etc/init.d
+	  	\item Formato de los links:
+
+	  	\textcolor{orange}{[S\textbar K]$<$orden$>$$<$nombreScript$>$}
+		\begin{lstlisting}
+$ ls -1 /etc/rcS.d/
+S55urandom
+S70x11-common
+		\end{lstlisting}
+		\item \textbf{S}: lanza el script con el argument start
+		\item \textbf{K}: lanza el script con el argument stop
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{insserv}}
+  \begin{itemize}
+	  	\item Se utiliza para administrar el orden de los enlaces simbólicos del /etc/rcX.d, resolviendo las dependencias de forma automática
+	  	\item Utiliza cabeceras en los scripts del /etc/init.d que permiten especificar la relacion con otros scripts rc $\rightarrow$ LSBInit (Linux Standard Based Init)
+		\item Es utilizado por \textit{update-rc.d} para instalar/remover los links simbólicos
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{insserv} (cont.)}
+  \begin{itemize}
+		\item Las dependencias se especifican mediante \textit{facilities} $\rightarrow$ \textbf{Provides} keyword
+		\item Las facilities que comienzan con \$ se reservan para el sistema (\textit{\$syslog})
+		\item Los scripts deben cumplir \textit{LSB init script}:
+		\begin{itemize}
+			\item Proveer al menos `start, stop, restart, force-reload and status'
+			\item Retornar un código apropiado
+			\item Declarar las dependencias
+		\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{\textbf{insserv} (cont.)}
+  \begin{itemize}
+	  	\item LSB init script headers:
+		\begin{lstlisting}
+### BEGIN INIT INFO
+# Provides:          my_daemon
+# Required-Start:    $syslog $remote_fs
+# Required-Stop:     $syslog $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: This is a test daemon
+# Description:       This is a test daemon
+#                    This provides example about how to
+#                    write a Init script.
+### END INIT INFO
+		\end{lstlisting}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
   \frametitle{Proceso de arranque \textbf{Upstart}}
   \begin{itemize}
-	  	\item Upstart es el reemplazo de SystemV (generalmente incluido en \emph{Ubuntu}, \emph{Fedora}, \emph{openSUSE}, etc.)
-	  	\item Permite la ejecución de trabajos en forma asincrónica como principal diferencia con sysVinit que es estrictamente sincrónico
+	  	\item Upstart es el reemplazo de SystemV (\emph{Ubuntu}, \emph{Fedora}, etc.)
+	  	\item Permite la ejecución de trabajos en forma asincrónica a través de eventos (\textit{event-based}) como principal diferencia con sysVinit que es estrictamente sincrónico (\textit{dependency-based})
 	  	\item Estos trabajos se denominan \textbf{jobs}
 		\item El principal objetivo de un job es definir servicios o tareas a ser ejecutadas por init
-		\item Son scripts de texto plano que definene las acciones/tareas (unidad de trabajo) a ejecutar ante determinados eventos
+		\item Son scripts de texto plano que definene las acciones/tareas (unidad de trabajo) a ejecutar ante determinados eventos		
 	  	\item Cada job es definido en el /etc/init
 	  	\item Suelen ser de dos tipos:
 	  	\begin{itemize}
@@ -363,10 +441,10 @@ ca::ctrlaltdel:/sbin/shutdown -t3 -r
 	  		\item Es posible crear eventos pero existen algunos de manera estándar\footnote{\url{http://people.canonical.com/~jhunt/upstart/upstart-states.png}}
 	  		\item Definido por \textbf{start on} y \textbf{stop on}
 	  	\end{itemize}  
-  		\item Es compatible con SystemV $\rightarrow$ /etc/init/rc-sysinit.conf, runlevels, scripts en /etc/init.d
-	  	\item Cada job posee un objetivo (\textit{goal}) y un estado (\textit{state})
+  		\item Es compatible con SystemV $\rightarrow$ /etc/init/rc-sysinit.conf, runlevels, scripts en /etc/init.d, objetivo start y stop
+	  	\item Cada job posee un objetivo (\textit{goal start/stop}) y un estado (\textit{state})
 	  	\begin{itemize}
-	  		\item En base a ellos se ejecuta un proceso especifico
+	  		\item En base a ellos se ejecuta un proceso específico
 	  		\item Al inicio, init emite el evento \textit{startup}
 	  	\end{itemize}
   \end{itemize}
@@ -375,7 +453,7 @@ ca::ctrlaltdel:/sbin/shutdown -t3 -r
 \begin{frame}
   	\frametitle{Proceso de arranque \textbf{Upstart} (cont.)}
   	\begin{itemize}
-		\item Un job puede tener uno o varios procesos ejecutables como parte de su ciclo de vida y siempre debe existir el proceso principal
+		\item Un job puede tener uno o varias tareas ejecutables como parte de su ciclo de vida y siempre debe existir la tarea principal
 	  	\item Las tareas de un job se definen mediante \textit{exec} o \textit{script ... end script}
 	  	\item A través de \textit{initctl} podemos administrar los jobs del demonio de Upstart:
 	  	\begin{itemize}
@@ -383,5 +461,132 @@ ca::ctrlaltdel:/sbin/shutdown -t3 -r
 	  		\item stop $<$job$>$: cambia el objetivo a stop del job especificado
 	  		\item emit $<$event$>$: event es emitido causando que otros jobs cambien a objetivo start o stop
 	  	\end{itemize}
+	  	\item No más /etc/inittab
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  	\frametitle{\textbf{Systemd}}
+  	\begin{itemize}
+		\item Es un sistema que centraliza la administración de demonios y librerias del sistema
+		\item Mejora el paralelismo de booteo
+		\item Puede ser controlado por \textbf{systemctl}
+		\item Puede reemplazar a SysV $\rightarrow$ si es llamado como \emph{init}
+		\item El demonio \emph{systemd} reemplaza al proceso init $\rightarrow$ este pasa a terner \emph{PID 1}
+		\item Los runlevels son reemplazados por \textbf{targets}
+		\item Al igual que con Upstart el archivo /etc/inittab no existe más
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  	\frametitle{\textbf{Systemd} (cont.)}
+  	\begin{itemize}
+		\item La unidad de trabajo son denominadas \textbf{units} de tipo:
+		\begin{itemize}
+			\item \textbf{Service}: controla un servicio particular (\emph{.service})
+			\item \textbf{Socket}: encapsula IPC, un sockect del sistema o sile system \emph{FIFO} (\emph{.socket}) $\rightarrow$ sockect-based activation
+			\item \textbf{Target}: agrupa units o establece puntos de sincronización durante el booteo (\emph{.target}) $\rightarrow$ dependencia de unidades
+			\item \textbf{Snapshop}: almacena el estado de un conjunto de unidades que pueden ser restablecidos más tarde (\emph{.snapshot})
+			\item etc.
+		\end{itemize}
+		\item Las units pueden tener dos estados $\rightarrow$ \textbf{active} o \textbf{inactive}
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Systemd} (cont.)}
+  \begin{figure}
+	    \includegraphics[scale=0.3]{images/systemd.jpg}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  	\frametitle{\textbf{Systemd} - Activación por Socket}
+  	\begin{itemize}
+		\item No todos los servicios que se inician en el booteo se utilizan:
+		\begin{itemize}
+			\item impresora
+			\item servidor en el puerto 80
+			\item etc.
+		\end{itemize}
+		\item Es un mecanismo de iniciación bajo demanda $\rightarrow$ podemos ofrecer una variedad de servicios sin que realmente esten iniciados
+		\item Cuando el sockect recibe una conxión spawnea el servicio y le pasa el socket
+		\item No hay necesidad de definir dependencias entre servicios $\rightarrow$ se inician todos los sockects en primer medida
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  	\frametitle{\textbf{Systemd} - \textbf{cgroups}}
+  	\begin{itemize}
+		\item Permite organizar un grupo de procesos en forma jerárquica
+		\item Agrupa conjunto de procesos relacionados $\rightarrow$ servidor apache con sus dependientes
+		\item Tareas que realiza:
+		\begin{itemize}
+			\item Tracking $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
+			\item Limitar el uso de recursos
+			\item etc.
+		\end{itemize}
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  	\frametitle{\textbf{fstab}}
+  	\begin{itemize}
+		\item Define qué particiones se montan al arranque
+		\item Suconfiguración se encuentra en /etc/fstab:
+		\begin{lstlisting}
+$ cat /etc/fstab
+# <file system> <mount point> <type> <options> <dump> <pass>
+/dev/sda1 / ext4 errors=remount-ro 0       1
+
+UUID=3FDE00F9523092AE /home/iso/datos ntfs user,auto,rw,exec,uid=1000,gid=1000,umask=000 0 2
+
+/dev/sda2 none swap sw 0 0
+		\end{lstlisting}
+		\item Opciones:
+		\begin{itemize}
+			\item \textbf{user}: cualquier usuario puede montar la partición
+			\item \textbf{auto}: monta la partición al inicio
+			\item \textbf{ro}: read only, \textbf{rw}: read and write
+			\item etc.
+		\end{itemize}
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  	\frametitle{Redirecciones}
+  	\begin{itemize}
+		\item Al utilizar redirecciones mediante \textbf{$>$} (destructiva):
+		\begin{itemize}
+			\item Si el archivo de destino no existe, se lo crea
+			\item Si el archivo existe, se lo trunca y se escribe el nuevo contenido
+		\end{itemize}
+		\item Al utilizar redirecciones mediante \textbf{$>>$} (no destructiva):
+		\begin{itemize}
+			\item Si el archivo de destino no existe, se lo crea
+			\item Si el archivo existe, se agrega la información al final
+		\end{itemize}
+  	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  	\frametitle{Uso de \textbf{\textbar}}
+  	\begin{itemize}
+		\item El ``\textbar'' nos permite comunicar dos procesos 
+		por medio de unpipe o tubería desde la \emph{shell}
+		\item El pipe conecta \textit{stdout} (salida estándar) del primer comando con la \textit{stdin} (entrada estándar) del segundo.
+		\item Por ejemplo:	
+		\begin{lstlisting}
+$ ls | more
+		\end{lstlisting}
+		\begin{itemize}			
+			\item Se ejecuta el comando \emph{ls} y la salida del mismo, es enviada como entrada del comanda \emph{more}
+		\end{itemize}
+		\item Se pueden anidar tantos pipes como se deseen
+		\item ¿Cómo haríamos si quisiéramos contar la cantidad de usuarios del sistema que en su nombre de usuario aparece una letra ``a''?
+		\pause
+		\begin{lstlisting}
+$ cat /etc/passwd | cut -d: -f1 | grep a | wc -l
+		\end{lstlisting}
   	\end{itemize}
 \end{frame}
