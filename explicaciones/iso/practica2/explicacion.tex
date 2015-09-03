@@ -289,13 +289,13 @@ $ chmod 755 /tmp/script
 \begin{frame}
   \frametitle{Proceso de arranque \textbf{System V}}
   \begin{enumerate}
-	\item Se empieza a ejecutar el código de la BIOS
-	\item La BIOS ejecute el POST
-	\item La BIOS lee el sector de arranque (MBR)
+	\item Se empieza a ejecutar el código del BIOS
+	\item El BIOS ejecuta el POST
+	\item El BIOS lee el sector de arranque (MBR)
 	\item Se carga el gestor de arranque (MBC)
 	\item El bootloader carga el \textit{kernel} y el \textit{initrd}
-	\item Se monta el initrd como sistema de archivos raíz y se inicializan componentes esenciales (e.j.: scheduler)
-	\item Se ejecuta el proceso \textit{init} y se desmonta en initrd
+	\item Se monta el initrd como sistema de archivos raíz y se inicializan componentes esenciales (ej.: scheduler)
+	\item Se ejecuta el proceso \textit{init} y se desmonta el initrd
 	\item Se lee el /etc/inittab
 	\item Se ejecutan los scripts apuntados por el \textit{runlevel 1}
 	\item El final del runlevel 1 le indica que vaya al runlevel por defecto
@@ -308,7 +308,7 @@ $ chmod 755 /tmp/script
   \frametitle{Proceso de arranque (cont.)}
   \begin{enumerate}
 	\item Su función es cargar todos los subprocesos necesarios para el correcto funcionamiento del SO
-	\item Posee el PID 1 y se encuentra en /sbin/init
+	\item El proceso init posee el PID 1 y se encuentra en /sbin/init
 	\item En SysV se lo configura a través del archivo /etc/inittab
 	\item No tiene padre y es el padre de todos los procesos (\textit{pstree})
 	\item Es el encargado de montar los filesystems y de hacer disponible los demás dispositivos
@@ -322,7 +322,7 @@ $ chmod 755 /tmp/script
 
 	  	\item El proceso de arranque lo dividimos en niveles
 
-	  	\item Cada uno es responsable de levantar o bajar una serie de servicios
+	  	\item Cada uno es responsable de levantar (iniciar) o bajar (parar) una serie de servicios
   \end{itemize}
 \end{frame}
 
