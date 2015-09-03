@@ -13,13 +13,15 @@
 	  	\item \textbf{/dev/hdc}: configurado como Master en el 2º bus IDE
 	  	\item \textbf{/dev/hdd}: configurado como Slave en el 2º bus IDE
 	  \end{itemize}
+	  \item Particiones primarias $\rightarrow$ 1 a 4
+	  \item Particiones logicas $\rightarrow$ desde 5 en adelante
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Características - Configuración de discos (cont.)}
   \begin{itemize}
-	  \item Configuración de discos SCSI: se basa en \textit{LUNS}
+	  \item Configuración de discos SCSI: se basa en \textit{LUN}
 	  \item Denominación de los discos basada en la identificación de los buses:
 	  \begin{itemize}
 	  	\item \textbf{/dev/sda}
@@ -45,12 +47,13 @@
   \begin{itemize}
 	  \item Nueva nomenclatura utilizada:
 	  \begin{itemize}
-	  	\item Con la evolución de las distribuciones GNU/Linux, se comenzó a utilizar \textbf{``udev''} como gestor de dispositivos:
+	  	\item Con la evolución de las distribuciones GNU/Linux, se comenzó a utilizar \textbf{``udev''} (\textit{.rules}) como gestor de dispositivos:
 	  	\begin{itemize}
-		  	\item Su función es controlar dinámicamente los archivos del /dev en base al hardware detectado
+		  	\item Su función es controlar dinámicamente los archivos del /dev \textit{SOLO} en base al hardware detectado
+		  	\item Soporta \textbf{Persistent Device Naming}
 		  	\item Motiva su uso, el no poder garantizar que tras distintos arranques del SO, los dispositivos se sigan llamando de la misma manera. (Suponga disco 1 y 2, que disco 1 se quita y contorladoras SCSI/SATA mixtas)
-		  	\item En /dev tendremos las entradas de los dispositivos conectados
-		  	\item Desaparece el concepto de Major y Minor Number
+		  	\item Reemplaza a \textit{devfs} y \textit{hotplug}
+		  	\item Se desentiende del \textbf{Major} y \textbf{Minor Number}
 		  	\item Se basa en eventos y permite que nuevos dispositivos sean agregados posteriormente al arranque
 	  	\end{itemize}
 	  \end{itemize}
@@ -61,15 +64,15 @@
   \frametitle{Características - Configuración de discos (cont.)}
   \begin{itemize}
 	  \item A futuro, todos los dispositivos llamados hdX serán denominados sdX $\leftarrow$ Introducido en Debian/Squeeze
-	  \item Por estas y otras razones se adoptan 4 mecanismos nuevos para nomenclar los discos\footnote{\url{http://wiki.debian.org/Part-UUID}}:
+	  \item Por estas y otras razones se adoptan 4 mecanismos nuevos para nomenclar\footnote{\url{http://wiki.debian.org/Part-UUID}}:
 	  \begin{itemize}
-	  	\item Nombres persistentes por UUID (\tiny{Universal Unique Identifier}):
+	  	\item Nombres persistentes por \textbf{UUID} (\small{Universal Unique Identifier}):
 	  	\begin{lstlisting}
 $ ls –l /dev/disk/by-uuid/
 2d781b26-0285-421a-b9d0-d4a0d3b55680 -> ../../sda1
 31f8eb0d-612b-4805-835e-0e6d8b8c5591 -> ../../sda7
 		\end{lstlisting}
-		\item Utilizando labels
+		\item Utilizando \textbf{labels}
 		\begin{lstlisting}
 $ ls -l /dev/disk/by-label
 data -> ../../sdb2
@@ -132,18 +135,18 @@ data2 -> ../../sda2
 	  \item Presente en cualquier distribución de GNU/Linux
 	  \item Posee 3 modos de ejecución:
 	  \begin{itemize}
-	  	\item Modo Insert
-	  	\item Modo Visual
-	  	\item Modo de Órdenes o Normal
+	  	\item Modo Insert (\textbf{Ins} o \textbf{i})
+	  	\item Modo Visual (\textbf{v})
+	  	\item Modo de Órdenes o Normal (\textbf{Esc})
 	  \end{itemize}
 	  \item Se le puede enviar una serie de comandos útiles
 	  \begin{itemize}
 	  	\item \textbf{w}: escribir cambios
 	  	\item \textbf{q} ó \textbf{q!}: salir del editor
-	  	\item \textbf{Ins} ó \textbf{i}: ingresar al modo edición
 	  	\item \textbf{dd}: cortar
 	  	\item \textbf{y}: copiar al portapapeles
 	  	\item \textbf{p}: pegar desde el portapapeles
+	  	\item \textbf{u}: deshacer
 	  	\item \textbf{/}frase: busca ``frase'' dentro del archivo
 	  \end{itemize}
   \end{itemize}
@@ -271,7 +274,7 @@ $ chmod 755 /tmp/script
   \begin{itemize}
   	\item El bootloader o cargador de arranque es un programa que permite cargar el Sistema Operativo. Puede llegar a cargar un entorno previo a la carga del sistema
 
-  	\item Generalmente se utilizan los cargadores multietapas, en los que carios programas pequeños se van invocando hasta lograr la carga del SO
+  	\item Generalmente se utilizan los cargadores multietapas, en los que varios programas pequeños se van invocando hasta lograr la carga del SO
 
   	\item En cierto sentido, el código del \textit{BIOS} forma parte del bootloader, pero el concepto está más orientado al código que reside en el \textit{Master Boot Record} (512b)
 
@@ -290,13 +293,13 @@ $ chmod 755 /tmp/script
 	\item La BIOS ejecute el POST
 	\item La BIOS lee el sector de arranque (MBR)
 	\item Se carga el gestor de arranque (MBC)
-	\item Se carga el kernel
-	\item Se monta el sistema de archivos raíz (\textit{initrd}) y se inicializan componentes esenciales (e.j.: scheduling)
-	\item Se ejecuta el proceso \textit{init}
-	\item Lee el /etc/inittab
-	\item Ejecuta los scripts apuntados por el \textit{runlevel 1}
+	\item El bootloader carga el \textit{kernel} y el \textit{initrd}
+	\item Se monta el initrd como sistema de archivos raíz y se inicializan componentes esenciales (e.j.: scheduler)
+	\item Se ejecuta el proceso \textit{init} y se desmonta en initrd
+	\item Se lee el /etc/inittab
+	\item Se ejecutan los scripts apuntados por el \textit{runlevel 1}
 	\item El final del runlevel 1 le indica que vaya al runlevel por defecto
-	\item Ejecuta los scripts apuntados por el runlevel por defecto
+	\item Se ejecutan los scripts apuntados por el runlevel por defecto
 	\item El sistema está listo para usarse
   \end{enumerate}
 \end{frame}
@@ -304,19 +307,28 @@ $ chmod 755 /tmp/script
 \begin{frame}
   \frametitle{Proceso de arranque (cont.)}
   \begin{enumerate}
-	\item su función es cargar todos los subproecos necesarios para el correcto funcionamiento del SO
+	\item Su función es cargar todos los subprocesos necesarios para el correcto funcionamiento del SO
 	\item Posee el PID 1 y se encuentra en /sbin/init
-	\item Se lo configura a través del archivo /etc/inittab en SysV
-	\item No tiene padre y es el padre de todos los procesos (probar \textit{pstree})
+	\item En SysV se lo configura a través del archivo /etc/inittab
+	\item No tiene padre y es el padre de todos los procesos (\textit{pstree})
 	\item Es el encargado de montar los filesystems y de hacer disponible los demás dispositivos
   \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Runlevels}
+  \begin{itemize}
+	  	\item Es el modo en que arranca Linux (3 en \emph{Redhat}, 2 en \emph{Debian})
+
+	  	\item El proceso de arranque lo dividimos en niveles
+
+	  	\item Cada uno es responsable de levantar o bajar una serie de servicios
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Runlevels}
   \begin{itemize}
-	  	\item Es el modo en que arranca Linux (3 en \emph{Redhat}, 2 en \emph{Debian})
-	  	\item El proceso de arranque lo dividimos en niveles. Cada un es responsable de leantar o bajar una serie de servicios
 	  	\item Se encuentran definidos en /etc/inittab
 	  	\textcolor{orange}{id:nivelesEjecución:acción:proceso}
 		\begin{itemize}
@@ -327,12 +339,14 @@ $ chmod 755 /tmp/script
 				\item \textbf{wait}: inicia cuando entra al runlevel e init espera a que termine
 				\item \textbf{initdefault}
 				\item \textbf{ctrlaltdel}: se ejecutará cuando init reciba la señal \emph{SIGINT}
-				\item \textbf{off}, \textbf{respawn}, \textbf{once}, \textbf{boot}, \textbf{bootwait}, \textbf{powerwait}, etc.
+				\item \textbf{off}, \textbf{respawn}, \textbf{once}, \textbf{sysinit}, \textbf{boot}, \textbf{bootwait}, \textbf{powerwait}, etc.
 			\end{itemize}
 			\item \textbf{Proceso}: el proceso exacto que será ejecutado
 		\end{itemize}
 		\begin{lstlisting}
-l1:1:wait:/etc/rc.d/rc 1
+$ cat /etc/inittab
+id:2:initdefault:
+si::sysinit:/etc/init.d/rcS
 ca::ctrlaltdel:/sbin/shutdown -t3 -r
 		\end{lstlisting}
   \end{itemize}
@@ -348,7 +362,7 @@ ca::ctrlaltdel:/sbin/shutdown -t3 -r
 	  		\item \textbf{1}: single user mode (monousuario)
 	  		\item \textbf{2}: multiuser, without \textit{NFS} (modo multiusuario sin soperte de red)
 	  		\item \textbf{3}: full multiuser mode console (modo multiusuario completo por consola)
-	  		\item \textbf{4}: No se utiliza
+	  		\item \textbf{4}: no se utiliza
 	  		\item \textbf{5}: X11 (modo multiusuario completo con login gráfico basado en X)
 	  		\item \textbf{6}: reboot
 	  	\end{itemize}	  	
@@ -359,7 +373,7 @@ ca::ctrlaltdel:/sbin/shutdown -t3 -r
   \frametitle{Runlevels (cont.)}
   \begin{itemize}
 	  	\item Los scripts que se ejecutan están en /etc/init.d
-	  	\item En /etc/rxC.d (donde X = 0..6) hay links a los archivos del /etc/init.d
+	  	\item En /etc/rcX.d (donde X = 0..6) hay links a los archivos del /etc/init.d
 	  	\item Formato de los links:
 
 	  	\textcolor{orange}{[S\textbar K]$<$orden$>$$<$nombreScript$>$}
@@ -424,7 +438,7 @@ S70x11-common
 	  	\item Estos trabajos se denominan \textbf{jobs}
 		\item El principal objetivo de un job es definir servicios o tareas a ser ejecutadas por init
 		\item Son scripts de texto plano que definene las acciones/tareas (unidad de trabajo) a ejecutar ante determinados eventos		
-	  	\item Cada job es definido en el /etc/init
+	  	\item Cada job es definido en el /etc/init (\textbf{.conf})
 	  	\item Suelen ser de dos tipos:
 	  	\begin{itemize}
 	  		\item \textbf{Task}: ejecución finita (\textit{task}) $\rightarrow$ not respawning $\rightarrow$ exit 0 o uso de \textit{stop}
@@ -471,7 +485,7 @@ S70x11-common
 		\item Es un sistema que centraliza la administración de demonios y librerias del sistema
 		\item Mejora el paralelismo de booteo
 		\item Puede ser controlado por \textbf{systemctl}
-		\item Puede reemplazar a SysV $\rightarrow$ si es llamado como \emph{init}
+		\item Compatible con SysV $\rightarrow$ si es llamado como \emph{init}
 		\item El demonio \emph{systemd} reemplaza al proceso init $\rightarrow$ este pasa a terner \emph{PID 1}
 		\item Los runlevels son reemplazados por \textbf{targets}
 		\item Al igual que con Upstart el archivo /etc/inittab no existe más
@@ -481,12 +495,12 @@ S70x11-common
 \begin{frame}
   	\frametitle{\textbf{Systemd} (cont.)}
   	\begin{itemize}
-		\item La unidad de trabajo son denominadas \textbf{units} de tipo:
+		\item Las unidades de trabajo son denominadas \textbf{units} de tipo:
 		\begin{itemize}
 			\item \textbf{Service}: controla un servicio particular (\emph{.service})
-			\item \textbf{Socket}: encapsula IPC, un sockect del sistema o sile system \emph{FIFO} (\emph{.socket}) $\rightarrow$ sockect-based activation
+			\item \textbf{Socket}: encapsula IPC, un sockect del sistema o file system \emph{FIFO} (\emph{.socket}) $\rightarrow$ sockect-based activation
 			\item \textbf{Target}: agrupa units o establece puntos de sincronización durante el booteo (\emph{.target}) $\rightarrow$ dependencia de unidades
-			\item \textbf{Snapshop}: almacena el estado de un conjunto de unidades que pueden ser restablecidos más tarde (\emph{.snapshot})
+			\item \textbf{Snapshop}: almacena el estado de un conjunto de unidades que puede ser restablecido más tarde (\emph{.snapshot})
 			\item etc.
 		\end{itemize}
 		\item Las units pueden tener dos estados $\rightarrow$ \textbf{active} o \textbf{inactive}
@@ -519,10 +533,10 @@ S70x11-common
   	\frametitle{\textbf{Systemd} - \textbf{cgroups}}
   	\begin{itemize}
 		\item Permite organizar un grupo de procesos en forma jerárquica
-		\item Agrupa conjunto de procesos relacionados $\rightarrow$ servidor apache con sus dependientes
+		\item Agrupa conjunto de procesos relacionados (servidor apache con sus dependientes)
 		\item Tareas que realiza:
 		\begin{itemize}
-			\item Tracking $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
+			\item Tracking grupal $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
 			\item Limitar el uso de recursos
 			\item etc.
 		\end{itemize}
