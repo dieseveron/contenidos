@@ -500,7 +500,7 @@ S70x11-common
 			\item \textbf{Service}: controla un servicio particular (\emph{.service})
 			\item \textbf{Socket}: encapsula IPC, un sockect del sistema o file system \emph{FIFO} (\emph{.socket}) $\rightarrow$ sockect-based activation
 			\item \textbf{Target}: agrupa units o establece puntos de sincronización durante el booteo (\emph{.target}) $\rightarrow$ dependencia de unidades
-			\item \textbf{Snapshop}: almacena el estado de un conjunto de unidades que puede ser restablecido más tarde (\emph{.snapshot})
+			\item \textbf{Snapshot}: almacena el estado de un conjunto de unidades que puede ser restablecido más tarde (\emph{.snapshot})
 			\item etc.
 		\end{itemize}
 		\item Las units pueden tener dos estados $\rightarrow$ \textbf{active} o \textbf{inactive}
@@ -533,7 +533,7 @@ S70x11-common
   	\frametitle{\textbf{Systemd} - \textbf{cgroups}}
   	\begin{itemize}
 		\item Permite organizar un grupo de procesos en forma jerárquica
-		\item Agrupa conjunto de procesos relacionados (servidor apache con sus dependientes)
+		\item Agrupa conjunto de procesos relacionados (por ejemplo, un servidor web Apache con sus dependientes)
 		\item Tareas que realiza:
 		\begin{itemize}
 			\item Tracking grupal $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
@@ -547,7 +547,7 @@ S70x11-common
   	\frametitle{\textbf{fstab}}
   	\begin{itemize}
 		\item Define qué particiones se montan al arranque
-		\item Suconfiguración se encuentra en /etc/fstab:
+		\item Su configuración se encuentra en /etc/fstab:
 		\begin{lstlisting}
 $ cat /etc/fstab
 # <file system> <mount point> <type> <options> <dump> <pass>
