@@ -1,0 +1,26 @@
+NAME = main-tsas
+PDFDIR = ../../../pdf
+TEXC = pdflatex
+COMMONDEPS = ../../../common/listing.tex ../../../common/include.tex
+
+TMP      := $(shell dirname $(CURDIR))
+TYPE     := $(shell basename `dirname $(TMP)`)
+SUBJECT  := $(shell basename `dirname $(CURDIR)`)
+DOCUMENT := $(notdir $(CURDIR))
+
+all: pdf
+pdf: $(NAME).pdf
+$(NAME).pdf: $(NAME).tex $(COMMONDEPS) $(DEPS)
+	$(TEXC) $(NAME)
+	$(TEXC) $(NAME) # HACK: run twice for generating TOC. Will fix soon.
+
+install: $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf
+$(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf: $(NAME).pdf
+	mkdir -p $(PDFDIR)/$(TYPE)/$(SUBJECT)/
+	cp -u $(NAME).pdf $(PDFDIR)/$(TYPE)/$(SUBJECT)/$(DOCUMENT).pdf
+
+clean:
+	rm -fv *.aux *.log *.fls *.fdb_latexmk *.nav *.out *.snm *.toc
+
+distclean: clean
+	rm -fv $(NAME).pdf
