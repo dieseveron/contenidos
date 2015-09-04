@@ -289,13 +289,13 @@ $ chmod 755 /tmp/script
 \begin{frame}
   \frametitle{Proceso de arranque \textbf{System V}}
   \begin{enumerate}
-	\item Se empieza a ejecutar el código de la BIOS
-	\item La BIOS ejecute el POST
-	\item La BIOS lee el sector de arranque (MBR)
+	\item Se empieza a ejecutar el código del BIOS
+	\item El BIOS ejecuta el POST
+	\item El BIOS lee el sector de arranque (MBR)
 	\item Se carga el gestor de arranque (MBC)
 	\item El bootloader carga el \textit{kernel} y el \textit{initrd}
-	\item Se monta el initrd como sistema de archivos raíz y se inicializan componentes esenciales (e.j.: scheduler)
-	\item Se ejecuta el proceso \textit{init} y se desmonta en initrd
+	\item Se monta el initrd como sistema de archivos raíz y se inicializan componentes esenciales (ej.: scheduler)
+	\item Se ejecuta el proceso \textit{init} y se desmonta el initrd
 	\item Se lee el /etc/inittab
 	\item Se ejecutan los scripts apuntados por el \textit{runlevel 1}
 	\item El final del runlevel 1 le indica que vaya al runlevel por defecto
@@ -308,7 +308,7 @@ $ chmod 755 /tmp/script
   \frametitle{Proceso de arranque (cont.)}
   \begin{enumerate}
 	\item Su función es cargar todos los subprocesos necesarios para el correcto funcionamiento del SO
-	\item Posee el PID 1 y se encuentra en /sbin/init
+	\item El proceso init posee el PID 1 y se encuentra en /sbin/init
 	\item En SysV se lo configura a través del archivo /etc/inittab
 	\item No tiene padre y es el padre de todos los procesos (\textit{pstree})
 	\item Es el encargado de montar los filesystems y de hacer disponible los demás dispositivos
@@ -322,7 +322,7 @@ $ chmod 755 /tmp/script
 
 	  	\item El proceso de arranque lo dividimos en niveles
 
-	  	\item Cada uno es responsable de levantar o bajar una serie de servicios
+	  	\item Cada uno es responsable de levantar (iniciar) o bajar (parar) una serie de servicios
   \end{itemize}
 \end{frame}
 
@@ -500,7 +500,7 @@ S70x11-common
 			\item \textbf{Service}: controla un servicio particular (\emph{.service})
 			\item \textbf{Socket}: encapsula IPC, un sockect del sistema o file system \emph{FIFO} (\emph{.socket}) $\rightarrow$ sockect-based activation
 			\item \textbf{Target}: agrupa units o establece puntos de sincronización durante el booteo (\emph{.target}) $\rightarrow$ dependencia de unidades
-			\item \textbf{Snapshop}: almacena el estado de un conjunto de unidades que puede ser restablecido más tarde (\emph{.snapshot})
+			\item \textbf{Snapshot}: almacena el estado de un conjunto de unidades que puede ser restablecido más tarde (\emph{.snapshot})
 			\item etc.
 		\end{itemize}
 		\item Las units pueden tener dos estados $\rightarrow$ \textbf{active} o \textbf{inactive}
@@ -533,7 +533,7 @@ S70x11-common
   	\frametitle{\textbf{Systemd} - \textbf{cgroups}}
   	\begin{itemize}
 		\item Permite organizar un grupo de procesos en forma jerárquica
-		\item Agrupa conjunto de procesos relacionados (servidor apache con sus dependientes)
+		\item Agrupa conjunto de procesos relacionados (por ejemplo, un servidor web Apache con sus dependientes)
 		\item Tareas que realiza:
 		\begin{itemize}
 			\item Tracking grupal $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
@@ -547,7 +547,7 @@ S70x11-common
   	\frametitle{\textbf{fstab}}
   	\begin{itemize}
 		\item Define qué particiones se montan al arranque
-		\item Suconfiguración se encuentra en /etc/fstab:
+		\item Su configuración se encuentra en /etc/fstab:
 		\begin{lstlisting}
 $ cat /etc/fstab
 # <file system> <mount point> <type> <options> <dump> <pass>
