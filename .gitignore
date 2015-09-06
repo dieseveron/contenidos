@@ -12,6 +12,7 @@
 *~
 *-stamp
 */*/*/main.pdf
+*/*/*/main-tsas.pdf
 *.pdfpc
 pdf/
 *.fuse*

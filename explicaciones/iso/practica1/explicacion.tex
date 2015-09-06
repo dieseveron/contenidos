@@ -335,3 +335,348 @@
 	    \fbox{\includegraphics[scale=0.4]{images/hdd3.jpeg}}
 	\end{figure}
 \end{frame}
+
+\begin{frame}
+	\frametitle{Conceptos para la instalación - \textbf{MBR}}
+	\begin{itemize}
+		\item Sector reservado del disco físico (cilindro 0, cabeza 0, sector 0)
+		\item Existe un MBR en todos los discos
+		\item Si existiese más de un disco rígido en la máquina, sólo un es designado como \textit{Primary Master Disk}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conceptos para la instalación - MBR (cont.)}
+	\begin{itemize}
+		\item El tamaño del MBR coincide con el tamaño estándar de sector, 512 bytes:
+		\begin{itemize}
+			\item Los primeros bytes corresponden al \textit{Master Boot Code} (MBC)
+			\item A partir del byte 446 está la tabla de particiones. Es de 64 bytes
+			\item Al final existen 2 bytes libres o para firmar el MBR
+		\end{itemize}
+		\item Es creado con algún utilitario	
+		\item El MBC es un pequeño código que permite arrancar el SO
+		\item La última acción del \textit{BIOS} es leer el MBC. Lo lleva a memoria y lo ejecuta		
+		\item Si se tiene un sistema instalado $\rightarrow$ bootloader de MBC típico. Sino $\rightarrow$ uno diferente (\textit{mutietapa})		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conceptos para la instalación - Particiones}
+	\begin{itemize}
+		\item Es una forma de dividir lógicamente el disco físico:
+		\begin{itemize}
+			\item \emph{DOS} y \emph{W95} no pueden manejar filesystems mayores a 2GB
+			\item Cada sistema operativo es instalado en una partición separada
+			\item Cada partición se formatea con un tipo de filesystem destino (\textit{fat}, \textit{ntfs}, \textit{ext}, etc.)
+			\item Es una buena práctica separar los datos del usuario de la aplicaciones y/o sistema operativo instalado
+			\item Tener una partición de \emph{restore} de todo es sistema
+			\item Poder ubicar el Kernel en una partición de solo lectura, o una que ni siquiera se monta (no está disponible para los usuarios)
+			\item Particionar demasiado un disco puede tener desventajas: ¡pensar..!
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conceptos para la instalación - Particiones (cont.)}
+	\begin{itemize}
+		\item Debido al tamaño acotado en el MBR para la tabla de particiones:
+		\begin{itemize}
+			\item Se restringe a 4 la cantidad de particiones primarias
+			\item 3 primarias y una extendida con sus respectivas particiones lógicas
+		\end{itemize}
+		\item Una de las 4 particiones puede ser extendida, la cual se subdivide en volúmenes lógicos
+		\item Partición primaria: división cruda del disco (puede haber 4 por disco). Se almacena información de la misma en el MBR
+		\item Partición extendida: sirve para contener unidades lógicas en su interior. Solo puede existir una partición de este tipo por disco. No se define un tipo de FS directamente sobre ella
+		\item Partición lógica: ocupa la totalidad o parte de la partición extendida y se le define un tipo de FS. Las particiones de este tipo se conectan como una lista enlazada
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conceptos para la instalación - Particiones (cont.)}
+	\begin{itemize}
+		\item Como mínimo es necesario una partición (para el /)
+		\item Es recomendable crear al menos 2 (/ y \textit{SWAP})
+		\item Para crearlas, se utiliza software denominado \textbf{particionador}. Existen 2 tipos:
+		\begin{itemize}
+			\item Destructivos: permiten crear y eliminar particiones (fdisk)
+			\item No destructivo: permiten crear, eliminar y modificar particiones (fips, gparted) $\leftarrow$ generalmente las distribuciones permiten hacerlo desde la interfaz de instalación
+		\end{itemize}
+		\pause
+		\item \textcolor{orange}{¿Para qué podríamos crear otras particiones?}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Nuestro ambiente de trabajo}
+	\begin{itemize}
+		\item Vamos a trabajar en un ambiente controlado $\rightarrow$ \emph{VirtualBox}
+		\item Necesitamos crear una máquina virtual y asignarle recursos
+		\item Booteamos la máquina virtual iniciando desde algún medio de instalación
+		\item Seguimos las instrucciones de instalación
+		\item Verificamos que podamos arrancar el/los sistemas operativos instalados
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Particionado de discos}
+	\begin{itemize}
+		\item Particionando - 3 escenatios posibles:
+		\begin{itemize}
+			\item Usar espacio libre no particionado
+			\item Usar partición no usada
+			\item Usar espacio libre de una partición actvia (más complicado):
+			\begin{itemize}
+				\item Cambio destructivo
+				\item Cambio no destructivo
+			\end{itemize}
+		\end{itemize}
+		\item En nuestra instalación:
+		\begin{itemize}
+			\item /dev/hda1: DOS con Wndows (2 GB) $\leftarrow$ ¡es mucho!
+			\item /dev/hda2: /boot $\rightarrow$ 60 MB aproximadamente
+			\item /dev/hda3: 6 GB aproximadamente
+			\item /dev/hda4: área de intercambio (SWAP)
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Verificando la configuración de nuestro disco}
+	\begin{itemize}
+		\item Desde Windows: utilizamos el administrador de discos
+		\item Desde DOS: usamos fdisk
+		\item Para instalar un nuevo SO necesitamos espacio libre sin particionar
+		\item Si no lo tenemos, debemos generarlo. Para esto existen diversos escenarios:
+		\begin{itemize}
+			\item Eliminar una partición existente
+			\item Redimensionar una partición
+		\end{itemize}
+		\item \textcolor{orange}{¿Qué ocurre en cada caso? ¿Qué software vamos a usar?}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Eumuladores/Virtualizadores}
+	\begin{itemize}
+		\item Para los fines de este curso, permiten virtualizar plataformas
+		\item Permite que en un equipo puedan correr varios SO en forma simultánea compartiendo recursos de hardware
+		\item El pionero en esta tecnología fue \emph{IBM} con el IBM System/360 en los años 1960
+		\begin{figure}[h]
+			\includegraphics[scale=0.3]{images/virt1.png}
+			\hspace{30px}
+			\includegraphics[scale=0.3]{images/virt2.png}
+		\end{figure}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Eumuladores/Virtualizadores (cont.)}
+	\begin{itemize}
+		\item Básicamente se pueden considerar 3 tipos:	
+		\begin{itemize}
+			\item Emulación:
+			\begin{itemize}
+				\item Emulan hardware
+				\item Tienen que implementar todas las instrucciones de la CPU
+				\item Es muy costosa y poco eficiente
+				\item Permite ejecutar arquitecturas diferentes a las soportadas por el hardware
+			\end{itemize}
+			\item Virtualización completa:
+			\begin{itemize}
+				\item Permiten ejecutar SO huéspedes en un sistema anfitrión (host)
+				\item Utilizan en el medio un hypervisor o monitor de máquinas virtuales
+				\item El SO huésped debe estar soportado en la arquitectura anfitriona
+				\item Es más eficiente que la emulación (\emph{Intel-VT} y \emph{AMD-V})
+			\end{itemize}
+			\item Paravirtualización:
+			\begin{itemize}
+				\item Permite correr SOs modificados exclusivamente para actuar en entornos virtualizados
+				\item Mayor eficiencia que la virtualización
+			\end{itemize}			
+		\end{itemize}		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Eumuladores/Virtualizadores (cont.)}
+	\begin{itemize}
+		\item Las principales diferencias entre ellos son:
+		\begin{itemize}
+			\item Los virtualizadores aprovechan el CPU sobre la que están trabajando, lo cual los hace más veloces
+			\item En un emulador se puede correr cualquier arquitectura. En un cirtualizador solo se puede correr la arquitectura virtualizada
+		\end{itemize}
+		\begin{figure}[h]
+			\includegraphics[scale=0.2]{images/bochs.png}
+			\hspace{30px}
+			\includegraphics[scale=0.2]{images/quemu.png}
+			\hspace{30px}
+			\includegraphics[scale=0.2]{images/virtualbox.png}
+			\hspace{30px}
+			\includegraphics[scale=0.2]{images/vmware.png}
+			\hspace{30px}
+			\includegraphics[scale=0.2]{images/xen.png}
+		\end{figure}		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Gestor de arranque}
+	\begin{itemize}
+		\item La finalidad del bootloader es la de cargar una imagen de \textit{Kernel} (sistema operativo) de alguna partición para su ejecución
+		\item Se ejecuta luego del código del BIOS		
+		\item Existen 2 modos de instalación:
+		\begin{itemize}
+			\item En el MBR (puede llegar a utilizar \textit{MBR gap})
+			\item En el sector de arranque de la particion raíz o activa (\textit{Volume Boot Record})
+		\end{itemize}
+		\item \emph{GRUB}, \emph{LILO}, \emph{NTLDR}, \emph{GAG}, \emph{YaST}, etc.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Grub Legacy}
+	\begin{itemize}
+		\item \textbf{GRand} \textbf{Unified} \textbf{Bootloader}: gestor de arranque múltiple más utilizado
+		\item En el MBR solo se encuentra la fase 1 del que solo se encarga de cargar la fase 1.5
+		\item Fase 1.5: ubicada en los siguientes 30 KB del disco. Carga la fase 2
+		\item Fase 2: interfaz de usuario y carga el Kernel seleccionado
+		\item Se configura a través del archivo \textcolor{orange}{/boot/grub/menu.lst}
+		\item Algunas líneas:
+		\begin{itemize}
+			\item default: define el SO por defecto a bootear
+			\item timeout: tiempo de espera para cargar el SO por defecto
+		\end{itemize}
+		\begin{lstlisting}
+title Debian GNU/Linux
+root (hd0,1) #(Disco,Particion)
+kernel /vmlinuz-2.6.26 ro quiet root=/dev/hda3
+initrd /initrd-2.6.26.img
+		\end{lstlisting}		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Grub 2}
+	\begin{itemize}
+		\item Utilizado en la mayoria de las distribuciones
+		\item Dentro de sus mejoras, incluye el soporte a nuevas arquitecturas, soporte de caracteres no ASCII, idiomas, customización de menúes, etc.
+		\item En Grub 2 la fase 1.5 ya no existe más
+		\item El archivo de configuración ahoora es \textcolor{orange}{/boot/grub/grub.cfg} y no debería editarse manualmente $\rightarrow$ update-grub
+		\item Más información en: \url{https://help.ubuntu.com/community/Grub2}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Proceso de arranque}
+	\begin{itemize}
+		\item Es el proceso de inicio de una máquina y carga del sistema operativo y se denomina \textit{bootstrap}
+		\item En las arquitecturas x86, el \textbf{BIOS (Basic I/O System)} es el responsable de iniciar la carga del SO a través del MBC:
+		\begin{itemize}
+			\item Está grabado en un chip (\emph{ROM}, \emph{NVRAM})
+			\item En otras arquitecturas también existe, pero se lo conoce con otro nombre:
+			\begin{itemize}
+				\item Power on Reset + IPL en \textit{mainframe}
+				\item OBP (OpenBoot PROM): en \textit{SPARC}
+			\end{itemize}
+		\end{itemize}
+		\item Carga el programa de booteo (desde el MBR)
+		\item El gestor de arranque lanzado desde el MBC carga el Kernel:
+		\begin{itemize}
+			\item Prueba e inicializa los dispositivos ¿?¿?¿?¿?
+			\item Luegoo pasa el control al proceso \textbf{init}
+		\end{itemize}
+		\item El proceso de arranque se ve como una serie de pequeños programas de ejecución encadenada
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Problemas del arranque basado en BIOS}
+	\begin{itemize}
+		\item Es de la década del 80
+		\item La última acción del BIOS es leer el MBC del MBR ¿?¿?¿
+		\item El firmware del BIOS no facilita la lectura de filesystems ¿??¿¿??¿?
+		\item El MBC no puede ocupar más de 446 bytes
+		\begin{itemize}
+			\item Por ejemplo Grub, utiliza los 446 bytes del MBR y luego utiliza sectores del disco adyacentes que deberían estar libres (\textit{MBR gap})
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Extensible Firmware Interface}
+	\begin{itemize}
+		\item EFI: nexo entre el SO y el firmaware
+		\item Utiliza el sistema \textbf{GPT} (GUID partition table) para solucionar limitaciones del MBR, como la cantidad de particiones
+		\item GPT especifica la ubicación y formato de la tabla de particiones en un disco duro
+		\item Es parte de EFI. Puede verse como una sustitución del MBR
+		\item La especificación EFI es propiedad de Intel
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.3]{images/efi.png}
+		\end{figure}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{GPT}
+	\begin{itemize}
+		\item Se mantiene un MBR para tener compatibilidad con el esquema BIOS
+		\item GPT usa modo de direccionamiento logico (logical block addressing \textbf{LBA}) en lugar de \textit{cylinder-header-sector}
+		\item El MBR ``heredado'' se almacena en el LBA 0
+		\item En el LBA 1 está la cabecera GPT. La tabla de particiones en sí está en los bloques sucesivos
+		\item La cabecera GPT y la tabla de particiones están escritas al principio y al final del disco (redundancia)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{GPT (cont.)}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.3]{images/gpt.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Unified Extensible Firmware Interface}
+	\begin{itemize}
+		\item UEFI Forum
+		\begin{itemize}
+			\item Alianza entre varias compañias con el objetivo de modernizar el proceso de arranque
+			\item Representantes de AMD, American Megatrends, Apple, HP, Dell, IBM, Insyde Software, Intel, Lenovo, Microsoft, Phoenix Technologies
+			\item EFI es propiedad de Intel
+			\item UEFI es propiedad del UEFI Forum
+			\item UEFI aporta criptografía, autenticación de red y una interface gráfica
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{UEFI (cont.)}
+	\begin{itemize}
+		\item Define la ubicación de gestor de arranque
+		\item Define la interfaz entre el gestor de arranque y el firmware
+		\item Expone información para los gestores de arranque con:
+		\begin{itemize}
+			\item Información de hardware y configuración del firmware
+			\item Punteros a rutinas que implementan los servicios que el firmware ofrece a los bootloaders u otras aplicaciones UEFI
+			\item Provee un \textit{BootManager} para cargar aplicaciones UEFI (e.j.: Grub) y drivers desde un UEFI filesystem
+			\item El booloader ahora es un tipo de aplicación UEFI:
+			\begin{itemize}
+				\item El Grub será una aplicación UEFI, que reside en el UEFI filesystem donde están los drivers necesarios para arrancar el sistema operativo (FAT32)
+				\item Para el Grub deja de ser necesario el arranque en varias etapas.
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Secure Boot}
+	\begin{itemize}
+		\item Propone mecanismos para un arranque libre de código malicioso
+		\item Las aplicaciones y drivers UEFI (imágenes UEFI) son validadas para verificar que no fueron alteradas
+		\item Se utilizan pares de claves asimétricas
+		\item Se almacenan en el firmware una serie de claves publicas que sirven para validar que las imágenes estén firmadas por un proveedor autorizado
+		\item Si la clave privada está vencida o fue revocada la verificación puede fallar
+	\end{itemize}
+\end{frame}
