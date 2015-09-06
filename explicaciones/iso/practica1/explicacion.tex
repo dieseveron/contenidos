@@ -53,7 +53,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{¿GNU? (cont.)}
+	\frametitle{GNU}
 	\begin{itemize}
 		\item Si bien ya se venía trabajando en un núcleo conocido como \textit{TRIX}, es en 1988 que se decide abandonarlo debido a su complejidad (corría en hardware muy costoso)
 		\item En este momento se decide adoptar como base el núcleo \textit{MACH} para crear \textit{GNU Hurd}, el cual tampoco prosperó
@@ -64,7 +64,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{¿GNU? (cont.)}
+	\frametitle{GNU (cont.)}
 	\begin{itemize}
 		\item GNU se refiere a 4 libertades principales de los usuarios del software:
 		\begin{itemize}
@@ -583,7 +583,7 @@ initrd /initrd-2.6.26.img
 		\item Carga el programa de booteo (desde el MBR)
 		\item El gestor de arranque lanzado desde el MBC carga el Kernel:
 		\begin{itemize}
-			\item Prueba e inicializa los dispositivos ¿?¿?¿?¿?
+			\item Prueba e inicializa los dispositivos
 			\item Luegoo pasa el control al proceso \textbf{init}
 		\end{itemize}
 		\item El proceso de arranque se ve como una serie de pequeños programas de ejecución encadenada
@@ -594,8 +594,8 @@ initrd /initrd-2.6.26.img
 	\frametitle{Problemas del arranque basado en BIOS}
 	\begin{itemize}
 		\item Es de la década del 80
-		\item La última acción del BIOS es leer el MBC del MBR ¿?¿?¿
-		\item El firmware del BIOS no facilita la lectura de filesystems ¿??¿¿??¿?
+		\item La última acción del BIOS es leer el MBC del MBR
+		\item El firmware del BIOS no facilita la lectura de filesystems
 		\item El MBC no puede ocupar más de 446 bytes
 		\begin{itemize}
 			\item Por ejemplo Grub, utiliza los 446 bytes del MBR y luego utiliza sectores del disco adyacentes que deberían estar libres (\textit{MBR gap})
