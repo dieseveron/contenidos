@@ -295,7 +295,7 @@ $ chmod 755 /tmp/script
 	\item Se carga el gestor de arranque (MBC)
 	\item El bootloader carga el \textit{kernel} y el \textit{initrd}
 	\item Se monta el initrd como sistema de archivos raíz y se inicializan componentes esenciales (ej.: scheduler)
-	\item Se ejecuta el proceso \textit{init} y se desmonta el initrd
+	\item El Kernel ejecuta el proceso \textit{init} y se desmonta el initrd
 	\item Se lee el /etc/inittab
 	\item Se ejecutan los scripts apuntados por el \textit{runlevel 1}
 	\item El final del runlevel 1 le indica que vaya al runlevel por defecto
@@ -305,7 +305,7 @@ $ chmod 755 /tmp/script
 \end{frame}
 
 \begin{frame}
-  \frametitle{Proceso de arranque (cont.)}
+  \frametitle{\textbf{init}}
   \begin{enumerate}
 	\item Su función es cargar todos los subprocesos necesarios para el correcto funcionamiento del SO
 	\item El proceso init posee el PID 1 y se encuentra en /sbin/init
