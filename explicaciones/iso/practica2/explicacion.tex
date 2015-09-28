@@ -536,7 +536,7 @@ S70x11-common
 		\item Agrupa conjunto de procesos relacionados (por ejemplo, un servidor web Apache con sus dependientes)
 		\item Tareas que realiza:
 		\begin{itemize}
-			\item Tracking grupal $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
+			\item Tracking mediante subsistema cgroups $\rightarrow$ no se utiliza el PID $\rightarrow$ doble \emph{fork} no funciona para escapar de systemd
 			\item Limitar el uso de recursos
 			\item etc.
 		\end{itemize}
