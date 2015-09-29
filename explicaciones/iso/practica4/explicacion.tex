@@ -1,0 +1,153 @@
+\begin{frame}
+  \frametitle{Definición Procesos}
+  \begin{itemize}
+	  \item Programa en ejecución
+	  \item Los conceptos de tarea, job y proceso hacen referencia a lo mismo
+	  \item Según su historial de ejecución, los podemos clasificar en:
+	  \begin{itemize}
+	  	\item CPU Bound (ligados a la CPU)
+	  	\item I/O Bound (ligados a entrada/salida)
+	  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Definición Procesos (cont.)}
+  \begin{itemize}
+	  \item Programa
+	  \begin{itemize}
+	  	\item Es estático
+	  	\item No tiene program cunter
+	  	\item Existe desde que se edita hasta que se borra
+	  \end{itemize}
+	  \begin{figure}
+		    \includegraphics[scale=0.1]{images/process.png}
+	  \end{figure}
+	  \item Proceso
+	  \begin{itemize}
+	  	\item Es dinámico
+	  	\item Tiene program counter
+	  	\item Su ciclo de vida comprende desde que se lo ejecuta hasta que termina
+	  \end{itemize}
+	  \begin{figure}
+			\includegraphics[scale=0.1]{images/program.png}
+	  \end{figure}	  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Procesos - PCB}
+  \begin{itemize}
+	  \item Una por proceso
+	  \item Contiene información del proceso
+	  \item Es lo primero que se crea cuando se realiza un \textit{fork} y lo último que se desaloca cuando termina
+	  \begin{figure}
+			\includegraphics[scale=0.2]{images/pcb.png}
+	  \end{figure}	  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Procesos - Estados}
+  \begin{figure}
+		\includegraphics[scale=0.5]{images/statesProcess.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificadores}
+  \begin{itemize}
+	  \item Es la clave de la multiprogramación
+	  \item Esta diseñado de manera apropiada para cumplir las metas de:
+	  \begin{itemize}
+	  	\item Menor Tiempo de Respuesta
+	  	\item Mayor rendimiento
+	  	\item Uso eficiente del procesador
+	  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificadores - Tipos}
+  \begin{itemize}
+		\item \textit{Long term scheduler}: admite nuevos procesos a memoria (controla el grado de multirpogramación)
+		\item \textit{Medium term scheduler}: realiza el \emph{swapping} (intercambio) entre el disco y la memoria cuando el SO lo determina (puede disminuir el grado de multiprogramación)
+		\item \textit{Short term scheduler}: determina que proceso pasará a ejecutarse
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{comment}
+
+\begin{frame}[fragile]
+  \frametitle{Características - Configuración de discos (cont.)}
+  \begin{itemize}
+	  \item A futuro, todos los dispositivos llamados hdX serán denominados sdX $\leftarrow$ Introducido en Debian/Squeeze
+	  \item Por estas y otras razones se adoptan 4 mecanismos nuevos para nomenclar\footnote{\url{http://wiki.debian.org/Part-UUID}}:
+	  \begin{itemize}
+	  	\item Nombres persistentes por \textbf{UUID} (\small{Universal Unique Identifier}):
+	  	\begin{lstlisting}
+$ ls –l /dev/disk/by-uuid/
+2d781b26-0285-421a-b9d0-d4a0d3b55680 -> ../../sda1
+31f8eb0d-612b-4805-835e-0e6d8b8c5591 -> ../../sda7
+		\end{lstlisting}
+		\item Utilizando \textbf{labels}
+		\begin{lstlisting}
+$ ls -l /dev/disk/by-label
+data -> ../../sdb2
+data2 -> ../../sda2
+		\end{lstlisting}
+	  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Herramientas para particionar}
+  \begin{itemize}
+	  \item El particionado de un disco se lo puede realizar mediante:
+	  \begin{itemize}
+	  	\item Software destructivo: \textit{fdisk}
+	  	\item Software no destructivo: \textit{fips}, \textit{gparted}
+		\begin{figure}
+		    \includegraphics[scale=0.3]{images/gparted.png}
+		\end{figure}
+	  \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Permisos}
+  \begin{itemize}
+	  	\item Se aplican a directorios y archivos
+	  	\item Existen 3 tipos de permisos y se basan en una notación octal:
+	  	\begin{table}
+		      \centering
+		      \resizebox{10pc}{!}{
+			  \begin{tabular}{| c | c | c |}
+			      \hline
+			      \bf Permiso & \bf Valor & \bf Octal \\
+			      \hline
+			      Lectura & R & 4 \\
+			      \hline
+			      Escritura & W & 2 \\
+			      \hline
+			      Ejecución & X & 1 \\
+			      \hline
+			  \end{tabular}
+		      }
+		\end{table}
+		\item Se aplican sobre los usuarios:
+		\begin{itemize}
+			\item Usuario: permisos del dueño $\rightarrow$ \textbf{U}
+			\item Usuario: permisos del grupo $\rightarrow$ \textbf{G}
+			\item Usuario: permisos de otros usuario $\rightarrow$ \textbf{O}
+		\end{itemize}
+		\item Se utiliza el comando \textbf{chmod}:
+		\begin{lstlisting}
+$ chmod 755 /tmp/script
+		\end{lstlisting}
+  \end{itemize}
+\end{frame}
+\end{comment}
