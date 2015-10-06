@@ -114,7 +114,7 @@
 \begin{frame}
   \frametitle{Algoritmo \textbf{FIFO}}
   \begin{itemize}
-		\item Primero en entrar, primero en ser servido
+		\item Firs come first served
 		\item Cuando hay que elegir un proceso para ejecutar, se selecciona el mas viejo
 		\item No favorece a ningún tipo de procesos, pero en principio prodíamos decir que los \textit{CPU Bound} terminan al comenzar su primer ráfaga, mientras que los \textit{I/O Bound} no
   \end{itemize}
@@ -152,6 +152,44 @@ TAREA “4” PRIORIDAD=2
 [CPU,7]  
   \end{lstlisting}  
   \hspace{35pt} \textcolor{orange}{¿Cuáles serían los tiempos de retorno y espera?}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{SJF}}
+  \begin{itemize}
+  		\item Shortest Job First
+		\item Política \textit{nonpreemptive} que selecciona el proceso más corto
+		\item Procesos cortos se colocan delante de procesos largos
+		\item Los procesos largos pueden sufrir \textit{starvation} (inanición)
+  		\pause
+  		\item \textcolor{orange}{Veamos el ejemplo anterior}	
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{RR}}
+  \begin{itemize}
+  		\item Round Robin
+		\item Politica basada en un reloj
+		\item \textbf{Quantum (Q)}: medida que determina cuanto tiempo podrá usar el procesador cada preceso:
+		\begin{itemize}
+			\item Pequeño: overhead de \textit{context switch}
+			\item Grande: ¿pensar?
+		\end{itemize}
+		\item Cuando un proceso es expulsado de la \textit{CPU} es colocado al final de la \textit{Ready Queue} y se selecciona otro (\textit{FIFO circular})
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{RR} (cont.)}
+  \begin{itemize}
+  		\item Existe un ``contador'' que indica las unidades de CPU en las que el proceso se ejecuto. Cuando el mismo llega a 0 el proceso es expulsado
+		\item Existen dos variantes con respecto al valor inicial del ``contador'' cuando un proceso es asignado a la CPU:
+		\begin{itemize}
+			\item \textbf{Timer Variable}
+			\item \textbf{Timer Fijo}
+		\end{itemize}
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
