@@ -76,6 +76,83 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Planificadores y Estados}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/statesSchedulers.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificadores y Colas}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/queuesSchedulers.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempos de los procesos}
+  \begin{itemize}
+		\item \textbf{Retorno}: tiempo que transcurre entre que el proceso llega al sistema hasta que completa su ejecución
+		\item \textbf{Espera}: tiempo que el proceso se encuentra en el sistema esperando, es decir el tiempo que pasa sin ejecutarse (\textbf{TR - Tcpu})
+		\item \textbf{Promedios}: tiempos promedio de los anteriores
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Apropiación vs No Apropiación}
+  \begin{itemize}
+		\item \textbf{Nonpreemptive}: una vez que un proceso esta en estado de ejecución, continua hasta que termina o se bloquea por algún evento (e.j. I/O)
+		\item \textbf{Preemptive}: el proceso en ejecución puede ser interrumpido y llevado a la cola de listos:
+		\begin{itemize}
+			\item Mayor overhead pero mejor servicio
+			\item Un proceso no monopoliza el procesador
+		\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{FIFO}}
+  \begin{itemize}
+		\item Primero en entrar, primero en ser servido
+		\item Cuando hay que elegir un proceso para ejecutar, se selecciona el mas viejo
+		\item No favorece a ningún tipo de procesos, pero en principio prodíamos decir que los \textit{CPU Bound} terminan al comenzar su primer ráfaga, mientras que los \textit{I/O Bound} no
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Algoritmo \textbf{FIFO} (cont.)}
+  \begin{table}
+      \centering
+      \resizebox{15pc}{!}{
+	  \begin{tabular}{| c | c | c | c |}
+	      \hline
+	      \bf Job & \bf Llegada & \bf CPU & \bf Prioridad \\
+	      \hline
+	      1 & 0 & 9 & 3 \\
+	      \hline
+	      2 & 1 & 5 & 2 \\
+	      \hline
+	      3 & 2 & 3 & 1 \\
+	      \hline
+	      4 & 3 & 7 & 2 \\
+	      \hline
+	  \end{tabular}
+      }
+  \end{table}  
+  \begin{lstlisting}
+#Ejemplo 1
+TAREA “1” PRIORIDAD=3
+[CPU,9]
+TAREA “2” PRIORIDAD=2
+[CPU,5]
+TAREA “3” PRIORIDAD=1
+[CPU,3]
+TAREA “4” PRIORIDAD=2
+[CPU,7]  
+  \end{lstlisting}  
+  \hspace{35pt} \textcolor{orange}{¿Cuáles serían los tiempos de retorno y espera?}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
