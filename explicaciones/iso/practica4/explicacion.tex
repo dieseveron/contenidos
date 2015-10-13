@@ -192,6 +192,70 @@ TAREA “4” PRIORIDAD=2
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Algoritmo \textbf{RR - Timer Variable}}
+  \begin{itemize}
+  		\item El ``contador'' se inicializa en Q (contador := Q) cada vez que un proceso es asignado a la \emph{CPU}
+		\item Es el más utilizado
+		\item Utilizado por el simulador
+		\pause
+		\item \textcolor{orange}{Veamos el ejemplo 1 nuevmanete}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{RR - Timer Fijo}}
+  \begin{itemize}
+  		\item El ``contador'' se inicializa en Q cuando su valor es cero
+  		\begin{itemize}
+  			\item if (contador == 0) contador = Q;
+  		\end{itemize}
+		\item Se puede ver como un valor de Q compartido entre los procesos
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{RR} (cont.)}
+	\begin{figure}
+	    \includegraphics[scale=0.4]{images/ejemploRR.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo con Uso de Prioridades}
+  \begin{itemize}
+  		\item Cada proceso tiene un valor que representa su prioridad $\rightarrow$ menor valor, mayor prioridad
+		\item Se selecciona el proceso de mayor prioridad de los que se encuentran ela \emph{Ready Queue}
+		\item Existe una \emph{Ready Queue} por cada nivel de prioridad
+		\item Procesos de baja prioridad pueden sufrir \emph{starvation} (inanición)
+		\begin{itemize}
+			\item Solución: permitir a un proceso cambiar su prioridad durante su ciclo de vida $\rightarrow$ \textbf{Aging}
+		\end{itemize}
+		\item Es un algoritmo \textbf{preemptive}
+		\pause
+		\item \textcolor{orange}{Veamos el ejemplo 1 nuevamente}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo con Uso de Prioridades (cont.)}
+	\begin{figure}
+	    \includegraphics[scale=0.4]{images/priorities.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{SRTF}}
+  \begin{itemize}
+  		\item Shortest Remaining Time First  		
+		\item Versión \emph{preemptive} de \textit{SJF}
+		\item Selecciona el proceso al cual le resta menos tiempo de ejecución en su siguiente ráfaga.
+		\begin{itemize}
+			\item También puede ser por el tiempo dedicado a la siguiente ráfaga
+		\end{itemize}
+  \end{itemize}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{comment}
