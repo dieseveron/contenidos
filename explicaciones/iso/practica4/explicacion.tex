@@ -142,13 +142,13 @@
   \end{table}  
   \begin{lstlisting}
 #Ejemplo 1
-TAREA “1” PRIORIDAD=3
+TAREA ''1'' PRIORIDAD=3
 [CPU,9]
-TAREA “2” PRIORIDAD=2
+TAREA ''2'' PRIORIDAD=2
 [CPU,5]
-TAREA “3” PRIORIDAD=1
+TAREA ''3'' PRIORIDAD=1
 [CPU,3]
-TAREA “4” PRIORIDAD=2
+TAREA ''4'' PRIORIDAD=2
 [CPU,7]  
   \end{lstlisting}  
   \hspace{35pt} \textcolor{orange}{¿Cuáles serían los tiempos de retorno y espera?}
@@ -158,7 +158,7 @@ TAREA “4” PRIORIDAD=2
   \frametitle{Algoritmo \textbf{SJF}}
   \begin{itemize}
   		\item Shortest Job First
-		\item Política \textit{nonpreemptive} que selecciona el proceso más corto
+		\item Política \textit{nonpreemptive} que selecciona el proceso con la ráfaga más corto
 		\item Procesos cortos se colocan delante de procesos largos
 		\item Los procesos largos pueden sufrir \textit{starvation} (inanición)
   		\pause
@@ -222,7 +222,7 @@ TAREA “4” PRIORIDAD=2
 \end{frame}
 
 \begin{frame}
-  \frametitle{Algoritmo con Uso de Prioridades}
+  \frametitle{Algoritmo con \textbf{Uso de Prioridades}}
   \begin{itemize}
   		\item Cada proceso tiene un valor que representa su prioridad $\rightarrow$ menor valor, mayor prioridad
 		\item Se selecciona el proceso de mayor prioridad de los que se encuentran ela \emph{Ready Queue}
@@ -250,83 +250,180 @@ TAREA “4” PRIORIDAD=2
   		\item Shortest Remaining Time First  		
 		\item Versión \emph{preemptive} de \textit{SJF}
 		\item Selecciona el proceso al cual le resta menos tiempo de ejecución en su siguiente ráfaga.
-		\begin{itemize}
-			\item También puede ser por el tiempo dedicado a la siguiente ráfaga
-		\end{itemize}
-  \end{itemize}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{comment}
-
-\begin{frame}[fragile]
-  \frametitle{Características - Configuración de discos (cont.)}
-  \begin{itemize}
-	  \item A futuro, todos los dispositivos llamados hdX serán denominados sdX $\leftarrow$ Introducido en Debian/Squeeze
-	  \item Por estas y otras razones se adoptan 4 mecanismos nuevos para nomenclar\footnote{\url{http://wiki.debian.org/Part-UUID}}:
-	  \begin{itemize}
-	  	\item Nombres persistentes por \textbf{UUID} (\small{Universal Unique Identifier}):
-	  	\begin{lstlisting}
-$ ls –l /dev/disk/by-uuid/
-2d781b26-0285-421a-b9d0-d4a0d3b55680 -> ../../sda1
-31f8eb0d-612b-4805-835e-0e6d8b8c5591 -> ../../sda7
-		\end{lstlisting}
-		\item Utilizando \textbf{labels}
-		\begin{lstlisting}
-$ ls -l /dev/disk/by-label
-data -> ../../sdb2
-data2 -> ../../sda2
-		\end{lstlisting}
-	  \end{itemize}
+		\item ¿A qué tipos de procesos favorece?
+		\pause
+		\textbf{$\rightarrow$ I/O Bound}
+		\pause
+		\item \textcolor{orange}{Veamos el ejemplo 1 nuevamente}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Herramientas para particionar}
+  \frametitle{Algoritmos de planificación - CPU + I/O}
   \begin{itemize}
-	  \item El particionado de un disco se lo puede realizar mediante:
-	  \begin{itemize}
-	  	\item Software destructivo: \textit{fdisk}
-	  	\item Software no destructivo: \textit{fips}, \textit{gparted}
-		\begin{figure}
-		    \includegraphics[scale=0.3]{images/gparted.png}
-		\end{figure}
-	  \end{itemize}
+  		\item Ciclo de vida de un proceso: uso de CPU + operaciones de I/O
+		\item Cada dispositivo tiene su cola de procesos en espera $\rightarrow$ un scheduler por cada cola
+		\item Se considera I/O independiente de la CPU (DMA, PCI, etc.) $\rightarrow$ uso de CPU y operaciones de I/O en simultaneo
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmos de planificación - Criterios de desempate}
+  \begin{itemize}
+  		\item Orden de aplicación:
+  		\begin{itemize}
+  			\item Orden de llegada de los procesos
+  			\item \textbf{PID} de los procesos
+  		\end{itemize}
+
+		\item Siempre se mantiene la misma politica
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Permisos}
+  \frametitle{Algoritmos de planificación - Un recurso por proceso}
+  \begin{table}
+      \centering
+      \resizebox{15pc}{!}{
+		  \begin{tabular}{| c | c | c | c |}
+		      \hline
+		      \bf Job & \bf Llegada & \bf CPU & \bf E/S (rec., inst., dur.) \\
+		      \hline
+		      1 & 0 & 5 & (R1, 3, 2) \\
+		      \hline
+		      2 & 1 & 4 & (R2, 2, 2) \\
+		      \hline
+		      3 & 2 & 3 & (R3, 2, 3) \\
+		      \hline
+		  \end{tabular}
+      }
+  \end{table}
+  \begin{lstlisting}
+#Ejemplo 2
+RECURSO ''R1''
+RECURSO ''R2''
+RECURSO ''R3''
+TAREA ''1'' INICIO=0
+[CPU,3] [1,2] [CPU,2]
+TAREA ''2'' INICIO=1
+[CPU,2] [2,2] [CPU,2]
+TAREA ''3'' INICIO=2
+[CPU,2] [3,3] [CPU,1]
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Algoritmos de planificación - Recurso compartido}
+  \begin{table}
+      \centering
+      \resizebox{15pc}{!}{
+		  \begin{tabular}{| c | c | c | c |}
+		      \hline
+		      \bf Job & \bf Llegada & \bf CPU & \bf E/S (rec., inst., dur.) \\
+		      \hline
+		      1 & 0 & 5 & (R1, 3, 3) \\
+		      \hline
+		      2 & 1 & 4 & (R1, 1, 2) \\
+		      \hline
+		      3 & 2 & 3 & (R2, 2, 3) \\
+		      \hline
+		  \end{tabular}
+      }
+  \end{table}
+  \begin{lstlisting}
+#Ejemplo 3
+RECURSO ''R1''
+RECURSO ''R1''
+TAREA ''1'' INICIO=0
+[CPU,3] [1,3] [CPU,2]
+TAREA ''2'' INICIO=1
+[CPU,1] [1,2] [CPU,3]
+TAREA ''3'' INICIO=2
+[CPU,2] [2,3] [CPU,1]
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Esquema \textbf{Colas Multinivel}}
   \begin{itemize}
-	  	\item Se aplican a directorios y archivos
-	  	\item Existen 3 tipos de permisos y se basan en una notación octal:
-	  	\begin{table}
-		      \centering
-		      \resizebox{10pc}{!}{
-			  \begin{tabular}{| c | c | c |}
-			      \hline
-			      \bf Permiso & \bf Valor & \bf Octal \\
-			      \hline
-			      Lectura & R & 4 \\
-			      \hline
-			      Escritura & W & 2 \\
-			      \hline
-			      Ejecución & X & 1 \\
-			      \hline
-			  \end{tabular}
-		      }
-		\end{table}
-		\item Se aplican sobre los usuarios:
-		\begin{itemize}
-			\item Usuario: permisos del dueño $\rightarrow$ \textbf{U}
-			\item Usuario: permisos del grupo $\rightarrow$ \textbf{G}
-			\item Usuario: permisos de otros usuario $\rightarrow$ \textbf{O}
-		\end{itemize}
-		\item Se utiliza el comando \textbf{chmod}:
-		\begin{lstlisting}
-$ chmod 755 /tmp/script
-		\end{lstlisting}
+  		\item Scheduler actuales $\rightarrow$ combinación de algoritmos vistos
+		\item La \emph{ready queue} es dividida en varias colas (similar a prioridades)		
+		\item Los procesos se colocan en las colas según una clasificación que realise el sistema operativo
+		\item Cada cola posee su propio algoritmo de planificación $\rightarrow$ \textbf{planificador horizontal}
+		\item A su vez existe un algoritmo que planifica las colas $\rightarrow$ \textbf{planificador vertical}
+		\item Retroalimentacion $\rightarrow$ un proceso puede cambiar de una cola a la otra
   \end{itemize}
 \end{frame}
-\end{comment}
+
+\begin{frame}
+  \frametitle{Esquema \textbf{Colas Multinivel} (ejemplo 1)}
+	\begin{figure}
+	    \includegraphics[scale=0.4]{images/multilevelSchemaExample1.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Esquema \textbf{Colas Multinivel} (ejemplo 2)}
+  \begin{itemize}
+  		\item El sistema consta de tres colas:
+  		\begin{itemize}
+  			\item Q0: se planifica con \emph{RR, q=8}
+  			\item Q1: se planifica con \emph{RR, q=16}
+  			\item Q2: se planifica con \emph{FCFS}
+  		\end{itemize}
+  		\item Para la planificacion se utilizan los siguientes criterios:
+  		\begin{itemize}
+  			\item Los procesos ingresan en la \emph{Q0}. Si no se utilizan los 8 cuantos el job es movido a la cola \emph{Q1}
+  			\item Para la cola \emph{Q1}, el comportamiento es similar a \emph{Q0}. Si un proceso no finaliza su ráfaga de 16 instantes, es movido a la cola \emph{Q2}
+  		\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Esquema \textbf{Colas Multinivel} (ejemplo 2 cont.)}
+	\begin{figure}
+    	\includegraphics[scale=0.4]{images/multilevelSchemaExample2.png}
+	\end{figure}
+	\begin{itemize}
+		\pause
+		\item \textcolor{orange}{¿A qué procesos beneficia el algoritmo?}
+		\pause
+		$\rightarrow$ \textbf{CPU Bound}
+	\pause  			
+		\item \textcolor{orange}{¿Puede ocurrir inanición?}
+	\pause
+		$\rightarrow$ Si, con los procesos ligados a \emph{E/S} si siempre llegan procesos ligados a \emph{CPU}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificación con múltiples procesadores}
+	\begin{itemize}
+		\item La planificación de CPU es más compleja cuando hay múltiples CPUs	
+		\item Este enfoque fue implementado inicialmente en \textit{Mainframes} y luego en \textit{PC}
+		\item La carga se divide entre distintas CPUs, logrando capacidades de procesamiento mayores
+		\item Si un procesador falla, el resto toma el control
+		\item La asignación de procesos a un procesador puede ser:
+		\begin{itemize}
+			\item \emph{Estática}: existe una afinidad de un proceso a una CPU
+			\item \emph{Dinámica}: la carga se comparte
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificación con múltiples procesadores (cont.)}
+	\begin{itemize}		
+		\item \emph{Clasificaciones}:
+		\begin{itemize}
+			\item \textbf{Procesadores homogéneos}: todas las CPUs son iguales. No existen ventajas físicas sobre el resto
+			\item \textbf{Procesadores heterogéneos}: cada procesador tiene su propia cola y algoritmo de planificación
+		\end{itemize}
+		\item \emph{Otra clasificación}:
+		\begin{itemize}
+			\item \textbf{Procesadores débilmente acoplados}: cada CPU tiene su propia memoria principal y canales
+			\item \textbf{Procesadores fuertenemente acoplados}:comparten memoria y canales
+			\item \textbf{Procesadores especializados}: uno o más procesadores principales de uso general y uno o más procesadores de uso específico
+		\end{itemize}		
+	\end{itemize}
+\end{frame}
