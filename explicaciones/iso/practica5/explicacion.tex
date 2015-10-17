@@ -55,7 +55,7 @@
 	  \item \textbf{Particiones Fijas}:
 	  \begin{itemize}
 	  	\item La memoria se divide en particiones o regiones de tamaño fijo $\rightarrow$ tamaños iguales o diferentes
-	  	\item Alojan un proceso en cada una
+	  	\item Alojan un único proceso
 	  	\item Cada proceso se coloca en alguna partición de acuerdo a algún criterio:
 	  	\begin{itemize}
 	  		\item \textbf{First Fit}
@@ -94,6 +94,104 @@
 	  	\item Solución $\rightarrow$ \emph{compactación} $\rightarrow$ muy costosa
 	  \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Paginación}}
+  \begin{itemize}
+  	  \item La memoria se divide en porciones de igual tamaño llamadas \textbf{marcos}
+	  \item El espacio de direcciones de los procesos se divide en porciones de igual tamaño denominadas \textbf{páginas}
+	  \item Tamaño página = tamaño marco = 512 bytes (generalmente)
+	  \item El SO mantiene una tabla de páginas para cada proceso, la cual contiene el marco donde se encuentra cada página
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - \textbf{Direccionamiento}}
+  \begin{figure}
+    \includegraphics[scale=0.5]{images/pagination1.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - \textbf{Direccionamiento} (cont.)}
+  \begin{itemize}
+  	  \item Un proceso en ejecución hace referencia a una dirección virtual $\rightarrow$ \emph{v = (p,d)}
+	  \item El SO busca la página \emph{p} en la \emph{tabla de páginas} del proceso y determina en que marco se encuentra
+	  \item La dirección de almacenamiento real se forma por la concatenación de \emph{p} y \emph{d}, donde \emph{p} es el número de página y \emph{d} es el desplazamiento
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - Ejemplo}
+  \begin{itemize}
+  	  \item Memoria administrada por sistema de paginacion
+	  \item Tamaño de página $\rightarrow$ 515 Bytes
+	  \item Cada dirección de memoria referencia a 1 Byte
+	  \item Los marcos en memoria principal se encuentran desde la dirección física 0
+	  \item Tenemos un proceso con un tamaño de 2000 Bytes y con la siguiente tabla de páginas
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - Ejemplo (cont.)}
+  \begin{figure}
+    \includegraphics[scale=0.2]{images/pagination2.png}
+  \end{figure}
+  \begin{itemize}
+  	\item Si tenemos una dirección \textbf{lógica}, por ejemplo 580:
+  	\begin{itemize}
+  		\item Para averiguar el número de página hacemos 580 div 512 = 1. Luego esta dirección corresponde a la página 1 que se encuentra en el marco 2
+  		\item Para averiguar el desplazamiento hacemos 580 mod 512 = 68
+  		\item La dirección física es 1024 + 68 = 1092
+  	\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - Ejemplo (cont.)}
+  \begin{figure}
+    \includegraphics[scale=0.2]{images/pagination3.png}
+  \end{figure}
+  \begin{itemize}
+  	\item Si tenemos una dirección \textbf{física}, por ejemplo 1092:
+  	\begin{itemize}
+  		\item Para averiguar el número de marco hacemos 1092 div 512 = 2. En el marco número 2 tenemos la página número 1
+  		\item Para averiguar el desplazamiento hacemos 1092 mod 512 = 68
+  		\item La dirección lógica es 512 + 68 = 580
+  	\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Segmentación}}
+  \begin{itemize}
+  	\item La segmentación básicamente la podemos ver como una mejora de la paginación (\emph{no hay F.I., sino externa})  	
+	\item Ahora la tabla de segmentos, además de tener la dirección de inicio del mismo, tiene la longitud o límite
+	\item Las direcciones lógicas constan de dos partes $\rightarrow$ un número de segmento \emph{s} y un desplazamiento \emph{d} dentro del segmento 
+
+	(\emph{0 $\langle$ d $\langle$ límite})
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.3]{images/segmentation.png}
+  \end{figure}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Memoria Virtual} con Paginación}
+  \begin{itemize}
+  	\item La técnica de pagiinación intenta alocar la mayor cantidad de páginas necesarias posibles
+	\item Cada vez que hay que alocar una página en un marco, se produce un \textbf{fallo de página} (page fault)
+	\item ¿Qué sucede si es necesario alocar una página y ya no hay espacio disponible?
+	\pause
+	\item Se debe seleccionar una página victima, para lo cual existen diversos algoritmos
+	\item ¿Cuál es el mejor algoritmo?:
+	\pause
+	\begin{itemize}
+		\item El que seleccione como página víctima aquella que no vaya a ser referenciada en un futuro próximo
+	\end{itemize}
+	\item La mayoria de los algoritmos predicen el comportamiento futuro mirando el comportamiento pasado
+  \end{itemize}  
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
