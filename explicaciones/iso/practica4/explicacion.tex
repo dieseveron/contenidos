@@ -21,7 +21,7 @@
 	  	\item Existe desde que se edita hasta que se borra
 	  \end{itemize}
 	  \begin{figure}
-		    \includegraphics[scale=0.1]{images/process.png}
+		    \includegraphics[scale=0.1]{images/program.png}
 	  \end{figure}
 	  \item Proceso
 	  \begin{itemize}
@@ -29,8 +29,8 @@
 	  	\item Tiene program counter
 	  	\item Su ciclo de vida comprende desde que se lo ejecuta hasta que termina
 	  \end{itemize}
-	  \begin{figure}
-			\includegraphics[scale=0.1]{images/program.png}
+	  \begin{figure}			
+			\includegraphics[scale=0.1]{images/process.png}
 	  \end{figure}	  
   \end{itemize}
 \end{frame}
@@ -70,9 +70,9 @@
 \begin{frame}
   \frametitle{Planificadores - Tipos}
   \begin{itemize}
-		\item \textit{Long term scheduler}: admite nuevos procesos a memoria (controla el grado de multirpogramación)
-		\item \textit{Medium term scheduler}: realiza el \emph{swapping} (intercambio) entre el disco y la memoria cuando el SO lo determina (puede disminuir el grado de multiprogramación)
-		\item \textit{Short term scheduler}: determina que proceso pasará a ejecutarse
+		\item \textbf{Long term scheduler}: admite nuevos procesos a memoria (controla el grado de multirpogramación)
+		\item \textbf{Medium term scheduler}: realiza el \emph{swapping} (intercambio) entre el disco y la memoria cuando el SO lo determina (puede disminuir el grado de multiprogramación)
+		\item \textbf{Short term scheduler}: determina que proceso pasará a ejecutarse
   \end{itemize}
 \end{frame}
 
@@ -159,6 +159,7 @@ TAREA ''4'' PRIORIDAD=2
   \begin{itemize}
   		\item Shortest Job First
 		\item Política \textit{nonpreemptive} que selecciona el proceso con la ráfaga más corto
+		\item Calculo basado en la ejecución previa
 		\item Procesos cortos se colocan delante de procesos largos
 		\item Los procesos largos pueden sufrir \textit{starvation} (inanición)
   		\pause
@@ -184,6 +185,11 @@ TAREA ''4'' PRIORIDAD=2
   \frametitle{Algoritmo \textbf{RR} (cont.)}
   \begin{itemize}
   		\item Existe un ``contador'' que indica las unidades de CPU en las que el proceso se ejecuto. Cuando el mismo llega a 0 el proceso es expulsado
+		\item El ``contador'' puede ser:
+		\begin{itemize}
+			\item Global
+			\item Local $\rightarrow$ \textit{PCB}
+		\end{itemize}  		
 		\item Existen dos variantes con respecto al valor inicial del ``contador'' cuando un proceso es asignado a la CPU:
 		\begin{itemize}
 			\item \textbf{Timer Variable}
@@ -231,7 +237,7 @@ TAREA ''4'' PRIORIDAD=2
 		\begin{itemize}
 			\item Solución: permitir a un proceso cambiar su prioridad durante su ciclo de vida $\rightarrow$ \textbf{Aging}
 		\end{itemize}
-		\item Es un algoritmo \textbf{preemptive}
+		\item Puede ser un algoritmo \textbf{preemptive} o no
 		\pause
 		\item \textcolor{orange}{Veamos el ejemplo 1 nuevamente}
   \end{itemize}
@@ -403,11 +409,32 @@ TAREA ''3'' INICIO=2
 		\item Este enfoque fue implementado inicialmente en \textit{Mainframes} y luego en \textit{PC}
 		\item La carga se divide entre distintas CPUs, logrando capacidades de procesamiento mayores
 		\item Si un procesador falla, el resto toma el control
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificación con múltiples procesadores: \textbf{Criterios}}
+	\begin{itemize}
+		\item Planificación temporal $\rightarrow$ que proceso ejecutar
+		\item Planificación espacial $\rightarrow$ en que procesador ejecutar el proceso:		
+		\begin{itemize}
+			\item \textbf{Huella}: estado que el proceso va dejando en la cache de un procesador
+			\item \textbf{Afinidad}: preferencia de un proceso para ejecutar en un procesador 
+		\end{itemize}
 		\item La asignación de procesos a un procesador puede ser:
 		\begin{itemize}
-			\item \emph{Estática}: existe una afinidad de un proceso a una CPU
-			\item \emph{Dinámica}: la carga se comparte
+			\item \textbf{Estática}: existe una afinidad de un proceso a una CPU
+			\item \textbf{Dinámica}: la carga se comparte $\rightarrow$ balanceo de carga
 		\end{itemize}
+		\item La política puede ser:
+		\begin{itemize}
+			\item \textbf{Tiempo compartido}: se puede cosiderar una \emph{cola global} o una \emph{cola local} a cada procesado
+			\item \textbf{Espacio compartido}:
+			\begin{itemize}
+				\item \textbf{Grupos} (\emph{threads})
+				\item \textbf{Particiones}
+			\end{itemize}
+		\end{itemize}		
 	\end{itemize}
 \end{frame}
 
@@ -422,7 +449,7 @@ TAREA ''3'' INICIO=2
 		\item \emph{Otra clasificación}:
 		\begin{itemize}
 			\item \textbf{Procesadores débilmente acoplados}: cada CPU tiene su propia memoria principal y canales
-			\item \textbf{Procesadores fuertenemente acoplados}:comparten memoria y canales
+			\item \textbf{Procesadores fuertenemente acoplados}: comparten memoria y canales
 			\item \textbf{Procesadores especializados}: uno o más procesadores principales de uso general y uno o más procesadores de uso específico
 		\end{itemize}		
 	\end{itemize}
