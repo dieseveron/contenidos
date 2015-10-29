@@ -99,10 +99,10 @@
 \begin{frame}
   \frametitle{\textbf{Paginación}}
   \begin{itemize}
-  	  \item La memoria se divide en porciones de igual tamaño llamadas \textbf{marcos}
+  	  \item La memoria se divide en porciones de igual tamaño llamadas \emph{\emph{marco}}
 	  \item El espacio de direcciones de los procesos se divide en porciones de igual tamaño denominadas \textbf{páginas}
-	  \item Tamaño página = tamaño marco = 512 bytes (generalmente)
-	  \item El SO mantiene una tabla de páginas para cada proceso, la cual contiene el marco donde se encuentra cada página
+	  \item Tamaño página = tamaño \emph{marco} = 512 bytes (generalmente)
+	  \item El SO mantiene una tabla de páginas para cada proceso, la cual contiene el \emph{marco} donde se encuentra cada página
   \end{itemize}
 \end{frame}
 
@@ -117,7 +117,7 @@
   \frametitle{Paginación - \textbf{Direccionamiento} (cont.)}
   \begin{itemize}
   	  \item Un proceso en ejecución hace referencia a una dirección virtual $\rightarrow$ \emph{v = (p,d)}
-	  \item El SO busca la página \emph{p} en la \emph{tabla de páginas} del proceso y determina en que marco se encuentra
+	  \item El SO busca la página \emph{p} en la \emph{tabla de páginas} del proceso y determina en que \emph{marco} se encuentra
 	  \item La dirección de almacenamiento real se forma por la concatenación de \emph{p} y \emph{d}, donde \emph{p} es el número de página y \emph{d} es el desplazamiento
   \end{itemize}
 \end{frame}
@@ -128,7 +128,7 @@
   	  \item Memoria administrada por sistema de paginacion
 	  \item Tamaño de página $\rightarrow$ 515 Bytes
 	  \item Cada dirección de memoria referencia a 1 Byte
-	  \item Los marcos en memoria principal se encuentran desde la dirección física 0
+	  \item Los \emph{marco} en memoria principal se encuentran desde la dirección física 0
 	  \item Tenemos un proceso con un tamaño de 2000 Bytes y con la siguiente tabla de páginas
   \end{itemize}
 \end{frame}
@@ -141,7 +141,7 @@
   \begin{itemize}
   	\item Si tenemos una dirección \textbf{lógica}, por ejemplo 580:
   	\begin{itemize}
-  		\item Para averiguar el número de página hacemos 580 div 512 = 1. Luego esta dirección corresponde a la página 1 que se encuentra en el marco 2
+  		\item Para averiguar el número de página hacemos 580 div 512 = 1. Luego esta dirección corresponde a la página 1 que se encuentra en el \emph{marco} 2
   		\item Para averiguar el desplazamiento hacemos 580 mod 512 = 68
   		\item La dirección física es 1024 + 68 = 1092
   	\end{itemize}
@@ -156,7 +156,7 @@
   \begin{itemize}
   	\item Si tenemos una dirección \textbf{física}, por ejemplo 1092:
   	\begin{itemize}
-  		\item Para averiguar el número de marco hacemos 1092 div 512 = 2. En el marco número 2 tenemos la página número 1
+  		\item Para averiguar el número de \emph{marco} hacemos 1092 div 512 = 2. En el \emph{marco} número 2 tenemos la página número 1
   		\item Para averiguar el desplazamiento hacemos 1092 mod 512 = 68
   		\item La dirección lógica es 512 + 68 = 580
   	\end{itemize}
@@ -181,10 +181,10 @@
   \frametitle{\textbf{Memoria Virtual} con Paginación}
   \begin{itemize}
   	\item La técnica de pagiinación intenta alocar la mayor cantidad de páginas necesarias posibles
-	\item Cada vez que hay que alocar una página en un marco, se produce un \textbf{fallo de página} (page fault)
+	\item Cada vez que hay que alocar una página en un \emph{marco}, se produce un \textbf{fallo de página} (page fault)
 	\item ¿Qué sucede si es necesario alocar una página y ya no hay espacio disponible?
 	\pause
-	\item Se debe seleccionar una página victima, para lo cual existen diversos algoritmos
+	\item Se debe seleccionar una página víctima, para lo cual existen diversos algoritmos
 	\item ¿Cuál es el mejor algoritmo?:
 	\pause
 	\begin{itemize}
@@ -192,6 +192,166 @@
 	\end{itemize}
 	\item La mayoria de los algoritmos predicen el comportamiento futuro mirando el comportamiento pasado
   \end{itemize}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{Óptimo}}
+  \begin{itemize}
+  	\item Selecciona la página cuyo próxima referencia se encuentra más lejana a la actual
+	\item Imposible de implementar $\rightarrow$ no se conoce los futuros eventos	  	
+  \end{itemize}
+  \begin{table}
+	  \centering
+	  \resizebox{\textwidth}{!}{
+	  \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c |}
+	      \hline
+	      \bf Marco/Página & \bf 1 & \bf 2 & \bf 1 & \bf 3 & \bf 4 & \bf 1 & \bf 4 & \bf 3 & \bf 5 \\
+	      \hline
+	      \bf F1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & ? \\
+	      \hline
+	      \bf F2 &  & 2 & 2 & 2 & 4 & 4 & 4 & 4 & ? \\
+	      \hline
+	      \bf F3 &  &  &  & 3 & 3 & 3 & 3 & 3 & ? \\
+	      \hline
+	      \bf PF? & X & X &  & X & X &  &  &  & X \\
+	      \hline
+	  \end{tabular}
+	  }
+  \end{table}
+  \textcolor{orange}{Continuación de la secuencia: 4 6 3 5 8 1}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{LRU}}
+  \begin{itemize}
+  	\item El algoritmo \emph{LRU} (Least Recently User) reemplaza la página que no fue referenciada por más tiempo
+	\item Cada página debe tener información del instante de su última referencia $\rightarrow$ el overhead es mayor
+  \end{itemize}
+  \begin{table}
+	  \centering
+	  \resizebox{\textwidth}{!}{
+	  \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c |}
+	      \hline
+	      \bf Marco/Página & \bf 1 & \bf 2 & \bf 1 & \bf 3 & \bf 4 & \bf 1 & \bf 4 & \bf 3 & \bf 5 \\
+	      \hline
+	      \bf F1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 5 \\
+	      \hline
+	      \bf F2 &  & 2 & 2 & 2 & 4 & 4 & 4 & 4 & 4 \\
+	      \hline
+	      \bf F3 &  &  &  & 3 & 3 & 3 & 3 & 3 & 3 \\
+	      \hline
+	      \bf PF? & X & X &  & X & X &  &  &  & X \\
+	      \hline
+	  \end{tabular}
+	  }
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{FIFO}}
+  \begin{itemize}
+  	\item El algoritmo \emph{FIFO} (Fist In First Out) trata a los \emph{frames} en uso como una cola circular
+	\item Simple de implementar
+	\item La página más vieja en la memoria es reemplazada
+	\item La página puede ser necesitada pronto
+  \end{itemize}
+  \begin{table}
+	  \centering
+	  \resizebox{\textwidth}{!}{
+	  \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c |}
+	      \hline
+	      \bf Marco/Página & \bf 1 & \bf 2 & \bf 1 & \bf 3 & \bf 4 & \bf 1 & \bf 4 & \bf 3 & \bf 5 \\
+	      \hline
+	      \bf F1 & 1 & 1 & 1 & 1 & 4 & 4 & 4 & 4 & 4 \\
+	      \hline
+	      \bf F2 &  & 2 & 2 & 2 & 2 & 1 & 1 & 1 & 1 \\
+	      \hline
+	      \bf F3 &  &  &  & 3 & 3 & 3 & 3 & 3 & 5 \\
+	      \hline
+	      \bf PF? & X & X &  & X & X & X &  &  & X \\
+	      \hline
+	  \end{tabular}
+	  }
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{FIFO con segunda chande}}
+  \begin{itemize}
+  	\item Se utiliza un \emph{bit} adicional $\rightarrow$ bit de referencia
+	\item Cuando la página se carga en memoria, el \emph{bit R} se pone a 0
+	\item Cuando la página es referenciada el \emph{bit R} se pone en 1
+	\item La víctima se busca en orden \emph{FIFO}. Se selecciona la primer página cuyo \emph{bit R} esta en 0
+	\item Mientras se busca la víctima cada \emph{bit R} que tiene el valor 1, se cambia a 0
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmo \textbf{FIFO}}
+  \begin{itemize}
+  	\item El algoritmo \emph{FIFO} (Fist In First Out) trata a los \emph{frames} en uso como una cola circular
+	\item Simple de implementar
+	\item La página más vieja en la memoria es reemplazada
+	\item La página puede ser necesitada pronto
+  \end{itemize}
+  \begin{table}
+	  \centering
+	  \resizebox{\textwidth}{!}{
+	  \begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c | c |}
+	      \hline
+	      \bf Marco/Página & \bf 1 & \bf 2 & \bf 1 & \bf 3 & \bf 4 & \bf 1 & \bf 4 & \bf 3 & \bf 5 \\
+	      \hline
+	      \bf F1 & 1 & 1 & 1* & 1* & 1 & 1* & 1* & 1* & 1 \\
+	      \hline
+	      \bf F2 &  & 2 & 2 & 2 & 4 & 4 & 4* & 4* & 4 \\
+	      \hline
+	      \bf F3 &  &  &  & 3 & 3 & 3 & 3 & 3* & 5 \\
+	      \hline
+	      \bf PF? & X & X &  & X & X &  &  &  & X \\
+	      \hline
+	  \end{tabular}
+	  }
+  \end{table}
+  \textcolor{orange}{* = \emph{bit R} = 1}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - Asignación de \emph{marco}}
+  \begin{itemize}
+  	\item La asignación de \emph{marco} se puede realizar de dos modos:
+  	\begin{itemize}
+  		\item \textbf{Asignación Fija}: a cada proceso se le asigna una cantidad arbitraria de \emph{marco}. A su vez para el reparto se puede usar:
+  		\begin{itemize}
+  			\item \textbf{Reparto equitativo}: se asigna la misma cantidad de \emph{marcos} a cada proceso
+  			\item \textbf{Reparto proporcional}: se asignan \emph{marco} en base a la necesidad que tiene cada proceso
+  		\end{itemize}
+		\item \textbf{Asignación dinámica}: los procesos se van cargando en forma dinámica de acuerdo a la cantidad de marcos que necesiten		
+  	\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - Alcance del reemplazo}
+  \begin{itemize}
+  	\item Al momento de seleccionar una página víctima, podemos utilizar:
+  	\begin{itemize}
+  		\item \textbf{Reemplazo global}: el fallo de página de un proceso puede reemplazar la página de cualquier proceso
+		\item \textbf{Reemplazo local}: el fallo de página de un proceso solo puede reemplazar sus propias páginas
+  	\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - Descarga asincrónica de páginas}
+  \begin{itemize}
+  	\item El sistema operativo reserva uno o varios \emph{marco} para la descarga asincrónica de páginas
+  	\item Cuando es necesario descargar una página modificada:
+  	\begin{itemize}
+  		\item La página que provoco el fallo se coloca en un \emph{frame} designado a la descarga asincrónica
+		\item El SO envía la orden de descargar asincrónicamente la página modificada mientras continua la ejecución de otro proceso
+		\item El \emph{frame} de descarga asincrónica pasa a ser el que contenía a la página víctima que ya se descargó correctamente
+  	\end{itemize}
+  \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
