@@ -354,6 +354,59 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Descarga asincrónica de páginas (ejemplo}
+  \begin{itemize}
+  	\item \textcolor{orange}{Ejemplo de algoritmo \emph{FIFO}}
+	\begin{figure}
+	    \includegraphics[scale=0.2]{images/asyncDownload.png}
+	\end{figure}  	
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Paginación - \textbf{Performance}}
+  \begin{itemize}
+  	\item La técnica de paginación por demanda puede generar una degradación de rendimiento del sistema debido a que el reemplazo de páginas es costoso
+  	\item Tasa de \emph{page faults 0 $\langle$ p $\langle$ 1}:
+  	\begin{itemize}
+  		\item Si \emph{p = 0}, no hay \emph{page faults}
+		\item Si \emph{p = 1}, cada referencia es un \emph{page fault}
+  	\end{itemize}
+  	\item \emph{Effective Access Time}: medida utilizada para medir este costo:
+  	\begin{itemize}
+  		\item \textbf{Am} = tiempo de acceso a la memoria real
+  		\item \textbf{Tf} = tiempo de atención de un fallo de página
+  		\item \textbf{At} = tiempo de acceso a la tabla de páginas. Es igual al tiempo de acceso a la memoria (\emph{Am}) si la entrada de la tabla de páginas no se encuentra en la \emph{TLB} (cache donde residen las traducciones de direcciones realizadas)
+  	\end{itemize}
+  	\hspace{35pt} \textbf{TAE = At + ( 1 - p ) * Am + p * ( Tf + Am )}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Thrashing}}
+  \begin{itemize}
+  	\item \emph{Thrashing} (hiperpaginación):
+  	\begin{itemize}
+  		\item decimos que un sistema está en \emph{thrashing} cuando pasa más tiempo paginando que ejecutando procesos
+  	\end{itemize}
+  	\item Si un proceso cuenta con todos los \emph{frames}
+  	que necesita, no habría \emph{thrashing}
+  	\item Existen técnicas para evitarlo $\rightarrow$ estrategia de \emph{Working Set}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Working Set - \textbf{Modelo de Localidad}}
+  \begin{itemize}
+  	\item Las referencias a datos y programas dentro de un proceso tienden a agruparse
+  	\item La localidad de un proceso en un momento dado se da por el conjunto de páginas que son referenciadas en ese momento
+  	\item
+  	\item 
+  	\item
+  \end{itemize}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{comment}
