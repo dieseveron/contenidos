@@ -401,9 +401,25 @@
   \begin{itemize}
   	\item Las referencias a datos y programas dentro de un proceso tienden a agruparse
   	\item La localidad de un proceso en un momento dado se da por el conjunto de páginas que son referenciadas en ese momento
-  	\item
-  	\item 
-  	\item
+  	\item En cortos períodos de tiempo, el proceso necesitará pocas ``piezas'' del proceso (una página de instrucciones y otra de datos)
+  	\item Entonces se define una ventana de trabajo o \emph{working set} ($\Delta$) que contiene las referencias de memoria más recientes
+  	\item \textbf{Working Set}: es el conjunto de páginas que tienen las $\Delta$ referencias a páginas más recientes
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Selección del $\Delta$}
+  \begin{itemize}
+    \item $\Delta$ chico: no cubrirá la localidad. Toma muy pocas referencias
+    \item $\Delta$ grande: puede tomar varias localidades. Toma referencias de la localidad y algunas más, posiblemente viejas
+    \item Para determinar la medida del \emph{working set} debemos tener en cuenta:
+    \begin{itemize}
+      \item \emph{m} = cantidad de \emph{frames} disponibles
+      \item \emph{D} = demanda total de \emph{frames}
+      \item \emph{WSS$_i$} = medida del \emph{working set} del proceso$_i$
+      \item \emph{$\sum$ WSS$_i$} = \emph{D}
+      \item Si \emph{D $\rangle$ m} habrá \textbf{thrashing}
+    \end{itemize}    
   \end{itemize}
 \end{frame}
 
