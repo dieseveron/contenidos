@@ -103,6 +103,7 @@
 	  \item El espacio de direcciones de los procesos se divide en porciones de igual tamaño denominadas \textbf{páginas}
 	  \item Tamaño página = tamaño \emph{marco} = 512 bytes (generalmente)
 	  \item El SO mantiene una tabla de páginas para cada proceso, la cual contiene el \emph{marco} donde se encuentra cada página
+	  \item La paginación bajo demanda es una técnica eficiente de manejar esta estrategia $\rightarrow$ \emph{Thrashing}
   \end{itemize}
 \end{frame}
 
@@ -118,7 +119,7 @@
   \begin{itemize}
   	  \item Un proceso en ejecución hace referencia a una dirección virtual $\rightarrow$ \emph{v = (p,d)}
 	  \item El SO busca la página \emph{p} en la \emph{tabla de páginas} del proceso y determina en que \emph{marco} se encuentra
-	  \item La dirección de almacenamiento real se forma por la concatenación de \emph{p} y \emph{d}, donde \emph{p} es el número de página y \emph{d} es el desplazamiento
+	  \item La dirección de almacenamiento real se forma por la concatenación de la resolución de \emph{p} (dirección inicio del marco que aloca la página) y \emph{d}, donde \emph{p} es el número de página y \emph{d} es el desplazamiento
   \end{itemize}
 \end{frame}
 
@@ -180,8 +181,8 @@
 \begin{frame}
   \frametitle{\textbf{Memoria Virtual} con Paginación}
   \begin{itemize}
-  	\item La técnica de pagiinación intenta alocar la mayor cantidad de páginas necesarias posibles
-	\item Cada vez que hay que alocar una página en un \emph{marco}, se produce un \textbf{fallo de página} (page fault)
+  	\item La técnica de paginación intenta alocar la mayor cantidad de páginas necesarias posibles
+	\item Cada vez que hay que alocar una página en un \emph{marco}, se produce un \textbf{fallo de página} (page fault) $\rightarrow$ \emph{hard page fault}
 	\item ¿Qué sucede si es necesario alocar una página y ya no hay espacio disponible?
 	\pause
 	\item Se debe seleccionar una página víctima, para lo cual existen diversos algoritmos
@@ -322,8 +323,8 @@
   	\begin{itemize}
   		\item \textbf{Asignación Fija}: a cada proceso se le asigna una cantidad arbitraria de \emph{marco}. A su vez para el reparto se puede usar:
   		\begin{itemize}
-  			\item \textbf{Reparto equitativo}: se asigna la misma cantidad de \emph{marcos} a cada proceso
-  			\item \textbf{Reparto proporcional}: se asignan \emph{marco} en base a la necesidad que tiene cada proceso
+  			\item \textbf{Reparto equitativo}: se asigna la misma cantidad de \emph{marcos} a cada proceso $\rightarrow$ \textit{m div p}
+  			\item \textbf{Reparto proporcional}: se asignan \emph{marco} en base a la necesidad que tiene cada proceso $\rightarrow$ \textit{V$_p$ . m / V$_t$}
   		\end{itemize}
 		\item \textbf{Asignación dinámica}: los procesos se van cargando en forma dinámica de acuerdo a la cantidad de marcos que necesiten		
   	\end{itemize}
@@ -355,7 +356,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Descarga asincrónica de páginas (ejemplo}
+  \frametitle{Descarga asincrónica de páginas (ejemplo)}
   \begin{itemize}
   	\item \textcolor{orange}{Ejemplo de algoritmo \emph{FIFO}}
 	\begin{figure}
@@ -390,8 +391,7 @@
   	\begin{itemize}
   		\item decimos que un sistema está en \emph{thrashing} cuando pasa más tiempo paginando que ejecutando procesos
   	\end{itemize}
-  	\item Si un proceso cuenta con todos los \emph{frames}
-  	que necesita, no habría \emph{thrashing}
+  	\item Si un proceso cuenta con todos los \emph{frames} que necesita, no habría \emph{thrashing}. Salvo excepciones como la \emph{anomalía de \textbf{Belady}}
   	\item Existen técnicas para evitarlo $\rightarrow$ estrategia de \emph{Working Set}
   \end{itemize}
 \end{frame}
