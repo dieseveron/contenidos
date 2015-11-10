@@ -1,4 +1,55 @@
+\begin{frame}
+  \frametitle{Organización física de un \textbf{HDD}}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/disk1.png}
+  \end{figure}
+\end{frame}
 
+\begin{frame}
+  \frametitle{Organización física de un \textbf{HDD} (cont.)}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/disk2.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Organización física de un \textbf{HDD} (cont.)}
+  \begin{itemize}
+  	\item Cilindro N: todas las n-esimas pistas de todas las caras
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/cylinders.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Capacidad de un disco}
+  \begin{itemize}
+  	\item La capacidad de un disco esta dada por el producto de:
+  	\begin{itemize}
+  		\item Cantidad de caras: \emph{W}
+  		\item Cantidad de pistas: \emph{X}
+  		\item Cantidad de sectores por pista: \emph{Y}
+  		\item Tamaño de sector: \emph{Z}
+  	\end{itemize}
+
+  	\emph{capadidad = W * X * Y * Z}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Acceso a un disco}
+  \begin{itemize}
+  	\item Para realizar una \emph{E/S}, por ejemplo un acceso a disco, se requiere de una llamada al sistema (\textit{System Call}). En la misma se especifica:
+  	\begin{itemize}
+  		\item Tipo de operación (\emph{E} o \emph{S})
+  		\item Dirección en disco para la transferencia (file descriptor que se obtuvo al abrir un archivo)
+  		\item Dirección en memoria para la transferencia (de donde se lee o escribe)
+  		\item Número de \bytes a transferir
+  	\end{itemize}
+  	\item Este requerimiento es pasado, por el \textit{kernel}, al subsistema de \emph{E/S} quien lo traduce en: \textbf{(\#Cara, \#Cilindro, \#Sector)}
+  \end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
