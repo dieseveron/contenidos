@@ -51,6 +51,41 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco}
+  \begin{itemize}
+    \item El tiempo de acceso esta dado por:
+    \begin{itemize}
+      \item \textbf{Seek time} (posicionamiento): tiempo que tarda en posicionarse la cabeza en el cilindro 
+      \item \textbf{Latency time} (latencia): tiempo que sucede desde que la cabeza se posiciona en el cilindro hasta que el sector en cuestión pasa por debajo de la misma
+      \item \textbf{Transfer time} (transferencia): tiempo de transferencia del sector (bloque) del disco a la memoria
+    \end{itemize}    
+  \end{itemize}
+  \begin{figure}
+      \includegraphics[scale=0.4]{images/dat.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco (cont.)}
+  \begin{figure}
+      \includegraphics[scale=0.5]{images/dat2.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco (cont.)}
+  \begin{itemize}
+    \item \emph{Latency time} $\rightarrow$ si este tiempo no se conoce, se considera que es igual a lo que tarda el disco en dar media vuelta
+    \item Ejemplo. Disco de 5400 \rpm $\rightarrow$
+      \linebreak
+      \linebreak
+      \hspace{35pt} 5400 \_\_\_\_\_\_\_\_\_\_ 1' = 60'' = 60000 \ms 
+      \linebreak  
+      \hspace{35pt} 1/2  \_\_\_\_\_\_\_\_\_\_\_ x = 5,5 \ms    
+  \end{itemize}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{comment}
