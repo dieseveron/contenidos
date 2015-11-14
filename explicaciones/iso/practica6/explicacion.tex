@@ -80,11 +80,85 @@
     \item Ejemplo. Disco de 5400 \rpm $\rightarrow$
       \linebreak
       \linebreak
-      \hspace{35pt} 5400 \_\_\_\_\_\_\_\_\_\_ 1' = 60'' = 60000 \ms 
+      \hspace{35pt} \textcolor{orange}{\textbf{5400 vueltas \_\_\_\_\_\_\_\_\_\_ 1' = 60'' = 60000 \ms}}
       \linebreak  
-      \hspace{35pt} 1/2  \_\_\_\_\_\_\_\_\_\_\_ x = 5,5 \ms    
+      \hspace{35pt} \textcolor{orange}{\textbf{1/2 vuelta \_\_\_\_\_\_\_\_\_\_\_\_\_ x = 5,5 \ms}}
   \end{itemize}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco (cont.)}
+  \begin{itemize}
+    \item \textbf{Almacenamiento secuencial}:
+      \linebreak
+      \hspace{35pt} \emph{seek + latency + (tiempo\_transferencia\_bloque * \#bloques)}
+    \item \textbf{Almacenamiento aleatorio}:
+      \linebreak
+      \hspace{35pt} \emph{(seek + latency + tiempo\_transferencia\_bloque) * \#bloques}      
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Prefijos}
+  \begin{itemize}
+    \item Prefijos: nos permiten representar números largos de manera más reducida
+    \item Prefijos binarios: 
+    \begin{itemize}
+      \item Nos permiten crear múltiplos binarios (basados en potencias de 2)
+      \item Son similares, en concepto, aunque difieren en valor a los prefijos del \emph{Sistema Internacional} (SI) basados en potencias de 10
+      \item En la práctica se adopta el sistema de prefijos binarios
+    \end{itemize}  
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Prefijos - \textbf{Equivalencias}}
+  \begin{figure}
+      \includegraphics[scale=0.5]{images/si.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco - Ejemplos}
+  \begin{itemize}
+    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno
+    \item Si queremos calcular la capacidad total del disco, hacemos:
+    \linebreak
+    \linebreak
+    \emph{tamaño\_disco = \#caras * \#pistas\_cara * \#sectores\_pista * tamaño\_sector}
+    \linebreak
+    \linebreak
+    \textcolor{orange}{\textbf{(6 * 2) * 1500 * 700 * 256 \bytes = 225600000 \bytes = 3,00407 \gibishort\bytesshort (\gibi\bytes)}}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco - Ejemplos}
+  \begin{itemize}
+    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno
+    \item Si queremos cuantas caras ocupará un archivo de 513 \mebishort\bytes almacenado de manera contigua a partir del primer sector de la primer pista de una cara determinada:
+    \begin{itemize}
+      \item Calculamos la capacidad de 1 cara:
+      \linebreak      
+      \hspace{35pt} \textcolor{orange}{\textbf{1500 * 700 * 256 \bytes = 268800000 \bytes}}
+      \linebreak
+      \item Dividimos el tamaño del archivo por la capacidad de una cara:
+      \hspace{35pt} \textcolor{orange}{\textbf{513 \mebishort\bytesshort = 537919488 \bytes}}
+      \linebreak
+      \hspace{35pt} \textcolor{orange}{\textbf{537919488 / 268800000 = 2,00118  $\rightarrow$ 3 caras}}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un disco - Ejemplos}
+  \begin{itemize}
+    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno. El disco gira a 12600 \rpm, tiene un tiempo de posicionamiento (\textit{seek}) de 2 \milisegundos y una velocidad de transferencia de 15 \mebishort\bitsshort/\s (\mebi\bits por \segundo)
+    \item Si queremos saber cuantos \milisegundos se tardarían en transferir un archivo almacenado de manera contigua de 4500 sectores:
+    
+  \end{itemize}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
