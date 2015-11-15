@@ -80,9 +80,9 @@
     \item Ejemplo. Disco de 5400 \rpm $\rightarrow$
       \linebreak
       \linebreak
-      \hspace{35pt} \textcolor{orange}{\textbf{5400 vueltas \_\_\_\_\_\_\_\_\_\_ 1' = 60'' = 60000 \ms}}
+      \hspace{35pt} \textcolor{orange}{\textbf{5400 vueltas $\rightarrow$ 1' = 60'' = 60000 \ms}}
       \linebreak  
-      \hspace{35pt} \textcolor{orange}{\textbf{1/2 vuelta \_\_\_\_\_\_\_\_\_\_\_\_\_ x = 5,5 \ms}}
+      \hspace{35pt} \textcolor{orange}{\textbf{1/2 vuelta $\rightarrow$ x = 5,5 \ms}}
   \end{itemize}
 \end{frame}
 
@@ -155,7 +155,17 @@
   \begin{itemize}
     \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno. El disco gira a 12600 \rpm, tiene un tiempo de posicionamiento (\textit{seek}) de 2 \milisegundos y una velocidad de transferencia de 15 \mebishort\bitsshort/\s (\mebi\bits por \segundo)
     \item Si queremos saber cuantos \milisegundos se tardarían en transferir un archivo almacenado de manera contigua de 4500 sectores:
-    
+    \begin{itemize}
+      \item Latencia:
+      12600 vueltas $\rightarrow$ 1' = 60 \s = 60000 \ms
+      0,5 vueltas $\rightarrow$ x = 2,3809 \ms
+      \item Transferencia:
+      15 \mebishort\bits $\rightarrow$ 1 \s = 1000 \ms
+      256 \bytes $\rightarrow$ x
+      15728640 \bits $\rightarrow$ 1000 \ms
+      2048 \bits $\rightarrow$ x = 0,1302
+    \end{itemize}      
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
