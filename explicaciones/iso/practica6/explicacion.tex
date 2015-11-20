@@ -52,7 +52,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco}
+  \frametitle{Tiempo de acceso a un \textit{HDD}}
   \begin{itemize}
     \item El tiempo de acceso esta dado por:
     \begin{itemize}
@@ -67,14 +67,14 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco (cont.)}
+  \frametitle{Tiempo de acceso a un \textit{HDD} (cont.)}
   \begin{figure}
       \includegraphics[scale=0.5]{images/dat2.png}
   \end{figure}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco (cont.)}
+  \frametitle{Tiempo de acceso a un \textit{HDD} (cont.)}
   \begin{itemize}
     \item \emph{Latency time} $\rightarrow$ si este tiempo no se conoce, se considera que es igual a lo que tarda el disco en dar media vuelta
     \item Ejemplo. Disco de 5400 \rpm $\rightarrow$
@@ -87,7 +87,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco (cont.)}
+  \frametitle{Tiempo de acceso a un \textit{HDD} (cont.)}
   \begin{itemize}
     \item \textbf{Almacenamiento secuencial}:
       \linebreak
@@ -119,7 +119,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco - Ejemplos}
+  \frametitle{Capacidad un disco - \textbf{HDD}}
   \begin{itemize}
     \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno
     \item Si queremos calcular la capacidad total del disco, hacemos:
@@ -133,7 +133,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco - Ejemplos}
+  \frametitle{Ocupación sobre un \textit{HDD} - Ejemplo}
   \begin{itemize}
     \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno
     \item Si queremos cuantas caras ocupará un archivo de 513 \mebishort\bytes almacenado de manera contigua a partir del primer sector de la primer pista de una cara determinada:
@@ -151,24 +151,253 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Tiempo de acceso a un disco - Ejemplos}
+  \frametitle{Tiempo de acceso a un \textit{HDD} - Ejemplo}
   \begin{itemize}
     \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno. El disco gira a 12600 \rpm, tiene un tiempo de posicionamiento (\textit{seek}) de 2 \milisegundos y una velocidad de transferencia de 15 \mebishort\bitsshort/\s (\mebi\bits por \segundo)
-    \item Si queremos saber cuantos \milisegundos se tardarían en transferir un archivo almacenado de manera contigua de 4500 sectores:
+    \item Si queremos saber cuantos \milisegundos se tardarían en transferir un archivo \textbf{almacenado de manera contigua y aleatoria} de 4500 sectores
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tiempo de acceso a un \textit{HDD} - Ejemplo (cont.)}
+  \begin{itemize}    
+    \item Calculamos los datos que faltan:
     \begin{itemize}
       \item Latencia:
-      12600 vueltas $\rightarrow$ 1' = 60 \s = 60000 \ms
-      0,5 vueltas $\rightarrow$ x = 2,3809 \ms
+      \linebreak
+      \textcolor{orange}{\textbf{12600 vueltas $\rightarrow$ 1\msymbol = 60 \s = 60000 \ms}}
+      \linebreak
+      \textcolor{orange}{\textbf{0,5 vueltas $\rightarrow$ x = 2,3809 \ms}}
+      \linebreak
       \item Transferencia:
-      15 \mebishort\bits $\rightarrow$ 1 \s = 1000 \ms
-      256 \bytes $\rightarrow$ x
-      15728640 \bits $\rightarrow$ 1000 \ms
-      2048 \bits $\rightarrow$ x = 0,1302
-    \end{itemize}      
+      \linebreak
+      \textcolor{orange}{\textbf{15 \mebishort\bits $\rightarrow$ 1 \s = 1000 \ms}}
+      \linebreak
+      \textcolor{orange}{\textbf{256 \bytes $\rightarrow$ x}}
+      \linebreak
+      \linebreak
+      Unificamos unidades:
+      \linebreak
+      \textcolor{orange}{\textbf{15728640 \bits $\rightarrow$ 1000 \ms}}
+      \linebreak
+      \textcolor{orange}{\textbf{2048 \bits $\rightarrow$ x = 0,1302 \ms}}
     \end{itemize}
   \end{itemize}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Tiempo de acceso a un \textit{HDD} - Ejemplo (cont.)}
+  \begin{itemize}
+    \item Datos obtenidos:
+    \begin{itemize}
+      \item Seek time: 2 \ms
+      \item Latency time: 2,3809 \ms
+      \item Tiempo transferencia bloque: 0,1302 \ms
+      \item \#bloques: 4500 $\rightarrow$ eventualmente se tienen que calcular
+    \end{itemize}
+    \item Resultados:
+    \begin{itemize}
+      \item Almacenamiento secuencial:
+      \linebreak
+      \textcolor{orange}{\textbf{seek + latency + tiempo\_transferencia\_bloque * \#bloques}}
+      \linebreak
+      \textcolor{orange}{\textbf{2 + 2,3809 + 0,1302 * 4500 = 590,2809 \ms}}      
+      \item Almacenamiento aleatorio:
+      \linebreak
+      \textcolor{orange}{\textbf{(seek + latency + tiempo\_transferencia\_bloque) * \#bloques}}        
+      \linebreak
+      \textcolor{orange}{\textbf{(2 + 2,3809 + 0,1302) * 4500 = 20299,95 \ms}}
+      \linebreak
+    \end{itemize}
+  \end{itemize} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planificación de requerimientos de un \textit{HDD}}
+  \begin{itemize}
+    \item Seek time $\rightarrow$ parámetro que más influye en el tiempo de acceso al disco
+    \item El sitema operativo:
+    \begin{itemize}
+      \item Es responsable de utilizar el hardware en forma eficiente. Para los discos, esto significa obtener el menor tiempo de atención de los requerimientos
+      \item Debe por lo tanto minimizar el tiempo de \textit{seek} $\rightarrow$ implica menor distancia de recorrido por el brazo
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmos de planificación en un \textit{HDD}}
+  \begin{itemize}
+    \item Objetivo: minimizar el movimiento de la cabeza
+    \item Como: ordenando lógicamente los requerimientos pendientes (\emph{que estan en la cola}) al disco, considerando el número de cilindro de cada requerimiento. En cualquier momento se pueden encolar nuevo movimientos
+    \item La atención de requerimientos a pistas duplicadas se resuelven según el algoritmo de planificación:
+    \begin{itemize}
+      \item \textbf{FCFS}: se atienden de manera separada (tantas veces como se requieran). Por ejemplo, si tengo \{10, 40, 70, 10\}, al 10 lo atiendo 2 veces
+      \item \textbf{SSTF}/\textbf{SCAN}/\textbf{LOOK}/\textbf{C-SCAN}/\textbf{C-LOOK}: se atienden de manera consecutiva
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmos - Ejemplo de enunciado sin \textbf{page faults}}
+  \begin{itemize}
+    \item Cantidad de pistas: 200 (0..199)
+    \item Requerimientos en la cola: \{98 , 183 , 37, 122, 14, 124, 65, 67\}
+    \item Viene de: pista 61
+    \item Ubicación actual del cabezal: pista 53 $\rightarrow$ derecha-izquierda
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{First Come First Served}}
+  \begin{itemize}
+    \item \textbf{FCFS}: atiende los requerimientos por orden de llegada
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/fifo1.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 640}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Sortest Seek Time First}}
+  \begin{itemize}
+    \item \textbf{SSTF}: selecciona el requerimiento que requiere el menor movimiento del cabezal
+  \end{itemize}
+  %\begin{figure}
+  %  \includegraphics[scale=0.4]{images/sstf1.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 235}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{SCAN}}
+  \begin{itemize}
+    \item \textbf{SCAN}: barre el disco en una dirección atendiendo los requerimientos pendientes en esa ruta hasta llegar a la última pista y cambia la dirección. Es \textbf{importante} saber en que pista se \textbf{esta} y de que pista se \textbf{viene} para determinar el sentido del cabezal
+  \end{itemize}
+  %\begin{figure}
+  %  \includegraphics[scale=0.4]{images/scan1.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 236}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{LOOK}}
+  \begin{itemize}
+    \item \textbf{LOOK}: se comporta igual que el \textit{SCAN} pero no llega hasta la última pista del disco sobre la dirección actual sino que llega hasta el último requerimiento de la dirección actual
+  \end{itemize}
+  %\begin{figure}
+  %  \includegraphics[scale=0.4]{images/look1.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 236}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Circular SCAN}}
+  \begin{itemize}
+    \item \textbf{C-SCAN}: se comporta igual que el \textit{SCAN} pero restringe la atención en un solo sentido. Al llegar a la última pista del disco en el sentido actual vuelve a la pista del otro extremo (\textbf{salto} $\rightarrow$ no se cuentan los movimientos) y sigue barriendo en el mismo sentido
+  \end{itemize}
+  %\begin{figure}
+  %  \includegraphics[scale=0.4]{images/cscan1.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 187}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Circular LOOK}}
+  \begin{itemize}
+    \item \textbf{C-LOOK}: se comporta igual que el \textit{LOOK} pero restringe la atención en un solo sentido. Al llegar a la  última pista de los requerimientos en el sentido actual vuelve a la primer pista más lejana del otro extremo (\textbf{salto} $\rightarrow$ no se cuentan los movimientos) y sigue barriendo en el mismo sentido
+  \end{itemize}
+  %\begin{figure}
+  %  \includegraphics[scale=0.4]{images/clook1.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 157}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmos - Atención de \textbf{PF}}
+  \begin{itemize}
+    \item Existen requerimientos especiales que deben atenderse con urgencia. Los \textit{fallos de página} indican simplemente que tienen mayor prioridad con respecto a los requerimientos convencionales, por lo tanto deben ser atendidos inmediatamente después del requerimiento que se esta atendiendo actualmente    
+    \item La lógica de atención de múltiples \textit{PF} se maneja según el algoritmo de planificación. Ejemplos:
+    \begin{itemize}
+      \item \textbf{FCFS}: Si tengo \{10, 40PF, 70PF, 10\}, primero se atiende al 40PF y luego al 70PF
+      \item \textbf{SSTF}: si tengo \{10, 40PF, 70PF, 10\} y estoy en la pista 65, primero atiendo al 70PF y luego al 40PF
+    \end{itemize}
+    \item En todos los algoritmos, los movimientos utilizados para atender estos requerimientos especiales deben ser contados
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmos - Atención de \textbf{PF (cont.)}}
+  \begin{itemize}
+    \item Una vez que no existan más requerimientos por \textit{page faults} en la cola, se procede:
+    \begin{itemize}
+      \item \textbf{FCFS}: en orden \textit{FCFS}
+      \item \textbf{SSTF}: en orden \textit{SSTF}
+      \item \textbf{SCAN}: con el sentido que determina la atención de los últimos dos requerimientos $\rightarrow$ puede cambiar de sentido
+      \item \textbf{C-SCAN}: con el sentido original $\rightarrow$ el sentido no cambia
+      \item \textbf{LOOK}: del mismo modo en que lo hace el \textit{SCAN}
+      \item \textbf{C-LOOK}: del mismo modo en que lo hace el \textit{C-SCAN}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Algoritmos - Ejemplo de enunciado con \textbf{page faults}}
+  \begin{itemize}
+    \item Cantidad de pistas: 100 (0..99)
+    \item Requerimientos en la cola: \{55 , 75 , \textcolor{red}{25$^{PF}$}, 45, 10\}. Luego de 30 movimientos \{\textcolor{red}{52$^{PF}$}, 60\} y luego de 10 movimientos más (40 desde el comienzo de la planificación) entra \{90, 10\}
+    \item Se se viene de la pista 15
+    \item Se esta atendiendo la pista 20 $\rightarrow$ izquierda-derecha
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{First Come First Served}}
+  %\begin{figure}
+  %  \includegraphics[scale=0.5]{images/fifo2.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Sortest Seek Time First}}
+  %\begin{figure}
+  %  \includegraphics[scale=0.5]{images/sstf2.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 180}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{SCAN}}
+  %\begin{figure}
+  %  \includegraphics[scale=0.5]{images/scan2.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{LOOK}}
+  %\begin{figure}
+  %  \includegraphics[scale=0.5]{images/look2.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Circular SCAN}}
+  %\begin{figure}
+  %  \includegraphics[scale=0.5]{images/cscan2.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Circular LOOK}}
+  %\begin{figure}
+  %  \includegraphics[scale=0.5]{images/clook2.png}
+  %\end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
