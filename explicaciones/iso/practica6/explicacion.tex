@@ -15,7 +15,7 @@
 \begin{frame}
   \frametitle{Organización física de un \textbf{HDD} (cont.)}
   \begin{itemize}
-  	\item Cilindro N: todas las n-esimas pistas de todas las caras
+    \item Cilindro N: todas las n-esimas pistas de todas las caras
   \end{itemize}
   \begin{figure}
     \includegraphics[scale=0.4]{images/cylinders.png}
@@ -25,29 +25,29 @@
 \begin{frame}
   \frametitle{Capacidad de un disco}
   \begin{itemize}
-  	\item La capacidad de un disco esta dada por el producto de:
-  	\begin{itemize}
-  		\item Cantidad de caras: \emph{W}
-  		\item Cantidad de pistas: \emph{X}
-  		\item Cantidad de sectores por pista: \emph{Y}
-  		\item Tamaño de sector: \emph{Z}
-  	\end{itemize}
+    \item La capacidad de un disco esta dada por el producto de:
+    \begin{itemize}
+      \item Cantidad de caras: \emph{W}
+      \item Cantidad de pistas: \emph{X}
+      \item Cantidad de sectores por pista: \emph{Y}
+      \item Tamaño de sector: \emph{Z}
+    \end{itemize}
 
-  	\emph{capadidad = W * X * Y * Z}
+    \emph{capadidad = W * X * Y * Z}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Acceso a un disco}
   \begin{itemize}
-  	\item Para realizar una \emph{E/S}, por ejemplo un acceso a disco, se requiere de una llamada al sistema (\textit{System Call}). En la misma se especifica:
-  	\begin{itemize}
-  		\item Tipo de operación (\emph{E} o \emph{S})
-  		\item Dirección en disco para la transferencia (file descriptor que se obtuvo al abrir un archivo)
-  		\item Dirección en memoria para la transferencia (de donde se lee o escribe)
-  		\item Número de \bytes a transferir
-  	\end{itemize}
-  	\item Este requerimiento es pasado, por el \textit{kernel}, al subsistema de \emph{E/S} quien lo traduce en: \textbf{(\#Cara, \#Cilindro, \#Sector)}
+    \item Para realizar una \emph{E/S}, por ejemplo un acceso a disco, se requiere de una llamada al sistema (\textit{System Call}). En la misma se especifica:
+    \begin{itemize}
+      \item Tipo de operación (\emph{E} o \emph{S})
+      \item Dirección en disco para la transferencia (file descriptor que se obtuvo al abrir un archivo)
+      \item Dirección en memoria para la transferencia (de donde se lee o escribe)
+      \item Número de \bytes a transferir
+    \end{itemize}
+    \item Este requerimiento es pasado, por el \textit{kernel}, al subsistema de \emph{E/S} quien lo traduce en: \textbf{(\#Cara, \#Cilindro, \#Sector)}
   \end{itemize}
 \end{frame}
 
@@ -263,31 +263,31 @@
   \begin{itemize}
     \item \textbf{SSTF}: selecciona el requerimiento que requiere el menor movimiento del cabezal
   \end{itemize}
-  %\begin{figure}
-  %  \includegraphics[scale=0.4]{images/sstf1.png}
-  %\end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/sstf1.png}
+  \end{figure}
   \hspace{35pt} \textcolor{orange}{Movimientos: 235}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{SCAN}}
   \begin{itemize}
-    \item \textbf{SCAN}: barre el disco en una dirección atendiendo los requerimientos pendientes en esa ruta hasta llegar a la última pista y cambia la dirección. Es \textbf{importante} saber en que pista se \textbf{esta} y de que pista se \textbf{viene} para determinar el sentido del cabezal
+    \item \textbf{SCAN}: barre el disco en una dirección atendiendo los requerimientos pendientes en esa ruta hasta llegar a la última pista del disco y cambia la dirección. Es \textbf{importante} saber en que pista se \textbf{está} y de que pista se \textbf{viene} para determinar el sentido del cabezal
   \end{itemize}
-  %\begin{figure}
-  %  \includegraphics[scale=0.4]{images/scan1.png}
-  %\end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.3]{images/scan1.png}
+  \end{figure}
   \hspace{35pt} \textcolor{orange}{Movimientos: 236}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{LOOK}}
   \begin{itemize}
-    \item \textbf{LOOK}: se comporta igual que el \textit{SCAN} pero no llega hasta la última pista del disco sobre la dirección actual sino que llega hasta el último requerimiento de la dirección actual
+    \item \textbf{LOOK}: se comporta igual que el \textit{SCAN} pero no llega hasta la última pista del disco sobre la dirección actual sino que llega hasta el último requerimiento de la dirección actual. Es \textbf{importante} saber en que pista se \textbf{está} y de que pista se \textbf{viene} para determinar el sentido del cabezal
   \end{itemize}
-  %\begin{figure}
-  %  \includegraphics[scale=0.4]{images/look1.png}
-  %\end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.3]{images/look1.png}
+  \end{figure}
   \hspace{35pt} \textcolor{orange}{Movimientos: 236}
 \end{frame}
 
@@ -296,9 +296,9 @@
   \begin{itemize}
     \item \textbf{C-SCAN}: se comporta igual que el \textit{SCAN} pero restringe la atención en un solo sentido. Al llegar a la última pista del disco en el sentido actual vuelve a la pista del otro extremo (\textbf{salto} $\rightarrow$ no se cuentan los movimientos) y sigue barriendo en el mismo sentido
   \end{itemize}
-  %\begin{figure}
-  %  \includegraphics[scale=0.4]{images/cscan1.png}
-  %\end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.3]{images/cscan1.png}
+  \end{figure}
   \hspace{35pt} \textcolor{orange}{Movimientos: 187}
 \end{frame}
 
@@ -307,9 +307,9 @@
   \begin{itemize}
     \item \textbf{C-LOOK}: se comporta igual que el \textit{LOOK} pero restringe la atención en un solo sentido. Al llegar a la  última pista de los requerimientos en el sentido actual vuelve a la primer pista más lejana del otro extremo (\textbf{salto} $\rightarrow$ no se cuentan los movimientos) y sigue barriendo en el mismo sentido
   \end{itemize}
-  %\begin{figure}
-  %  \includegraphics[scale=0.4]{images/clook1.png}
-  %\end{figure}
+  \begin{figure}
+    \includegraphics[scale=0.3]{images/clook1.png}
+  \end{figure}
   \hspace{35pt} \textcolor{orange}{Movimientos: 157}
 \end{frame}
 
@@ -345,7 +345,7 @@
   \frametitle{Algoritmos - Ejemplo de enunciado con \textbf{page faults}}
   \begin{itemize}
     \item Cantidad de pistas: 100 (0..99)
-    \item Requerimientos en la cola: \{55 , 75 , \textcolor{red}{25$^{PF}$}, 45, 10\}. Luego de 30 movimientos \{\textcolor{red}{52$^{PF}$}, 60\} y luego de 10 movimientos más (40 desde el comienzo de la planificación) entra \{90, 10\}
+    \item Requerimientos en la cola: \{55 , 75 , \textcolor{red}{52$^{PF}$}, 45, 10\}. Luego de 30 movimientos \{\textcolor{red}{25$^{PF}$}, 60\} y luego de 10 movimientos más (40 desde el comienzo de la planificación) entra \{90, 10\}
     \item Se se viene de la pista 15
     \item Se esta atendiendo la pista 20 $\rightarrow$ izquierda-derecha
   \end{itemize}
@@ -353,123 +353,72 @@
 
 \begin{frame}
   \frametitle{\textbf{First Come First Served}}
-  %\begin{figure}
-  %  \includegraphics[scale=0.5]{images/fifo2.png}
-  %\end{figure}
-  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/fifo2.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 334}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{Sortest Seek Time First}}
-  %\begin{figure}
-  %  \includegraphics[scale=0.5]{images/sstf2.png}
-  %\end{figure}
-  \hspace{35pt} \textcolor{orange}{Movimientos: 180}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/sstf2.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 154}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{SCAN}}
-  %\begin{figure}
-  %  \includegraphics[scale=0.5]{images/scan2.png}
-  %\end{figure}
-  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/scan2.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 174}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{LOOK}}
-  %\begin{figure}
-  %  \includegraphics[scale=0.5]{images/look2.png}
-  %\end{figure}
-  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/look2.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 154}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{Circular SCAN}}
-  %\begin{figure}
-  %  \includegraphics[scale=0.5]{images/cscan2.png}
-  %\end{figure}
-  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/cscan2.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 143}
 \end{frame}
 
 \begin{frame}
   \frametitle{\textbf{Circular LOOK}}
-  %\begin{figure}
-  %  \includegraphics[scale=0.5]{images/clook2.png}
-  %\end{figure}
-  \hspace{35pt} \textcolor{orange}{Movimientos: ¿TODO?}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{comment}
-
-\begin{frame}[fragile]
-  \frametitle{Características - Configuración de discos (cont.)}
-  \begin{itemize}
-	  \item A futuro, todos los dispositivos llamados hdX serán denominados sdX $\leftarrow$ Introducido en Debian/Squeeze
-	  \item Por estas y otras razones se adoptan 4 mecanismos nuevos para nomenclar\footnote{\url{http://wiki.debian.org/Part-UUID}}:
-	  \begin{itemize}
-	  	\item Nombres persistentes por \textbf{UUID} (\small{Universal Unique Identifier}):
-	  	\begin{lstlisting}
-$ ls –l /dev/disk/by-uuid/
-2d781b26-0285-421a-b9d0-d4a0d3b55680 -> ../../sda1
-31f8eb0d-612b-4805-835e-0e6d8b8c5591 -> ../../sda7
-		\end{lstlisting}
-		\item Utilizando \textbf{labels}
-		\begin{lstlisting}
-$ ls -l /dev/disk/by-label
-data -> ../../sdb2
-data2 -> ../../sda2
-		\end{lstlisting}
-	  \end{itemize}
-  \end{itemize}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/clook2.png}
+  \end{figure}
+  \hspace{35pt} \textcolor{orange}{Movimientos: 124}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Herramientas para particionar}
-  \begin{itemize}
-	  \item El particionado de un disco se lo puede realizar mediante:
-	  \begin{itemize}
-	  	\item Software destructivo: \textit{fdisk}
-	  	\item Software no destructivo: \textit{fips}, \textit{gparted}
-		\begin{figure}
-		    \includegraphics[scale=0.3]{images/gparted.png}
-		\end{figure}
-	  \end{itemize}
-  \end{itemize}
+  \frametitle{Imágenes de discos en la historia}
+  \begin{figure}
+    \includegraphics[scale=0.7]{images/oldDisk1.png}
+    \includegraphics[scale=0.09]{images/oldDisk2.png}
+  \end{figure}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Permisos}
-  \begin{itemize}
-	  	\item Se aplican a directorios y archivos
-	  	\item Existen 3 tipos de permisos y se basan en una notación octal:
-	  	\begin{table}
-		      \centering
-		      \resizebox{10pc}{!}{
-			  \begin{tabular}{| c | c | c |}
-			      \hline
-			      \bf Permiso & \bf Valor & \bf Octal \\
-			      \hline
-			      Lectura & R & 4 \\
-			      \hline
-			      Escritura & W & 2 \\
-			      \hline
-			      Ejecución & X & 1 \\
-			      \hline
-			  \end{tabular}
-		      }
-		\end{table}
-		\item Se aplican sobre los usuarios:
-		\begin{itemize}
-			\item Usuario: permisos del dueño $\rightarrow$ \textbf{U}
-			\item Usuario: permisos del grupo $\rightarrow$ \textbf{G}
-			\item Usuario: permisos de otros usuario $\rightarrow$ \textbf{O}
-		\end{itemize}
-		\item Se utiliza el comando \textbf{chmod}:
-		\begin{lstlisting}
-$ chmod 755 /tmp/script
-		\end{lstlisting}
-  \end{itemize}
+\begin{frame}
+  \frametitle{Imágenes de discos en la historia (cont.)}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/oldDisk3.png}
+    \includegraphics[scale=0.4]{images/oldDisk4.png}
+  \end{figure}
 \end{frame}
-\end{comment}
+
+\begin{frame}
+  \frametitle{Imágenes de discos en la historia (cont.)}
+  \begin{figure}
+    \includegraphics[scale=0.4]{images/oldDisk5.png}
+    \includegraphics[scale=0.4]{images/oldDisk6.png}
+  \end{figure}
+\end{frame}
