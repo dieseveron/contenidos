@@ -1,7 +1,7 @@
 \textbf{Objetivo}
 
 El objetivo de esta práctica es que el alumno se familiarice con los conceptos básicos
-del sistema operativo GNU/Linux, así como con su entorno y comandos principales.
+del sistema operativo \textit{GNU/Linux}, así como con su entorno y comandos principales.
 
 \begin{questions}
 
@@ -10,10 +10,131 @@ del sistema operativo GNU/Linux, así como con su entorno y comandos principales
   \part Mencione y explique las características más relevantes de \textit{GNU/Linux}.
   \part Mencione otros sistemas operativos y compárelos con \textit{GNU/Linux} en cuanto a los
   puntos mencionados en el inciso \textit{a}.
-  \part ¿Qué es \textit{GNU}?
+  \part ¿Qué es \textbf{GNU}?
   \part Indique una breve historia sobre la evolución del proyecto \textit{GNU}
   \part Explique que es la multitarea, e indique si \textit{GNU/Linux} hace uso de ella.
   \part ¿Qué es \textbf{POSIX}?
 \end{parts}
+
+\question Distribuciones de \textit{GNU/Linux}:
+\begin{parts}
+  \part ¿Qué es una distribución de \textit{GNU/Linux}? Nombre al menos 4 distribuciones de
+  \textit{GNU/Linux} y cite diferencias básicas entre ellas.
+  \part ¿En qué se diferencia una distribución de otra?
+  \part ¿Qué es \textbf{Lihuen}? Acceda al sitio \footnote{\url{http://lihuen.linti.unlp.edu.ar}} e indique cuáles son
+  los objetivos del proyecto y una breve cronología del mismo
+\end{parts}
+
+\question Estructura de \textit{GNU/Linux}:
+\begin{parts}
+  \part Nombre cuales son los 3 componentes fundamentales de \textit{GNU/Linux}.
+  \part Mencione y explique la estructura básica del Sistema Operativo \textit{GNU/Linux}.
+\end{parts}
+
+\question \textit{Kernel}:
+\begin{parts}
+  \part ¿Qué es? Indique una breve reseña histórica acerca de la evolución del Kernel de
+  \textit{GNU/Linux}.
+  \part ¿Cuáles son sus funciones principales?
+  \part ¿Cuál es la versión actual? ¿Cómo se definía el esquema de versionado del Kernel en versiones anteriores a la 2.4? ¿Qué cambio en el versionado se impuso a partir de
+  la versión 2.6?
+  \part ¿Es posible tener más de un Kernel de \textit{GNU/Linux} instalado en la misma máquina?
+  \part ¿Dónde se encuentra ubicado dentro del File System?
+  \part ¿El Kernel de \textit{GNU/Linux} es monolítico? Justifique.
+\end{parts}
+
+\question Intérprete de comandos \textit{(Shell))}:
+\begin{parts}
+  \part ¿Qué es?
+  \part ¿Cuáles son sus funciones?
+  \part Mencione al menos 3 intérpretes de comandos que posee \textit{GNU/Linux} y compárelos
+  entre ellos.
+  \part ¿Dónde se ubican (\textit{path}) los comandos propios y externos al Shell?
+  \part ¿Por qué considera que el Shell no es parte del Kernel de \textit{GNU/Linux}?
+  \part ¿Es posible definir un intérprete de comandos distinto para cada usuario? ¿Desde
+  dónde se define? ¿Cualquier usuario puede realizar dicha tarea?
+\end{parts}
+
+\question Sistema de Archivos \textit{(File System)}:
+\begin{parts}
+  \part ¿Qué es?
+  \part Mencione sistemas de archivos soportados por \textit{GNU/Linux}.
+  \part ¿Es posible visualizar particiones del tipo \textbf{FAT} y \textbf{NTFS} en \textit{GNU/Linux}?
+  \part ¿Cuál es la estructura básica de los File System en \textit{GNU/Linux}? Mencione los
+  directorios más importantes e indique que tipo de información se encuentra en ellos.
+  ¿A qué hace referencia la sigla \textbf{FHS}?
+\end{parts}
+
+\question Particiones:
+\begin{parts}
+  \part Definición. Tipos de particiones. Ventajas y Desventajas.
+  \part ¿Como se identifican las particiones en \textit{GNU/Linux}? (Considere discos \textbf{IDE}, \textbf{SCSI} y
+  \textbf{SATA}).
+  \part ¿Cuantas particiones son necesarias como mínimo para instalar \textit{GNU/Linux}?
+  Nómbrelas indicando tipo de partición, identificación, tipo de File System y punto de
+  montaje.
+  \part Ejemplifique diversos casos de particionamiento dependiendo del tipo de tarea que
+  se deba realizar en su sistema operativo.
+  \part ¿Qué tipo de software para particionar existe? Menciónelos y compare.
+\end{parts}
+
+\question Arranque (\textit{bootstrap}) de un Sistema Operativo:
+\begin{parts}
+  \part ¿Qué es el \textbf{BIOS}? ¿Qué tarea realiza?
+  \part ¿Qué es \textbf{UEFI}? ¿Cuál es su función?
+  \part ¿Qué es el \textbf{MBR}? ¿Que es el \textbf{MBC}?
+  \part ¿A qué hacen referencia las siglas \textbf{GPT}? ¿Qué sustituye? Indique cuál es su
+  formato.
+  \part ¿Cuál es la funcionalidad de un “Gestor de Arranque”? ¿Qué tipos existen? ¿Dónde
+  se instalan? Cite gestores de arranque conocidos.
+  \part ¿Cuáles son los pasos que se suceden desde que se prende una computadora
+  hasta que el Sistema Operativo es cargado (proceso de \textit{bootstrap})?
+  \part Analice el proceso de arranque en \textit{GNU/Linux} y describa sus principales pasos.
+  \part ¿Cuáles son los pasos que se suceden en el proceso de parada (\textit{shutdown}) de
+  \textit{GNU/Linux}?
+  \part ¿Es posible tener en una PC \textit{GNU/Linux} y otro Sistema Operativo instalado?
+  Justifique.
+\end{parts}
+
+\question Archivos:
+\begin{parts}
+  \part ¿Cómo se identifican los archivos en \textit{GNU/Linux}?
+  \part Investigue el funcionamiento de los editores \textbf{vi} y \textbf{mcedit}, y los comandos \textbf{cat} y
+  \textbf{more}.
+  \part Cree un archivo llamado “prueba.exe” en su directorio personal usando el vi. El
+  mismo debe contener su número de alumno y su nombre.
+  \part Investigue el funcionamiento del comando file. Pruébelo con diferentes archivos.
+  ¿Qué diferencia nota?
+\end{parts}
+
+\question Comandos en \textit{GNU/Linux} (Investigue su funcionamiento y parámetros más importantes):
+\begin{parts}
+  \part cd
+  \part ls
+  \part pwd
+  \part df
+  \part shutdown
+  \part reboot
+  \part halt
+  \part find
+  \part locate
+  \part uname
+  \part gmesg
+  \part who
+  \part lspci
+  \part at
+  \part touch
+  \part netstat
+  \part tail
+  \part head
+  \part mount
+  \part umount
+  \part losetup
+  \part write
+  \part mkfs
+  \part fdisk (con cuidado)
+\end{parts}
+
+\question Indique en que directorios se almacenan los comandos mencionados en el ejercicio anterior.
 
 \end{questions}
