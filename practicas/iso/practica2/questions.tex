@@ -1,4 +1,238 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\question Usuarios:
 \begin{questions}
-\question Hello world.
-\question Good bye cruel world!
+	\part ¿Qué archivos son utilizados en un sistema GNU/Linux para guardar la información de los usuarios?
+	\part ¿A que hacen referencia las siglas UID y GID? ¿Pueden coexistir UIDs iguales en un sistema GNU/Linux? Justifique.
+	\part ¿Qué es el usuario root? ¿Puede existir más de un usuario con este perfil en GNU/Linux? ¿Cuál es la UID del root?.
+	\part Agregue un nuevo usuario llamado iso2015 a su instalación de GNU/Linux, especifique que su home sea creada en /home/iso_2015, y hágalo miembro del grupo cátedra (si no existe, deberá crearlo). Luego, sin iniciar sesión como este usuario cree un archivo en su home personal que le pertenezca. Luego de todo esto, borre el usuario y verifique que no queden registros de él en los archivos de información de los usuarios y grupos.
+	\part Investigue la funcionalidad y parámetros de los siguientes comandos:
+	\begin{itemize}
+		\item useradd ó adduser
+		\item usermod
+		\item userdel
+		\item su
+		\item groupadd
+		\item who
+		\item groupdel
+		\item passwd
+	\end{itemize}
+\end{questions}
+\question FileSystem:
+\begin{questions}
+	\part ¿Cómo son definidos los permisos sobre archivos en un sistema GNU/Linux?
+	\part Investigue la funcionalidad y parámetros de los siguientes comandos relacionados con los permisos en GNU/Linux:
+	\begin{itemize}
+		\item chmod
+		\item chown
+		\item chgrp
+	\end{itemize}
+	\part Al utilizar el comando chmod generalmente se utiliza una notación octal asociada para definir permisos. ¿Qué significa esto? ¿A qué hace referencia cada valor?
+	\part ¿Existe la posibilidad de que algún usuario del sistema pueda acceder a determinado archivo para el cual no posee permisos? Nombrelo, y realice las pruebas correspondientes.
+	\part Explique los conceptos de “full path name” y “relative path name”. De ejemplos claros de cada uno de ellos.
+	\part ¿Con qué comando puede determinar en qué directorio se encuentra actualmente? ¿Existe alguna forma de ingresar a su directorio personal sin necesidad de escribir todo el path completo? ¿Podría utilizar la misma idea para acceder a otros directorios? ¿Cómo? Explique con un ejemplo.
+	\part Investigue la funcionalidad y parámetros de los siguientes comandos relacionados con el uso del FileSystem:
+	\begin{itemize}
+		\item cd
+		\item umount
+		\item mkdir
+		\item du
+		\item rmdir
+		\item df
+		\item mount
+		\item ln
+		\item ls
+		\item pwd
+		\item cp
+		\item mv
+	\end{itemize}
+\end{questions}
+\question Procesos:
+\begin{questions}
+	\part ¿Qué es un proceso? ¿A que hacen referencia las siglas \textit{PID} y \textit{PPID}? ¿Todos los procesos tienen estos atributos en GNU/Linux? Justifique. Indique que otros atributos tiene un proceso.
+	\part Indique que comandos se podrían utilizar para ver que procesos están en ejecución en un sistema GNU/Linux.
+	\part ¿Qué significa que un proceso se esta ejecutando en Background? ¿Y en Foreground?
+	\part ¿Cómo puedo hacer para ejecutar un proceso en Background? ¿Como puedo hacer para pasar un proceso de background a foreground y viceversa?
+	\part Pipe ( \textbf{|} ). ¿Cual es su finalidad? Cite ejemplos de su utilización.
+	\part Redirección. ¿Qué tipo de redirecciones existen? ¿Cuál es su finalidad? Cite ejemplos de utilización.
+	\part Comando Kill. ¿Cuál es su funcionalidad? Cite ejemplos.
+	\part Investigue la funcionalidad y parámetros de los siguientes comandos relacionados con el manejo de procesos en GNU/Linux. Además
+	compárelos entre ellos:
+	\begin{itemize}
+		\item ps
+		\item kill
+		\item pstree
+		\item killall
+		\item top
+		\item nice
+	\end{itemize}
+\end{questions}
+\question Otros comandos de Linux (Indique funcionalidad y parámetros):
+\begin{questions}
+	\part ¿A qué hace referencia el concepto de empaquetar archivos en GNU/linux?
+	\part Seleccione 4 archivos dentro de algún directorio al que tenga persmiso y sume el tamaño de cada uno de estor archivos. Cree un archivo empaquetado conteniendo estos 4 archivos y compare los tamaños de los mismos. ¿Qué característica nota?
+	\part ¿Qué acciones debe llevar a cabo para comprimir 4 archivos en uno solo? Indique la secuencia de comandos ejecutados.
+	\part ¿Pueden comprimirse un conjunto de archivos utilizando un único comando?
+	\part Investigue la funcionalidad de los siguientes comandos:
+	\begin{itemize}
+		\item tar
+		\item grep
+		\item gzip
+		\item zgrep
+		\item wc
+	\end{itemize}
+\end{questions}
+\question Indique que acción realiza cada uno de los comandos indicados a continuación considerando su orden. Suponga que se ejecutan desde un usuario que no es root ni pertenece al grupo de root. (Asuma que se encuentra posicionado en el directorio de trabajo del usuario con el que se logueo). En caso de no poder ejecutarse el comando indique la razón:
+\begin{questions}
+	\part ls -l > prueba
+	\part ps > PRUEBA
+	\part chmod 710 prueba
+	\part chown root:root PRUEBA
+	\part chmod 777 PRUEBA
+	\part chmod 700 /etc/passwd
+	\part passwd root
+	\part rm PRUEBA
+	\part man /etc/shadow
+	\part find / -name *.conf
+	\part usermod root –d /home/newroot -L
+	\part cd /root
+	\part rm *
+	\part cd /etc
+	\part cp * /home –R
+	\part shutdown
+\end{questions}
+\question Indique que comando seria necesario ejecutar para realizar cada una de las siguientes acciones:
+\begin{questions}
+	\part Terminar el proceso con PID 23
+	\part Terminar el proceso llamado \textit{init}. ¿Qué resultados obtuvo?
+	\part Buscar todos los archivos de usuarios en los que su nombre contiene la cadena “.conf”
+	\part Guardar una lista de procesos en ejecución el archivo \textbf{/home/<su nombre de usuario>/procesos}
+	\part Cambiar los permisos del archivo \textbf{/home/<su nombre de usuario>/xxxx} a:
+	\begin{itemize} 
+		\item Usuario: Lectura, escritura, ejecución
+		\item Grupo: Lectura, ejecución
+		\item Otros: ejecución
+	\end{itemize}
+	\part Cambiar los permisos del archivo \textbf{/home/<su nombre de usuario>/yyyy} a:
+	\begin{itemize} 
+		\item Usuario: Lectura, escritura.
+		\item Grupo: Lectura, ejecución
+		\item Otros: Ninguno
+	\end{itemize}
+	\part Borrar todos los archivos del directorio \textbf{/tmp}
+	\part Cambiar el propietario del archivo \textbf{/opt/isodata} al usuario \textbf{iso2010}
+	\part Guardar en el archivo \textbf{/home/<su nombre de usuario>/donde} el directorio donde me encuentro en este momento, en caso de que el archivo exista no se debe eliminar su contenido anterior.
 \end{questions}
