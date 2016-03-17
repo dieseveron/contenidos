@@ -1,0 +1,2 @@
+# __init & __exit macros para modulos
+http://www.tldp.org/LDP/lkmpg/2.4/html/x281.htm
