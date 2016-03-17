@@ -1,0 +1,46 @@
+-Android vs. GNU/Linux
+	Introducción a Android
+	Componentes de Android (Arquitectura)
+	Comparativa Android vs. GNU/Linux: Modelo de aplicaciones, modelo de drivers, extensiones del kernel,...
+-Mecanismos de sincronización en el kernel (Parte II)
+	Mutexes
+	Completion variables
+	RCU (Read-Copy-Update)
+	Wait queues
+-Mecanismos de depuración del kernel Linux
+	Kprobes
+	gdb y kgdb
+	kdump
+
+-SystemTap
+-Sysfs
+-Linux Virtual File System
+-Estructuras de datos genéricas del kernel Linux 
+	Colas
+	Arrays asociativos (Maps)
+	Binary Trees
+-Arquitectura interna del planificador de Linux v3.14.1 
+	Clases de planificación y políticas
+	Estructuras de datos del planificador
+	Funciones principales scheduler_tick(), schedule()...
+	Algoritmo de planificación CFS
+-Soporte del kernel Linux para monitorización del rendimiento mediante contadores hardware
+-Drivers USB en Linux
+	Introducción a USB
+	Arquitectura subsistema USB Linux
+	API kernel Linux para drivers USB y ejemplos
+-CPUFreq
+	Arquitectura
+	CPUFreq governors
+	Ejemplos
+-Cgroups
+-User Mode Linux
+-Virtualización 
+	Introducción a la virtualización
+	Tipos de virtualización
+	Soporte HW para virtualización
+	Ejemplos prácticos
+-El hypervisor Xen
+-KVM 
+-Docker 
+
