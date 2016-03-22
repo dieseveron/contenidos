@@ -1,4 +1,212 @@
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+
 \begin{questions}
-\question Hello world.
-\question Good bye cruel world!
+\question ¿Qué es el Shell Scripting? ¿A qué tipos de tareas están orientados los script? ¿Los scripts deben compilarse? ¿Por qué?
+\question Investigar la funcionalidad de los comandos echo y read. 
+\begin{parts}
+\part ¿Como se indican los comentarios dentro de un script? 
+\part ¿Cómo se declaran y se hace referencia a variables dentro de un script?
+\end{parts}
+
+\item Crear dentro del directorio personal del usuario logueado un directorio llamado practica-shell-script y dentro de él un archivo llamado mostrar.sh cuyo contenido sea el siguiente:
+
+\begin{verbatim}  
+  #!/bin/bash
+  # Comentarios acerca de lo que hace el script
+  # Siempre comento mis scripts, si no hoy lo hago
+  # y mañana ya no me acuerdo de lo que quise hacer
+  echo "Introduzca su nombre y apellido:"
+  read nombre apellido
+  echo "Fecha y hora actual:"
+  date
+  echo "Su apellido y nombre es:
+  echo "$apellido $nombre"
+  echo "Su usuario es: `whoami`"
+  echo "Su directorio actual es:"
+\end{verbatim}  
+\begin{parts}
+
+\part Asignar al archivo creado los permisos necesarios de manera que pueda ejecutarlo
+\part Ejecutar el archivo creado de la siguiente manera: ./mostrar
+\part ¿Qué resultado visualiza?
+\part Las backquotes (`) entre el comando whoami ilustran el uso de la sustitución de comandos. ¿Qué significa esto?
+\part Realizar modificaciones al script anteriormente creado de manera de poder mostrar distintos resultados (cuál es su directorio personal, el contenido de un directorio en particular, el espacio libre en disco, etc.). Pida que se introduzcan por teclado (entrada
+estándar) otros datos.
+\end{parts}
+
+\item \underline{Parametrización:} ¿Cómo se acceden a los parámetros enviados al script al momento de su invocación? ¿Qué información contienen las variables \texttt{\$\#, \$*, \$? Y \$HOME} dentro de un script?
+
+\item ¿Cual es la funcionalidad de comando exit? ¿Qué valores recibe como parámetro y cual es su significado?
+
+\item El comando \texttt{expr} permite la evaluación de expresiones. Su sintaxis es: \texttt{expr arg1 op arg2}, donde \texttt{arg1} y \texttt{arg2} representan argumentos y \texttt{op} la operación de la expresión. Investigar que tipo de operaciones se pueden utilizar.
+
+\item El comando \texttt{“test expresión”} permite evaluar expresiones y generar un valor de retorno, true o false. Este comando puede ser reemplazado por el uso de corchetes de la siguiente manera \texttt{[ expresión ]}. Investigar que tipo de expresiones pueden ser usadas con el comando \texttt{test}. Tenga en cuenta operaciones para: evaluación de archivos, evaluación de cadenas de caracteres y evaluaciones numéricas.
+
+\item Estructuras de control. Investigue la sintaxis de las siguientes estructuras de control
+incluidas en shell scripting:
+\begin{itemize}
+\item if
+\item case
+\item while
+\item for
+\item select
+\end{itemize}
+
+\item ¿Qué acciones realizan las sentencias \texttt{break} y \texttt{continue} dentro de un bucle? ¿Qué parámetros reciben?
+
+\item ¿Qué tipo de variables existen? ¿Es shell script fuertemente tipado? ¿Se pueden definir arreglos? ¿Cómo?
+
+\item ¿Pueden definirse funciones dentro de un script? ¿Cómo? ¿Cómo se maneja el pasaje de parámetros de una función a la otra?
+
+\item Evaluación de expresiones:
+\begin{parts}
+
+\part Realizar un script que le solicite al usuario 2 números, los lea de la entrada Standard e imprima la multiplicación, suma, resta y cual es el mayor de los números leídos. 
+
+\part Modificar el script creado en el inciso anterior para que los números sean recibidos como parámetros. El script debe controlar que los dos parámetros sean enviados.
+
+\part Realizar una calculadora que ejecute las 4 operaciones básicas: +, - ,*, \%. Esta calculadora debe funcionar recibiendo la operación y los números como parámetros
+\end{parts}
+
+\item Uso de las estructuras de control:
+\begin{parts}
+\part Realizar un script que visualice por pantalla los números del 1 al 100 así como sus cuadrados.
+\part Crear un script que muestre 3 opciones al usuario: Listar, DondeEstoy y QuienEsta. Según la opción elegida se le debe mostrar:
+\begin{itemize}
+\item Listar: lista el contenido del directoria actual.
+\item DondeEstoy: muestra el directorio donde me encuentro ubicado.
+\item QuienEsta: muestra los usuarios conectados al sistema.
+\end{itemize}
+
+\part Crear un script que reciba como parámetro el nombre de un archivo e informe si el mismo existe o no, y en caso afirmativo indique si es un directorio o un archivo. En caso de que no exista el archivo/directorio cree un directorio con el nombre recibido como parámetro.
+\end{parts}
+
+\item Renombrando Archivos: haga un script que renombre solo archivos de un directorio pasado como parametro agregandole una CADENA, contemplando las opciones:
+\begin{itemize}
+\item ``-a CADENA'': renombra el fichero concatenando CADENA al final del nombre del archivo
+\item ``-b CADENA'': renombra el fichero concantenado CADENA al principio del nombre del archivo
+\end{itemize}
+Ejemplo:
+\begin{verbatim}
+Si tengo los siguientes archivos: /tmp/a /tmp/b
+Al ejecutar: ./renombra /tmp/ -a EJ
+Obtendré como resultado: /tmp/aEJ /tmp/bEJ
+Y si ejecuto: ./renombra /tmp/ -b EJ
+El resultado será: /tmp/EJa /tmp/EJb
+\end{verbatim}
+
+\item \underline{Comando cut}. El comando \texttt{cut} nos permite procesar la líneas de la entrada que reciba (archivo, entrada estándar, resultado de otro comando, etc) y cortar columnas o campos, siendo posible indicar cual es el delimitador de las mismas. Investigue los parámetros que puede recibir este comando y cite ejemplos de uso.
+
+\item Realizar un script que reciba como parámetro una extensión y haga un reporte con 2 columnas, el nombre de usuario y la cantidad de archivos que posee con esa extensión. Se debe guardar el resultado en un archivo llamado \texttt{reporte.txt}
+
+\item Escribir un script que al ejecutarse imprima en pantalla los nombre de los archivos que se encuentran en el directorio actual, intercambiando minúsculas por mayúsculas, además de eliminar la letra a (mayúscula o minúscula). Ejemplo, directorio actual:
+\begin{verbatim}
+IsO
+pepE
+Maria
+Si ejecuto: ./ejercicio17
+\end{verbatim}
+
+Obtendré como resultado:
+
+\begin{verbatim}
+iSo
+PEPe
+mRI
+\end{verbatim}
+
+\underline{Ayuda}: Investigar el comando \texttt{tr}
+
+\item Crear un script que verifique cada 10 segundos si un usuario se ha loqueado en el sistema (el nombre del usuario será pasado por parámetro). Cuando el usuario finalmente se loguee, el programa deberá mostrar el mensaje ”Usuario XXX logueado en el sistema” y salir.
+
+\item Escribir un Programa de “Menu de Comandos Amigable con el Usuario” llamado menu, el cual, al ser invocado, mostrará un menú con la selección para cada uno de los scripts creados en esta práctica. Las instrucciones de como proceder deben mostrarse junto con el menú. El menú deberá iniciarse y permanecer activo hasta que se seleccione Salir. Por ejemplo:
+
+\begin{verbatim}
+MENU DE COMANDOS
+03. Ejercicio 3
+12. Evaluar Expresiones
+13. Probar estructuras de control
+...
+Ingrese la opción a ejecutar: 03
+\end{verbatim}
+
+\item Realice un script que simule el comportamiento de una estructura de PILA e implemente las siguientes funciones aplicables sobre una estructura global definida en el script:
+
+\begin{tabular}{ l c r }
+  \texttt{push}: Recibe un parámetro y lo agrega en la pila & \texttt{pop}: Saca un elemento de la pila \\
+  \texttt{length}: Devuelve la longitud de la pila & \texttt{print}: Imprime todos elementos de la pila \\
+\end{tabular}
+
+\item Dentro del mismo script y utilizando las funciones implementadas:
+\begin{itemize}
+\item Agregue 10 elementos a la pila 
+\item Saque 3 de ellos 
+\item Imprima la longitud de la cola 
+\item Luego imprima la totalidad de los elementos que en ella se encuentran.
+\end{itemize}
+
+\item Dada la siguiente declaración al comienzo de un script: num=(10 3 5 7 9 3 5 4) (la cantidad de elementos del arreglo puede variar). Implemente la función \texttt{productoria} dentro de este script, cuya tarea sea multiplicar todos los números del arreglo
+
+\item Implemente un script que recorra un arreglo compuesto por números e imprima en pantalla sólo los números pares y que cuente sólo los números impares y los informe en pantalla al finalizar el recorrido.
+
+\item Dada la definición de 2 vectores del mismo tamaño y cuyas longitudes no se conocen.
+\begin{verbatim}
+vector1=( 1 .. N)
+vector2=( 7 .. N)
+\end{verbatim}
+
+Por ejemplo:
+\begin{verbatim}
+vector1=( 1 80 65 35 2 ) 
+\end{verbatim}
+y 
+\begin{verbatim}
+vector2=( 5 98 3 41 8 ).
+\end{verbatim}
+
+Complete este script de manera tal de implementar la suma elemento a elemento entre ambos vectores y que la misma sea impresa en pantalla de la siguiente manera:
+\begin{verbatim}
+La suma de los elementos de la posición 0 de los vectores es 6
+La suma de los elementos de la posición 1 de los vectores es 178
+...
+La suma de los elementos de la posición 4 de los vectores es 10
+\end{verbatim}
+
+\item Realice un script que agregue en un arreglo todos los nombres de los usuarios del
+sistema pertenecientes al grupo “users”. Adicionalmente el script puede recibir como
+parametro:
+\begin{itemize}
+\item ``-b n'': Retorna el elemento de la posición n del arreglo si el mismo existe. Caso contrario, un mensaje de error.
+\item ``-l'': Devuelve la longitud del arreglo
+\item ``-i'': Imprime todos los elementos del arreglo en pantalla
+\end{itemize}
+
+\item Escriba un script que reciba una cantidad desconocida de parámetros al momento de su invocación (debe validar que al menos se reciba uno). Cada parámetro representa la ruta absoluta de un archivo o directorio en el sistema. El script deberá iterar por todos los parámetros recibidos, \underline{y solo para aquellos parámetros que se encuentren en posiciones impares (el primero, el tercero, el quinto, etc.)}, verificar si el archivo o directorio existen en el sistema, imprimiendo en pantalla que tipo de objeto es (archivo o directorio). Además, deberá informar la cantidad de archivos o directorios inexistentes en el sistema.
+
+\item Realice un script que implemente a través de la utilización de funciones las operaciones básicas sobre arreglos:
+\begin{itemize}
+\item inicializar: Crea un arreglo llamado array vacío
+\item agregar\_elem <parametro1>: Agrega al final del arreglo el parámetro recibido
+\item eliminar\_elem <parametro1>: Elimina del arreglo el elemento que se encuentra en la posición recibida como parámetro. Debe validar que se reciba una posición válida
+\item longitud: Imprime la longitud del arreglo en pantalla
+\item imprimir: Imprime todos los elementos del arreglo en pantalla
+\item inicializar\_Con\_Valores <parametro1> <parametro2>: Crea un arreglo con longitud <parametro1> y en todas las posiciones asigna el valor <parametro2>
+\end{itemize}
+
+\item Realice un script que reciba como parámetro el nombre de un directorio. Deberá validar que el mismo exista y de no existir causar la terminación del script con código de error 4. Si el directorio existe deberá contar \underline{por separado} la cantidad de archivos que en él se encuentran para los cuales el usuario que ejecuta el script tiene permiso de lectura y escritura, e informar dichos valores en pantalla. En caso de encontrar subdirectorios, \underline{no deberán procesarse}, y \underline{tampoco deberán ser tenidos en cuenta para la suma a informar}.
+
+\item Implemente un script que agregue a un arreglo todos los archivos del directorio /home cuya terminación sea .doc. Adicionalmente, implemente las siguientes funciones que le permitan acceder a la estructura creada:
+\begin{itemize}
+\item verArchivo <nombre\_de\_archivo>: Imprime el archivo en pantalla si el mismo se encuentra en el arreglo. Caso contrario imprime el mensaje de error “Archivo no encontrado” y devuelve como valor de retorno 5
+\item cantidadArchivos: Imprime la cantidad de archivos del /home con terminación .doc
+\item borrarArchivo <nombre\_de\_archivo>: Consulta al usuario si quiere eliminar el archivo lógicamente. Si el usuario responde Si, elimina el elemento solo del arreglo. Si el usuario responde No, elimina el archivo del arreglo y también del FileSystem. Debe validar que el archivo exista en el arreglo. En caso de no existir, imprime el mensaje de error “Archivo no encontrado” y devuelve como valor de retorno 10
+\end{itemize}
+
+\item Realice un script que mueva todos los programas del directorio actual (archivos ejecutables) hacia el subdirectorio ``bin'' del directorio HOME del usuario actualmente logueado. El script debe imprimir en pantalla los nombres de los que mueve, e indicar cuántos ha movido, o que no ha movido ninguno. Si el directorio “bin” no existe,deberá ser creado.
+
 \end{questions}
+
