@@ -277,11 +277,10 @@ Donde:
 	\part Para el caso de las dos colas vistas en \ref{inciso_a_colas_multinivel}: ¿Qué algoritmo utilizaría para planificarlas?
 \end{parts}
 
-\question Suponga que en un SO se utiliza un algoritmo de planificación de colas multinivel. El mismo cuenta con 3 colas de procesos listos, en las que los procesos se encolan en una u otra según su prioridad. Hay 3 prioridades (1 , 2 , 3), donde un menor número indica mayor prioridad.
+\question Suponga que en un SO se utiliza un algoritmo de planificación de colas multinivel. El mismo cuenta con 3 colas de procesos listos, en las que los procesos se encolan en una u otra según su prioridad. Hay 3 prioridades (1 , 2 , 3), donde un menor número indica mayor prioridad. \label{ejer_sched_cola_multi_1}
+\hspace{20pt} Se utiliza el algoritmo de prioridades para la administración entre las colas.
 
-\hspace{20pt}Se utiliza el algoritmo de prioridades para la administración entre las colas.
-
-\hspace{20pt} Si se tiene el siguiente lote de procesos a ser procesados con sus respectivas operaciones de I/O.
+\hspace{20pt} Se tiene el siguiente lote de procesos a ser procesados con sus respectivas operaciones de I/O:
 
 \begin{table}[h]
   \centering
@@ -306,8 +305,151 @@ Donde:
 
 Suponiendo que las colas de cada dispositivo se administran a trabes de FCFS y que cada cola de procesos listos se administra por medio de un algoritmo RR con un quantum de 3 unidades y Timer Variable, realice un diagrama de Gantt:
 \begin{parts}
-	\part Asumiendo que NO hay apropiación entre los procesos.
-	\part Asumiendo que hay apropiación entre los procesos.
+	\part Asumiendo que NO hay apropiación entre los procesos. \label{inciso_a_sched_cola_multi}
+	\part Asumiendo que hay apropiación entre los procesos. \label{inciso_b_sched_cola_multi}
+\end{parts}
+
+\question En el esquema de Colas Multinivel, cuando se utiliza un algoritmo de prioridades para administrar las diferentes colas los procesos pueden sufrir starvation. \label{ejer_sched_cola_multi_2}
+
+\hspace{20pt} La técnica de envejecimiento se puede aplicar a este esquema, haciendo que un proceso cambie de una cola de menor prioridad a una de mayor prioridad, después de cierto periodo de tiempo que el mismo se encuentra esperando en su cola. Luego de llegar a una cola en la que el proceso llega a ser atendido, el mismo retorna a su cola original.
+
+\hspace{20pt} Por ejemplo: Un proceso con prioridad 3 esta en cola su cola correspondiente. Luego de X unidades de tiempo, el proceso se mueve a la cola de prioridad 2. Si en esta cola es atendido, retorna a su cola original, en caso contrario luego de sucederse otras X unidades de tiempo el proceso de mueve a la cola de prioridad 1. Esta última acción se repite hasta que el proceso obtiene la CPU, situación que hace que el mismo vuelva a su cola original.
+\begin{parts}
+	\part Para los casos \ref{inciso_a_sched_cola_multi} y \ref{inciso_b_sched_cola_multi} del ejercicio \ref{ejer_sched_cola_multi_1} realice el diagrama de Gantt considerando además que se tiene un envejecimiento de 4 unidades.
+\end{parts}
+
+\question La situación planteada en el ejercicio \ref{ejer_sched_cola_multi_2}, donde un proceso puede cambiar de una cola a otra, se la conoce como Colas Multinivel con Realimentación.
+
+\hspace{20pt} Suponga que se quiere implementar un algoritmo de planificación que tenga en cuenta el tiempo de ejecución consumido por el proceso, penalizando a los que más tiempo de ejecución tienen. (Similar a la tarea del algoritmo SJF que tiene en cuenta el
+tiempo de ejecución que resta).
+
+\hspace{20pt} Utilizando los conceptos vistos de Colas Multinivel con Realimentación indique que colas implementaría, que algoritmo usaría para cada una de ellas así como para la administración de las colas entre sí.
+
+\hspace{20pt} Tenga en cuenta que los procesos no deben sufrir inanición.
+
+\question Un caso real: “Unix Clasico “ (SVR3 y BSD 4.3)
+
+\hspace{20pt} Estos sistemas estaban dirigidos principalmente a entornos interactivos de tiempo compartido. El algoritmo de planificación estaba diseñado para ofrecer buen tiempo de respuesta a usuarios interactivos y asegurar que los trabajos de menor prioridad (en segundo plano) no sufrieran inanición.
+
+\hspace{20pt} La planificación tradicional usaba el concepto de colas multinivel con realimentación, utilizando RR para cada uno de las colas y realizando el cambio de proceso cada un segundo (quantum). La prioridad de cada proceso se calcula en función de la clase de proceso y de su historial de ejecución. Para ello se aplican las siguientes funciones:
+
+\begin{equation} \label{formula_3}
+CPU _{j}(\emph{i}) = \frac{CPU _{j}(\emph{i}-1)}{2}
+\end{equation}
+\begin{equation} \label{formula_4}
+P_{j}(\emph{i}) = \emph{Base}_{j} + \frac{CPU _{j}(\emph{i})}{2} + \emph{nice}_{j}
+\end{equation}
+
+donde:
+
+\hspace{20pt} \emph{CPU$_{j}$(i)} = Media de la utilización de la CPU del proceso j en el intervalo \emph{i}.
+
+\hspace{20pt} \emph{P$_{j}$(i)} = Prioridad del proceso \emph{j} al principio del intervalo \emph{i} (los valores inferiores
+indican prioridad más alta).
+
+\hspace{20pt} \emph{Base$_{j}$} = Prioridad base del proceso \emph{j}.
+
+\hspace{20pt} \emph{Nice$_{j}$} = Factor de ajuste.
+
+La prioridad del proceso se calcula cada segundo y se toma una nueva decisión de planificación. El propósito de la prioridad base es dividir los procesos en bandas fijas de prioridad. Los valores de CPU y nice están restringidos para impedir que un proceso salga de la banda que tiene asignada. Las bandas definidas, en orden
+decreciente de prioridad, son:
+\begin{itemize}
+	\item Intercambio
+	\item Control de Dispositivos de I/O por bloques
+	\item Gestión de archivos
+	\item Control de Dispositivos de I/O de caracteres
+	\item Procesos de usuarios
+\end{itemize}
+Veamos un ejemplo:
+Supongamos 3 procesos creados en el mismo instante y con prioridad base 60 y un valor nice de 0. El reloj interrumpe al sistema 60 veces por segundo e incrementa un contador para el proceso en ejecución.
+
+Los sectores en celeste representan el proceso en ejecución.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{images/unix_classic_real_case.png}
+\end{figure}
+
+\begin{parts}
+	\part Analizando la jerarquía descripta para las bandas de prioridades: ¿Que tipo de actividad considera que tendrá más prioridad? ¿Por qué piensa que el scheduler prioriza estas actividades?
+	\part Para el caso de los procesos de usuarios, y analizando las funciones antes descriptas: ¿Qué tipo de procesos se encarga de penalizar? (o equivalentemente se favorecen). Justifique
+	\part La utilización de RR dentro de cada cola: ¿Verdaderamente favorece al sistema de Tiempo Compartido? Justifique.
+\end{parts}
+
+\question A cuáles de los siguientes tipos de trabajos:
+\begin{parts}
+	\part cortos acotados por CPU
+	\part cortos acotados por E/S
+	\part largos acotados por CPU
+	\part largos acotados por E/S
+\end{parts}
+benefician las siguientes estrategias de administración:
+\begin{parts}
+	\part prioridad determinada estáticamente con el método del más corto primero (SJF).
+	\part prioridad dinámica inversamente proporcional al tiempo transcurrido desde la última operación de E/S.
+\end{parts}
+
+\question Explicar porqué si el quantum "q" en Round-Robin se incrementa sin límite, el método se aproxima a FIFO.
+
+\question Los sistemas multiprocesador pueden clasificarse en:
+\begin{itemize}
+	\item \underline{\textbf{Homogéneos}}: Los procesadores son iguales. Ningún procesador tiene ventaja física sobre el resto.
+	\item \underline{\textbf{Heterogéneos}}: Cada procesador tiene su propia cola y algoritmo de planificación.
+\end{itemize}
+Otra clasificación posible puede ser:
+\begin{itemize}
+	\item \underline{\textbf{Multiprocesador débilmente acoplados}}: Cada procesador tiene su propia memoria principal y canales.
+	\item \underline{\textbf{Procesadores especializados}}: Existe uno o más procesadores principales de propósito general y varios especializados controlados por el primero (ejemplo procesadores de E/S, procesadores Java, procesadores Criptográficos, etc.).
+	\item \underline{\textbf{Multiprocesador fuertemente acoplado}}: Consta de un conjunto de procesadores que comparten una memoria principal y se encuentran bajo el control de un Sistema Operativo
+\end{itemize}
+\begin{parts}
+	\part ¿Con cuál/es de estas clasificaciones asocia a las PCs de escritorio habituales?
+	\part ¿Qué significa que la asignación de procesos se realice de manera simétrica?
+	\part ¿Qué significa que se trabaje bajo un esquema Maestro/esclavo?
+\end{parts}
+
+\question Asumiendo el caso de procesadores homogéneos:
+\begin{parts}
+	\item ¿Cuál sería el método de planificación más sencillo para asignar CPUs a los procesos?
+	\item Cite ventajas y desventajas del método escogido
+\end{parts}
+
+\question Indique brevemente a que hacen referencia los siguientes conceptos:
+\begin{parts}
+	\item Huella de un proceso en un procesador
+	\item Afinidad con un procesador
+	\item ¿Por qué podría ser mejor en algunos casos que un proceso se ejecute en el mismo procesador?
+	\item ¿Puede el usuario en \emph{Windows} cambiar la afinidad de un proceso? ¿y en \emph{GNU/Linux}?
+	\item Investigue el concepto de balanceo de carga (load balancing).
+	\item Compare los conceptos de afinidad y balanceo de carga y como uno afecta al otro.
+\end{parts}
+
+\question Si a la tabla del ejercicio \ref{ejer_sched_2} la modificamos de la siguiente manera:
+\begin{table}[h]
+  \centering
+  \resizebox{15pc}{!}{
+  \begin{tabular}{| c | c | c | c |}
+      \hline
+      \bf Job & \bf Llegada & \bf CPU & \bf Afinidad \\
+      \hline
+      1 & 0 & 4 & CPU0 \\
+      \hline
+      2 & 2 & 6 & CPU0 \\
+      \hline
+      3 & 3 & 4 & CPU1 \\
+      \hline
+      4 & 6 & 5 & CPU1 \\
+      \hline
+      5 & 8 & 2 & CPU0 \\
+      \hline
+  \end{tabular}
+  }
+\end{table}
+Y considerando que el scheduler de los Sistemas Operativos de la familia \emph{Windows} utiliza un mecanismo denominado preferred processor (procesador preferido). El scheduler usa el procesador preferido a modo de afinidad cuando el proceso esta en estado ready. De esta manera el sheduler asigna este procesador a la tarea si este está libre.
+\begin{parts}
+	\part Ejecute el esquema anterior utilizando el algoritmo anterior.
+	\part Ejecute el esquema anterior. Pero ahora si el procesador preferido no está libre es asignado a otro procesador. Luego el procesador preferido de cada job es el último en el cual ejecuto.
+	\part Para cada uno de los casos calcule el tiempo promedio de retorno y el tiempo promedio de espera.
+	\part ¿Cuál de las dos alternativas planteadas es mas performante?
 \end{parts}
 
 \end{questions}
