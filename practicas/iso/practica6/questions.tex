@@ -1,6 +1,181 @@
 
-
 \begin{questions}
-\question Hello world.
-\question Good bye cruel world!
+
+\section{Administración de E/S}
+
+\question Dispositivos
+\begin{parts}
+	\part Los dispositivos, según la forma de transferir los datos, se pueden clasificar en 2 tipos:
+	\begin{itemize}
+		\item Orientados a bloques
+		\item Orientados a flujos
+	\end{itemize}
+	Describa las diferencias entre ambos tipos.
+	\part Cite ejemplos de dispositivos de ambos tipos.
+	\part Enuncie las diferencias que existen entre los dispositivos de E/S y que el SO debe considerar.
+\end{parts}
+
+\question Técnicas de E/S
+Describa como trabajan las siguientes técnicas de E/S
+\begin{itemize}
+	\item E/S programada
+	\item E/S dirigida por interrupciones
+	\item DMA (Acceso Directo a Memoria)
+\end{itemize}
+
+\question La tecnica de E/S programa puede trabajar de dos formas:
+\begin{itemize}
+	\item E/S mapeada
+	\item E/S aislada
+\end{itemize}
+Indique como trabajan estas 2 técnicas.
+
+\question Enuncie las metas que debe perseguir un SO para la administración de la entrada salida.
+
+\question Drivers
+\begin{parts}
+	\part ¿Qué son?
+	\part ¿Qué funciones mínimas deben proveer?
+	\part ¿Quién determina cuales deben ser estas funciones?
+\end{parts}
+
+\question Realice un grafico que marque la relación entre el Subsistema de E/S, los drivers, los controladores de dispositivos y los dispositivos.
+
+\question Describa mediante un ejemplo los pasos mínimos que se suceden desde que un proceso genera un requerimiento de E/S hasta que el mismo llega al dispositivo.
+
+\question Describa mediante un ejemplo los pasos mínimos que se suceden desde que un proceso genera un requerimiento de E/S hasta que el mismo llega al dispositivo.
+
+\question Enuncie que servicios provee el SO para la administración de E/S.
+
+\section{Administración de Discos}
+
+\question Describa en forma sintética, cómo es la organización física de un disco, puede utilizar gráficos para mayor claridad.
+
+\question La velocidad promedio para la obtención de datos de un disco esta dada por la suma de los siguientes tiempos:
+\begin{itemize}
+	\item \textit{Seek Time}
+	\item \textit{Latency Time}
+	\item \textit{Transfer Time}
+\end{itemize}
+De una definición para estos tres tiempos.
+
+\question Suponga un disco con las siguientes características:
+\begin{itemize}
+	\item 7 platos con 2 caras utilizables cada uno.
+	\item 1100 cilindros
+	\item 300 sectores por pista, donde cada sector de es 512 \bytes.
+	\item Seek Time de 10 \ms
+	\item 9000 \rpm.
+	\item Velocidad de Transferencia de 10 \mebishort\bytesshort/\s (\mebi\bytes \hspace{1pt} por segundos).
+\end{itemize}
+\begin{parts}
+	\part Calcule la capacidad total del disco.
+	\part ¿Cuantos sectores ocuparía un archivo de tamaño de 3 \mebishort\bytesshort (\mebi\bytes)?
+	\part Calcule el tiempo de transferencia real de un archivo de 15 \mebishort\bytesshort (\mebi\bytes). grabado en el disco de manera secuencial (todos sus bloques almacenados de manera consecutiva)
+	\part Calcule el tiempo de transferencia real de un archivo de 16 \mebishort\bytesshort (\mebi\bytes). grabado en el disco de manera aleatoria.
+\end{parts}
+
+\question El \textit{Seek Time} es el parámetro que posee mayor influencia en el tiempo real necesario para transferir datos desde o hacia un disco. Es importante que el SO planifique los diferentes requerimientos que al disco para minimizar el movimiento de la cabeza lecto-grabadora.
+
+\hspace{20pt} Analicemos las diferentes políticas de planificación de requerimientos a disco con un ejemplo: Supongamos un \textit{Head} con movimiento en 200 \textit{tracks} (numerados de 0 a 199), que está en el track 83 atendiendo un requerimiento y anteriormente atendió un requerimiento en el track 75.
+
+\hspace{20pt} Si la cola de requerimientos es: 86, 147, 91, 177, 94, 150, 102, 175, 130, 32, 120, 58, 66, 115. Realice los diagramas para calcular el total de movimientos de head para satisfacer estos requerimientos de acuerdo a los siguientes algoritmos de scheduling de discos:
+\begin{parts}
+	\part FCFS (\textit{First Come, First Served})
+	\part SSTF (\textit{Shortest Seek Time First})	
+	\part Scan	
+	\part Look	
+	\part C-Scan (\textit{Circular Scan})
+	\part C-Look (\textit{Circular Look})
+\end{parts}
+
+\question ¿Alguno de los algoritmos analizados en el ejercicio anterior pueden causar inanición de requerimientos?
+
+\question Supongamos un Head con movimiento en 300 pistas (numerados de 0 a 299), que esta en la
+pista 143 atendiendo un requerimiento y anteriormente atendió un requerimiento en la pista 125.
+
+\hspace{20pt} Si la cola de requerimientos es: 126, 147, 81, 277, 94, 150, 212, 175, 140, 225, 280, 50, 99, 118, 22, 55; y después de 30 movimientos se incorporan los requerimientos de las pistas 75, 115, 220 y 266. Realice los diagramas para calcular el total de movimientos de head para satisfacer estos requerimientos de acuerdo a los siguientes algoritmos de scheduling de discos:
+\begin{parts}
+	\part FCFS
+	\part SSTF
+	\part Scan	
+	\part Look	
+	\part C-Scan
+	\part C-Look
+\end{parts}
+
+\question Supongamos un Head con movimiento en 300 pistas (numerados de 0 a 299), que esta en la pista 140 atendiendo un requerimiento y anteriormente atendió un requerimiento en la pista 135.
+
+\hspace{20pt} Si la cola de requerimientos es: 99, 110, 42, 25, 186, 270, 50, 99, 147$^{PF}$, 81, 257, 94, 133, 212, 175, 130; y después de 30 movimientos se incorporan los requerimientos de las pistas 85, 15$^{PF}$, 202 y 288; y después de otros 40 movimientos más se incorporan los requerimientos de las pistas 75, 149$^{PF}$, 285, 201 y 59. Realice los diagramas para calcular el total de movimientos de head para satisfacer estos requerimientos de acuerdo a los siguientes algoritmos de scheduling de discos:
+\begin{parts}
+	\part FCFS
+	\part SSTF
+	\part C-Scan	
+	\part Scan
+	\part Look
+	\part C-Look
+\end{parts}
+
+\section{Administración de Archivos}
+
+\question Dados los siguientes métodos de administración de espació de un archivo:
+\begin{itemize}
+	\item Asignación contigua
+	\item Asignación enlazada
+	\item Asignación indexada
+\end{itemize}
+\begin{parts}
+	\part Describa como trabaja cada uno.
+	\part Cite ventajas y desventajas de cada uno.
+\end{parts}
+
+\question Gestión de espacio libre.  Dados los siguientes métodos de gestión de espacio libre en un disco:
+\begin{itemize}
+	\item Tabla de bits
+	\item Lista Ligada
+	\item Agrupamiento
+	\item Recuento
+\end{itemize}
+\begin{parts}
+	\part Describa como trabajan estos métodos.
+	\part Cite ventajas y desventajas de cada uno.
+\end{parts}
+
+\question Gestión de archivos en \textit{UNIX}. 
+
+\hspace{20pt} El sistema de archivos de UNIX utiliza una versión modificada del esquema de Asignación Indexada para la administración de espacio de los archivos.
+
+\hspace{20pt} Cada archivo o directorio esta representado por una estructura que mantiene, entre otra información, las direcciones de lo bloques que contienen los datos del archivo: el I-NODO.
+
+\hspace{20pt}  Cada I-NODO contiene 13 direcciones a los bloques de datos, organizadas de la siguiente
+manera:
+\begin{itemize}
+	\item 10 de direccionamiento directo.
+	\item 1 de direccionamiento indirecto simple.
+	\item 1 de direccionamiento indirecto doble.
+	\item 1 de direccionamiento indirecto triple.
+\end{itemize}
+\begin{parts}
+	\part Realice un grafico que describa la estructura del \textit{I-NODO} y de los bloques de datos. Cada bloque es de 1 \kibishort\bitsshort (\kibi\bits). Si cada dirección para referenciar un bloque es de 32 bits:
+	\begin{subparts}
+		\subpart ¿Cuántas referencias (direcciones) a bloque pueden contener un bloque de disco?
+		\subpart ¿Cuál sería el tamaño máximo de un archivo?
+	\end{subparts}
+\end{parts}
+
+\question Analice las siguientes fórmulas necesarias para localizar un I-NODO en la lista de inodos:
+
+\fbox{\begin{minipage}{40em}
+\textbf{nro bloque} = ((nro de inodo -1)/nro. de inodos por bloque) + bloque de comienzo de la lista de inodos.
+\end{minipage}}
+
+\fbox{\begin{minipage}{40em}
+\textbf{Desplazamiento del inodo en el bloque} = ((nro de inodo - 1) módulo (número de inodos por bloque)) * medida de inodo del disco.
+\end{minipage}}
+
+\begin{parts}
+	\part Según la primer fórmula, asumiendo que en el bloque 2 está en el comienzo de la lista de inodos y que hay 8 inodos por bloque: calcule donde se encuentra el inodo 8 y el 9. ¿Dónde estarían para bloque de disco de 16 inodos?
+	\part De acuerdo a la segunda fórmula, si cada inodo del disco ocupa 64 \bytes y hay 8 inodos por bloque de disco, el inodo 8 comienza en el desplazamiento 448 del bloque de disco. ¿Dónde empieza el 6? Si fueran inodos de 128 \bytes y 24 inodos por bloque: ¿dónde empezaría el inodo 8?
+\end{parts}
+
 \end{questions}

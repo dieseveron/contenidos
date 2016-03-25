@@ -45,7 +45,7 @@
       \item Tipo de operación (\emph{E} o \emph{S})
       \item Dirección en disco para la transferencia (file descriptor que se obtuvo al abrir un archivo)
       \item Dirección en memoria para la transferencia (de donde se lee o escribe)
-      \item Número de \bytes a transferir
+      \item Número de \bytes \hspace{1pt} a transferir
     \end{itemize}
     \item Este requerimiento es pasado, por el \textit{kernel}, al subsistema de \emph{E/S} quien lo traduce en: \textbf{(\#Cara, \#Cilindro, \#Sector)}
   \end{itemize}
@@ -121,26 +121,26 @@
 \begin{frame}
   \frametitle{Capacidad de un \textbf{HDD} - Ejemplo}
   \begin{itemize}
-    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno
+    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes \hspace{1pt} cada uno
     \item Si queremos calcular la capacidad total del disco, hacemos:
     \linebreak
     \linebreak
     \emph{tamaño\_disco = \#caras * \#pistas\_cara * \#sectores\_pista * tamaño\_sector}
     \linebreak
     \linebreak
-    \textcolor{orange}{\textbf{(6 * 2) * 1500 * 700 * 256 \bytes = 225600000 \bytes = 3,00407 \gibishort\bytesshort (\gibi\bytes)}}
+    \textcolor{orange}{\textbf{(6 * 2) * 1500 * 700 * 256 \bytes \hspace{1pt} = 225600000 \bytes \hspace{1pt} = 3,00407 \gibishort\bytesshort (\gibi\bytes)}}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Ocupación sobre un \textit{HDD} - Ejemplo}
   \begin{itemize}
-    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno
+    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes \hspace{1pt} cada uno
     \item Si queremos cuantas caras ocupará un archivo de 513 \mebishort\bytes almacenado de manera contigua a partir del primer sector de la primer pista de una cara determinada:
     \begin{itemize}
       \item Calculamos la capacidad de 1 cara:
       \linebreak      
-      \hspace{35pt} \textcolor{orange}{\textbf{1500 * 700 * 256 \bytes = 268800000 \bytes}}
+      \hspace{35pt} \textcolor{orange}{\textbf{1500 * 700 * 256 \bytes \hspace{1pt} = 268800000 \bytes}}
       \linebreak
       \item Dividimos el tamaño del archivo por la capacidad de una cara:
       \hspace{35pt} \textcolor{orange}{\textbf{513 \mebishort\bytesshort = 537919488 \bytes}}
@@ -153,7 +153,7 @@
 \begin{frame}
   \frametitle{Tiempo de acceso a un \textit{HDD} - Ejemplo}
   \begin{itemize}
-    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes cada uno. El disco gira a 12600 \rpm, tiene un tiempo de posicionamiento (\textit{seek}) de 2 \milisegundos y una velocidad de transferencia de 15 \mebishort\bitsshort/\s (\mebi\bits por \segundo)
+    \item Supongamos un disco con 6 platos, 2 caras útiles, 1500 pistas por cara y 700 sectores por pista de 256 \bytes \hspace{1pt} cada uno. El disco gira a 12600 \rpm, tiene un tiempo de posicionamiento (\textit{seek}) de 2 \milisegundos y una velocidad de transferencia de 15 \mebishort\bitsshort/\s (\mebi\bits \hspace{1pt} por \segundo)
     \item Si queremos saber cuantos \milisegundos se tardarían en transferir un archivo \textbf{almacenado de manera contigua y aleatoria} de 4500 sectores
   \end{itemize}
 \end{frame}
@@ -171,16 +171,16 @@
       \linebreak
       \item Transferencia:
       \linebreak
-      \textcolor{orange}{\textbf{15 \mebishort\bits $\rightarrow$ 1 \s = 1000 \ms}}
+      \textcolor{orange}{\textbf{15 \mebishort\bits \hspace{1pt} $\rightarrow$ 1 \s = 1000 \ms}}
       \linebreak
-      \textcolor{orange}{\textbf{256 \bytes $\rightarrow$ x}}
+      \textcolor{orange}{\textbf{256 \bytes \hspace{1pt} $\rightarrow$ x}}
       \linebreak
       \linebreak
       Unificamos unidades:
       \linebreak
-      \textcolor{orange}{\textbf{15728640 \bits $\rightarrow$ 1000 \ms}}
+      \textcolor{orange}{\textbf{15728640 \bits \hspace{1pt} $\rightarrow$ 1000 \ms}}
       \linebreak
-      \textcolor{orange}{\textbf{2048 \bits $\rightarrow$ x = 0,1302 \ms}}
+      \textcolor{orange}{\textbf{2048 \bits \hspace{1pt} $\rightarrow$ x = 0,1302 \ms}}
     \end{itemize}
   \end{itemize}
 \end{frame}
