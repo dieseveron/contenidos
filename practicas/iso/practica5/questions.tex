@@ -1,4 +1,115 @@
 \begin{questions}
-\question Hello world.
-\question Good bye cruel world!
+\question Explique a que hacen referencia los siguientes términos:
+\begin{itemize}
+	\item Dirección Lógica o Virtual
+	\item Dirección Física
+\end{itemize}
+
+\question En la técnica de Particiones Múltiples, la memoria es divida en varias particiones y los procesos son ubicados en estas, siempre que el tamaño del mismo sea menor o igual que el tamaño de la partición. Al trabajar con particiones se pueden considerar 2 métodos (independientes entre si):
+\begin{itemize}
+	\item Particiones Fijas
+	\item Particiones Dinámicas
+\end{itemize}
+\begin{parts}
+	\part Explique como trabajan estos 2 métodos. Cite diferencias, ventajas y desventajas.
+	\part ¿Qué información debe disponer el SO para poder administrar la memoria con estos métodos?
+	\part Realice un gráfico indicado como realiza el SO la transformación de direcciones lógicas a direcciones físicas.
+\end{parts}
+
+\question Al trabajar con particiones fijas, los tamaños de las mismas se pueden considerar:
+\begin{itemize}
+	\item Particiones de igual tamaño.
+	\item Particiones de diferente tamaño.
+\end{itemize}
+Cite ventajas y desventajas de estos dos métodos.
+
+\question Fragmentación.
+
+Ambos métodos de particiones presentan el problema de la fragmentación:
+\begin{itemize}
+	\item Fragmentación Interna (Para el caso de Particiones Fijas)
+	\item Fragmentación Externa (Para el caso de Particiones Dinámicas)
+\end{itemize}
+\begin{parts}
+	\item Explique a que hacen referencia estos 2 problemas
+	\item El problema de la Fragmentación Externa es posible de subsanar. Explique una técnica que evite este problema.
+\end{parts}
+
+\question Paginación
+\begin{parts}
+	\part Explique como trabaja este método de asignación de memoria.
+	\part¿Qué estructuras adicionales debe poseer el SO para llevar a cabo su implementación?
+	\part Explique, utilizando gráficos, como son transformadas las direcciones lógicas en físicas.
+	\part En este esquema: ¿Se puede producir fragmentación (interna y/o externa)?
+\end{parts}
+
+\question Cite similitudes y diferencias entre la técnica de paginación y la de particiones fijas.
+
+\question Suponga un sistema donde la memoria es administrada mediante la técnica de paginación, y donde:
+\begin{itemize}
+	\item El tamaño de la página es de 512 \bytes.
+	\item Cada dirección de memoria referencia 1 \byte.
+	\item Los marcos en memoria principal de encuentran desde la dirección física 0.
+\end{itemize}	
+
+Suponga además un proceso con un tamaño 2000 \bytes y con la siguiente tabla de páginas:
+\begin{table}[h]
+  \centering
+  \resizebox{12pc}{!}{
+  \begin{tabular}{| c | c |}
+      \hline
+      \bf Página & \bf Marco \\
+      \hline
+      0 & 3 \\
+      \hline
+      1 & 5 \\
+      \hline
+      2 & 2 \\
+      \hline
+      3 & 6 \\      
+      \hline
+  \end{tabular}
+  }
+\end{table}
+\begin{parts}
+	\part Realice los gráficos necesarios (de la memoria, proceso y tabla de paginas) en el que reflejen el estado descrito.
+	\part Indicar si las siguientes direcciones lógicas son correctas y en caso afirmativo indicar la dirección física a la que corresponden:
+	\begin{subparts}
+		\subpart 35
+		\subpart 512
+		\subpart 2051
+		\subpart 0
+		\subpart 1325
+		\subpart 602
+	\end{subparts}
+	\part Indicar, en caso de ser posible, las direcciones lógicas del proceso que se corresponden si las siguientes direcciones físicas:
+		\begin{subparts}
+		\subpart 509
+		\subpart 1500
+		\subpart 0
+		\subpart 3215
+		\subpart 1024
+		\subpart 2000
+	\end{subparts}
+	\part ¿Indique, en caso que se produzca, la fragmentación (interna y/o externa)?
+\end{parts}
+
+\question Considere un espacio lógico de 8 paginas de 1024 bytes cada una, mapeadas en una memoria física de 32 marcos.
+\begin{parts}
+	\part ¿Cuántos bits son necesarios para representar una dirección lógica?
+	\part ¿Cuántos bits son necesarios para representar una dirección física?
+\end{parts}
+
+\question Segmentación.
+\begin{parts}
+	\part Explique como trabaja este método de asignación de memoria.
+	\part ¿Qué estructuras adicionales debe poseer el SO para llevar a cabo su implementación?
+	\part Explique, utilizando gráficos, como son transformadas las direcciones lógicas en físicas.
+	\part En este esquema: ¿Se puede producir fragmentación (interna y/o externa)?
+\end{parts}
+
+\question Cite similitudes y diferencias entre la técnica de segmentación y la de particiones dinámicas.
+
+\question Cite similitudes y diferencias entre la técnica de paginación y segmentación.
+
 \end{questions}
