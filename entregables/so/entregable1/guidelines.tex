@@ -11,15 +11,14 @@
 	      \begin{lstlisting}
 		  while true; do
 		  
-		    #print promp
-		    echo -n _____________
-		    
-		    #read command and params
-		    read line
-		    
-		    #execute command in background mode if it exists
-		    
-		    #waits until command finish
+		    #print prompt and read command and params
+			read -p <prompt> line		    
+
+		    #Execute internal command in background and 
+		    #waits until command finish.
+		    #Or execute external command as user has typed
+		    #and waits for its finish.
+		    #Otherwise alert to user.
 		    
 		  done
 	      \end{lstlisting}
@@ -59,7 +58,11 @@
 	     
 	     \item \textbf{pwd}: Tiene el mismo comportamiento que un pwd de bash.
 	     
-	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Si el usuario que lo ejecuta no tiene permiso para escribir en la estructura del FileSystem, deberá devolver el mensaje de error “No tenés permiso!”, sin mostrar otro error en la pantalla.
+	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Como primer parámetro siempre debe recibir el \textit{path} del directorio a crear y a continuación cualquier otro parámetro soportado por el comando \emph{mkdir} de bash. También tendrá que tener en cuenta los siguientes puntos:
+	     \begin{itemize}
+	     	\item Si el usuario que lo ejecuta no tiene permiso para escribir en la estructura del FileSystem, deberá devolver el mensaje de error ”No tenés permiso!”, sin mostrar otro error en la pantalla.
+	     	\item Si al momento de realizar la operación hay algun error se debera visualizar en pantalla ”Error!, Directorio/s no creado/s”.
+	     \end{itemize}	      
 	    \end{enumerate}
 
 	    \item En \textbf{bash} y \textit{shells} similares, todo comando ingresado es buscado en los directorios configurados en la variable de entorno \textbf{PATH}. El valor de esta variable consiste en directorios separados por el caracter \textbf{":"}. Por ejemplo:
@@ -79,10 +82,14 @@
 	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando built-in. Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir "No se pudo encontrar el programa 'tree'".
       \end{enumerate}
 
-      \item Copie el \textit{script} implementado en el inciso 3 de la práctica 1 a cualquiera de los directorios contenidos en la variable de entorno \textbf{RUTA}.
+	  \item Cree dos \textit{links simbólicos} que vinculen a los dos \textit{scripts} implementados en el ejercicio 1 de la segunda parte de la práctica 1 a cualquiera de los directorios contenidos en la variable de entorno \textbf{RUTA}. Luego pruebelos desde dos terminales diferentes mediante su \textit{shell}.
+
+      \item Cree un \textit{link simbólico} que vincule el \textit{script} implementado en el inciso 3 de la segunda parte de la práctica 1 a cualquiera de los directorios contenidos en la variable de entorno \textbf{RUTA}. Luego pruebelo a través de su interprete.
       
       \item Cree un usuario en el sistema y asociele la \textit{shell} creada en el punto 1 con el fin de que la misma sea su intérprete de comandos.
       
       \item Verifique que todos los comandos \textit{built-in} implementados y el \textit{script} del inciso 3 de la práctica 1 se ejecuten sin problemas.
+
+      \item ¿Qué sucede si los comandos \textit{built-in} de este interprete no son ejecutados en \textit{background}?
 
 \end{enumerate}

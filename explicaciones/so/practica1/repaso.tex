@@ -30,7 +30,7 @@
       \item \texttt{cd}, \texttt{source}, \texttt{for}, \texttt{if}, \texttt{while},
         \texttt{continue}, \texttt{break}, \texttt{echo}, \texttt{exit}, \texttt{return}, \texttt{export},
         \texttt{bg}, \texttt{fg}, \texttt{help}, \texttt{kill}, \texttt{let}, \texttt{local},
-        \texttt{pwd}, \texttt{read}, \texttt{test} (o \texttt{[ ]})
+        \texttt{pwd}, \texttt{read}, \texttt{test} (o \texttt{[ ]}, o \texttt{[[ ]]})
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -40,11 +40,12 @@
   \begin{itemize}
     \item Cualquier binario que instalemos
     \item ¡Cualquier script que hagamos nosotros mismos!
-    \item \texttt{man COMANDO} para ver su documentación
+    \item \texttt{man COMANDO} para ver su documentación -$\rangle$ \texttt{/usr/share/doc} (texto plano, HTML, gzip)
+    \item Parámetro \texttt{--help}
     \item Hemos visto en ISO:
     \begin{itemize}
       \item \texttt{grep}, \texttt{cat}, \texttt{cut}, \texttt{ln}, \texttt{ls},
-        \texttt{find}, \texttt{expr}, \texttt{rm}, \texttt{mv}, \texttt{cp}
+        \texttt{find}, \texttt{expr}, \texttt{rm}, \texttt{mv}, \texttt{cp}, \texttt{whereis}
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -64,13 +65,14 @@ ls /etc # Y esto también
 \begin{frame}[fragile]
   \frametitle{Estructuras de control}
   \begin{itemize}
-    \item Son comandos internos de bash
+    \item Son comandos internos de bash    
     \begin{itemize}
       \item \texttt{if}
       \item \texttt{for}
       \item \texttt{while}
       \item ...
     \end{itemize}
+    \item \texttt{if} y \texttt{while} responden a \textit{true} y \textit{false}
     \item Ejemplo:
    \begin{lstlisting}
  if [ 4 -gt 3 ]
@@ -151,11 +153,24 @@ ls /etc # Y esto también
   \begin{itemize}
     \item Por defecto, todas las variables son \textbf{globales} al script
     \item Se pueden definir variables \textit{locales} mediante \texttt{local}
-    \item Existen variables globales a la sesión, llamadas \textbf{variables de entorno}
+    \item Existen variables globales a la sesión, llamadas \textbf{variables de entorno}:
     \begin{itemize}
       \item \texttt{export MI\_VARIABLE=\string"su valor\string"}
-      \item Ejemplos: \texttt{\$HOME}, \texttt{\$PATH}, \texttt{\$PWD}
-      \item Se pueden consultar las variables de entorno definidas mediante \texttt{export}
+      \item Ejemplos: \texttt{\$HOME}, \texttt{\$PATH}, \texttt{\$PWD}, \texttt{\$UID}, \texttt{\$EUID}, \texttt{\$IFS}
+      \item Se pueden consultar las variables de entorno definidas mediante \texttt{export} o \texttt{env}
+      \item Se pueden modificar
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Variables Especiales - \textbf{Bash}}
+  \begin{itemize}
+    \item Son read-only y pueden ser de mucha utilidad:
+    \begin{itemize}
+      \item \texttt{\$!}: Mantiene el \textit{PID} del último comando ejecutando en \textit{background}.
+      \item \texttt{\$\_}: Mantiene el último parámetro del último comando ejecutado.
+      \item \texttt{\$\$}: Mantiene el \textit{PID} del proceso actual, es decir el script en si mismo.
     \end{itemize}
   \end{itemize}
 \end{frame}

@@ -6,9 +6,13 @@
   \frametitle{Unnamed Pipes}
   \begin{itemize}
     \item Son los que se utilizaron para realizar los scripts en ISO (\texttt{|})
-    \item ¿Cuántos procesos actuan en la siguiente linea ejecutada en una terminal?
+    \item ¿Cuántos procesos actuan en la siguiente linea ejecutada en una terminal? (\textit{subshell\footnote{\url{http://www.tldp.org/LDP/abs/html/subshells.html}}})
     \begin{lstlisting}
 ls | grep x
+    \end{lstlisting}
+    \pause
+    \begin{lstlisting}
+echo "Subshell_1 \$BASH_SUBSHELL=$BASH_SUBSHELL \$BASHPID=$BASHPID \$\$=$$ \$PPID=$PPID" | (read v; echo "$v - Subshell_2 \$BASH_SUBSHELL=$BASH_SUBSHELL \$BASHPID=$BASHPID \$\$=$$ \$PPID=$PPID")
     \end{lstlisting}
   \end{itemize}
 \end{frame}
@@ -19,7 +23,7 @@ ls | grep x
   \begin{itemize}
     \item También conocidas con el nombre de \textit{FIFO}
     \item Se representan mediante archivos
-    \item Se crean con el comando \textit{mkfifo}
+    \item Se crean con el comando \textit{mkfifo} o \textit{mknode}
     \item Se identifican con la letra \textit{p}
     \begin{lstlisting}
 $ ls -l
@@ -70,9 +74,13 @@ nc -zv host_name port_number
   \frametitle{Netcat con Pipes y Redirecciones}
   \begin{itemize}
     \item Transferencia de datos, como el contenido de un archivo
-      \begin{lstlisting}	
-nc -l port_number < /home/so/archivo_a_enviar
-      \end{lstlisting}
+      \begin{lstlisting}
+# En el servidor      
+nc -l -p port_number
+
+# En el cliente
+nc port_number -q 1 < /home/so/archivo_a_enviar
+      \end{lstlisting}      
     \item ¿Cuál es el comportamiento el siguiente código?
       \begin{lstlisting}
 # En el servidor
