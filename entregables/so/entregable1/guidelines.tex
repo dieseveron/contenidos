@@ -79,7 +79,7 @@
 		$ echo $RUTA
 		/bin;/usr/bin;/usr/local/bin
 	    \end{lstlisting}
-	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando built-in. Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir "No se pudo encontrar el programa 'tree'".
+	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando interno (una funcion bash en nuestro caso). Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir "No se pudo encontrar el programa 'tree'".
       \end{enumerate}
 
 	  \item Cree dos \textit{links simbólicos} que vinculen a los dos \textit{scripts} implementados en el ejercicio 1 de la segunda parte de la práctica 1 a cualquiera de los directorios contenidos en la variable de entorno \textbf{RUTA}. Luego pruebelos desde dos terminales diferentes mediante su \textit{shell}.

@@ -84,7 +84,7 @@ nc port_number -q 1 < /home/so/archivo_a_enviar
     \item ¿Cuál es el comportamiento el siguiente código?
       \begin{lstlisting}
 # En el servidor
-cat named_pipe | nc -l 1500 > named_pipe
+cat named_pipe | nc -l -p 1500 > named_pipe
 
 # En el cliente
 nc localhost 1500
