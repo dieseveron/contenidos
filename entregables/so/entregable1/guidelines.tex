@@ -1,9 +1,9 @@
-\textbf{Modo de entrega:} A través de la plataforma (de sebe subir el archivo a la actividad que se creará para tal fin)
+\textbf{Modo de entrega:} A través de la plataforma (de sebe subir el archivo \textit{.tar.gz} a la actividad que se creará para tal fin)
 
 \renewcommand{\labelenumiii}{\roman{enumiii})}
 
 \begin{enumerate}
- \item Desarrollo de una \textit{shell}:
+ \item Desarrollo de una \textit{shell}: \label{implementar_shell}
       \begin{enumerate}
 	    \item En base al comportamiento típico y conocido como \textbf{REPL} y los conceptos vistos en la Práctica 1 desarrolle una \textit{shell} teniendo en cuenta las siguientes pautas:
 	    \begin{enumerate}
@@ -11,24 +11,28 @@
 	      \begin{lstlisting}
 		  while true; do
 		  
-		    #print prompt and read command and params
+		    #Imprimir prompt y leer lo ingresado por usuario
 			read -p <prompt> line		    
 
-		    #Execute internal command in background and 
-		    #waits until command finish.
-		    #Or execute external command as user has typed
-		    #and waits for its finish.
-		    #Otherwise alert to user.
+			#Validaciones
+			#Obtener comando y sus parametros
+		    #Ejecutar built-in de esta shell y esperar si es necesario
+		    #O ejecutar built-in de bash
+		    #O ejecutar comando externo con el criterio descrito mas abajo
 		    
 		  done
 	      \end{lstlisting}
 	      
-	      \item El \textit{prompt} del usuario debe ser el siguiente: \textbf{@nombre\_usuario\_logueado}
+	      \item El \textit{prompt} del usuario, por defecto, debe ser el siguiente: 
+
+	      				\textbf{@nombre\_usuario\_logueado>}
 	      
-	      \item Para cada comando ingresado, se deberá ejecutar el mismo en modo \textit{background}, de manera que se cree un sub-proceso de la \textit{shell}. Se deberá esperar por la terminación del comando ejecutado. \textbf{Nota}: investigue a que hace referencia la variable especial \textbf{\$!} y los comandos internos de \textbf{bash} con los que podría utilizarla. 
+	      \item Debe ser capaz de ejecutar algunos comandos buint-in de bash que no se especifiquen más abajo, como el comando \textit{cd}.
+
+	      \item Esta \textit{shell} no debe soportar ni \textit{pipes}, ni \textit{sustitución de comandos}, ni \textit{redirecciones}, ni la creación de \textit{subshells} ni tampoco ejecución \textit{background (\&)}.	      
 	    \end{enumerate}
 	    
-	    \item La shell deberá disponer de los siguientes comandos \textit{built-in}:
+	    \item La shell deberá disponer de los siguientes comandos \textit{built-in} (funciones del script):
 	    \begin{enumerate}
 	     \item \textbf{ls}: Tiene el mismo comportamiento que un ls de bash, a diferencia que cuando se ejecuta un ls en bash, este muestra los resultados en formato de columnas, mientras que el ls que se debe implementar deberá mostrar los resultados en una única columna (un resultado bajo el otro) Deberá ser capaz de recibir el parámetro -l: El resultado de la ejecución de este comando con el parámetro -l devolverá un listado similar al de un ls -l tradicional, con la salvedad de que los permisos serán mostrados utilizando notación octal. Por ejemplo:
 	     \begin{table}[th]
@@ -55,13 +59,28 @@
 	     \item \textbf{cat}: Tiene el mismo comportamiento que un cat de bash.
 
 	     \item \textbf{tac}: Devuelve el mismo resultado que un cat, pero en orden inverso (la primer línea la mostrará última).
+
+		 \item \textbf{prompt}: Cambia el \textit{prompt} de la shell. Recibe un string como parámetro:
+		 \begin{itemize}
+		 	\item \textbf{\emph{largo}}: el prompt se convierte en \textbf{@YoSoy-\emph{nombre\_usuario}>}
+		 	\item \textbf{\emph{uid}}: el prompt se convierte en \textbf{@\emph{uid\_usuario}>}
+		 	\item Caso contrario el prompt toma la forma por defecto.
+		 \end{itemize}
 	     
+		 \item \textbf{quiensoy}: Imprime información acerca de quien esta logueado. Recibe SOLO un string como parámetro, debiendo chequearse:
+		 \begin{itemize}
+		 	\item Si la cantidad de parámetros no es exactamente uno imprime "Cantidad de argumentos incorrecta. Solo es posible recibir uno solo."
+		 	\item Recibe \textbf{\emph{+h}}: imprime \textbf{Yo soy nombre\_usuario y estoy en la maquina "nombre\_host"}
+		 	\item Recibe \textbf{\emph{+inos}}: imprime \textbf{Yo soy nombre\_usuario y tengo UID=uid\_usuario}
+		 	\item Caso contrario imprime \textbf{Yo soy nombre\_usuario}
+		 \end{itemize}
+
 	     \item \textbf{pwd}: Tiene el mismo comportamiento que un pwd de bash.
 	     
-	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Como primer parámetro siempre debe recibir el \textit{path} del directorio a crear y a continuación cualquier otro parámetro soportado por el comando \emph{mkdir} de bash. También tendrá que tener en cuenta los siguientes puntos:
+	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Como primer parámetro siempre debe recibir el \textit{path} del directorio a crear y a continuación cualquier otro parámetro soportado por el comando \emph{mkdir} de bash. También tendrá que tener en cuenta lo siguiente:
 	     \begin{itemize}
 	     	\item Si el usuario que lo ejecuta no tiene permiso para escribir en la estructura del FileSystem, deberá devolver el mensaje de error ”No tenés permiso!”, sin mostrar otro error en la pantalla.
-	     	\item Si al momento de realizar la operación hay algun error se debera visualizar en pantalla ”Error!, Directorio/s no creado/s”.
+	     	\item Si al momento de realizar la operación hay algun error se debera visualizar en pantalla ”Error!, Directorio/s no creado/s” y nada más.
 	     \end{itemize}	      
 	    \end{enumerate}
 
@@ -82,14 +101,24 @@
 	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando interno (una funcion bash en nuestro caso). Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir "No se pudo encontrar el programa 'tree'".
       \end{enumerate}
 
-	  \item Cree dos \textit{links simbólicos} que vinculen a los dos \textit{scripts} implementados en el ejercicio 1 de la segunda parte de la práctica 1 a cualquiera de los directorios contenidos en la variable de entorno \textbf{RUTA}. Luego pruebelos desde dos terminales diferentes mediante su \textit{shell}.
-
-      \item Cree un \textit{link simbólico} que vincule el \textit{script} implementado en el inciso 3 de la segunda parte de la práctica 1 a cualquiera de los directorios contenidos en la variable de entorno \textbf{RUTA}. Luego pruebelo a través de su interprete.
+      \item Cree un directorio llamado \textbf{externalSO} a la misma altura que la shell para luego agregar esa ruta a la variable \textbf{RUTA}. El mismo debe contener lo siguiente:
+      \begin{itemize}
+      	\item Un script llamado \textbf{serverNC}: que implementa el servidor del ejercicio uno de la primer práctica. 
+      	\item Un script llamado \textbf{clientNC}: que implemente el cliente del ejercicio uno de la primer práctica.
+      	\item Un script llamado \textbf{scanner}: que implemente el ejercicio tres de la primer práctica pero recibiendo la lista hosts por parámetros.
+      \end{itemize}
       
-      \item Cree un usuario en el sistema y asociele la \textit{shell} creada en el punto 1 con el fin de que la misma sea su intérprete de comandos.
+      \item Cree un usuario en el sistema y asociele la \textit{shell} creada en el punto \ref{implementar_shell} con el fin de que la misma sea su intérprete de comandos.
       
-      \item Verifique que todos los comandos \textit{built-in} implementados y el \textit{script} del inciso 3 de la práctica 1 se ejecuten sin problemas.
+      \item Verifique que todos los comandos \textit{built-in} implementados, algunos \textit{built-in} de bash (\textit{cd}) y los scripts alojados en \textbf{externalSO} funcionen.
 
       \item ¿Qué sucede si algunos de los comandos \textit{built-in} de este interprete, como el \textit{ls}, no son ejecutados en \textit{background}?
 
 \end{enumerate}
+
+\textbf{TIPS}:
+\begin{itemize}
+	\item Para crear una \textit{subshell} puede utilizar \textbf{\&}.
+	\item Investigue las variables internas de \emph{bash}. Una que le va a ser de utilidad es \textbf{\$!}.
+	\item Investigue los comandos internos de \emph{bash}. Uno que le va a ser de utilidad es \textbf{wait}.
+\end{itemize}
