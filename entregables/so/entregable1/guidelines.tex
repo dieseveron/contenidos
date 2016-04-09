@@ -1,4 +1,4 @@
-\textbf{Modo de entrega:} A través de la plataforma (de sebe subir el archivo \textit{.tar.gz} a la actividad que se creará para tal fin)
+\textbf{Modo de entrega:} A través de la plataforma (se debe subir un archivo \textit{.tar.gz} a la actividad que se creará para tal fin. El mismo debe contener la implementación de la shell junto con lo que se especifica en el punto \ref{puntoComandosExternos})
 
 \renewcommand{\labelenumiii}{\roman{enumiii})}
 
@@ -69,8 +69,8 @@
 	     
 		 \item \textbf{quiensoy}: Imprime información acerca de quien esta logueado. Recibe SOLO un string como parámetro, debiendo chequearse:
 		 \begin{itemize}
-		 	\item Si la cantidad de parámetros no es exactamente uno imprime "Cantidad de argumentos incorrecta. Solo es posible recibir uno solo."
-		 	\item Recibe \textbf{\emph{+h}}: imprime \textbf{Yo soy nombre\_usuario y estoy en la maquina "nombre\_host"}
+		 	\item Si la cantidad de parámetros no es exactamente uno imprime ``Cantidad de argumentos incorrecta. Solo es posible recibir uno solo.''
+		 	\item Recibe \textbf{\emph{+h}}: imprime \textbf{Yo soy nombre\_usuario y estoy en la maquina ``nombre\_host''}
 		 	\item Recibe \textbf{\emph{+inos}}: imprime \textbf{Yo soy nombre\_usuario y tengo UID=uid\_usuario}
 		 	\item Caso contrario imprime \textbf{Yo soy nombre\_usuario}
 		 \end{itemize}
@@ -84,7 +84,7 @@
 	     \end{itemize}	      
 	    \end{enumerate}
 
-	    \item En \textbf{bash} y \textit{shells} similares, todo comando ingresado es buscado en los directorios configurados en la variable de entorno \textbf{PATH}. El valor de esta variable consiste en directorios separados por el caracter \textbf{":"}. Por ejemplo:
+	    \item En \textbf{bash} y \textit{shells} similares, todo comando ingresado es buscado en los directorios configurados en la variable de entorno \textbf{PATH}. El valor de esta variable consiste en directorios separados por el caracter \textbf{``:''}. Por ejemplo:
 	    \begin{lstlisting}
 		  $ echo $PATH
 		  /usr/local/bin:/usr/bin:/bin
@@ -93,15 +93,15 @@
 	    Entonces, si se ingresa el comando \textbf{cat}, bash primero comprobará si el comando es \textit{built-in}. Si no lo es, lo buscará en \textbf{/usr/local/bin}, si no lo encuentra lo buscará en \textbf{/usr/bin} y finalmente en \textbf{/bin}.
 	    
 	    
-	    Implemente una solución similar para la shell que se está desarrollando. Utilice una variable de entorno con nombre \textbf{RUTA} que separe cada directorio con el caracter \textbf{``;``}, y que busque el comando ingresado de atrás hacia delante. Por ejemplo:
+	    Implemente una solución similar para la shell que se está desarrollando. Utilice una variable de entorno con nombre \textbf{RUTA} que separe cada directorio con el caracter \textbf{``;''}, y que busque el comando ingresado de atrás hacia delante. Por ejemplo:
 	    \begin{lstlisting}
 		$ echo $RUTA
 		/bin;/usr/bin;/usr/local/bin
 	    \end{lstlisting}
-	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando interno (una funcion bash en nuestro caso). Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir "No se pudo encontrar el programa 'tree'".
+	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando interno (una funcion bash en nuestro caso). Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir ``No se pudo encontrar el programa `tree'''.
       \end{enumerate}
 
-      \item Cree un directorio llamado \textbf{externalSO} a la misma altura que la shell para luego agregar esa ruta a la variable \textbf{RUTA}. El mismo debe contener lo siguiente:
+      \item Cree un directorio llamado \textbf{externalSO} a la misma altura que la shell para luego agregar esa ruta a la variable \textbf{RUTA}. El mismo debe contener lo siguiente: \label{puntoComandosExternos}
       \begin{itemize}
       	\item Un script llamado \textbf{serverNC}: que implementa el servidor del ejercicio uno de la primer práctica. 
       	\item Un script llamado \textbf{clientNC}: que implemente el cliente del ejercicio uno de la primer práctica.
