@@ -14,7 +14,7 @@
 
   \question ¿Cuáles son los cambios que se introdujeron en el \textit{kernel} a
   partir de la versión 3.0? ¿ Cuál fue la razón por la cual se cambió de la
-  versión 2 a la 3?
+  versión 2 a la 3? ¿Y la razón para el cambio de la versión 3 a la 4?
 
   \question ¿Cómo se define el versionado de los \textit{kernel}s de GNU/Linux?
 
@@ -173,13 +173,13 @@ ejecutarse con privilegios de usuario \texttt{root}.
 \$ cd /usr/src/\\
 \$ sudo su\\
 \# wget
-https://kernel.org/pub/linux/kernel/v3.x/linux-\KERNELBASEVERSION.tar.xz}\\
+https://kernel.org/pub/linux/kernel/v4.x/linux-\KERNELBASEVERSION.tar.xz}\\
 
 \part Descargar el parche correspondiente a la versión a la que quiere
 llevar su código fuente. Si se está usando la máquina virtual provista por la cátedra,
 el parche también se encuentra en \texttt{/usr/src}:\\
 \texttt{\\
-\# wget https://kernel.org/pub/linux/kernel/v3.x/patch-\PATCHEDKERNELVERSION.xz} \\
+\# wget https://kernel.org/pub/linux/kernel/v4.x/patch-\PATCHEDKERNELVERSION.xz} \\
 
 \part Descomprimir el \textit{kernel} utilizando usuario sin privilegios de
 \texttt{root} (en la virtual, el usuario \texttt{so}), en un nuevo
