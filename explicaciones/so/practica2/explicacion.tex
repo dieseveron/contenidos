@@ -10,7 +10,20 @@
     \item Administración de \alert{memoria principal}
     \item Administración de \alert{uso de la CPU}
     \end{itemize}
+  \item Es de código abierto a los usuarios \alert{(kernel/sched.c)}
+  \item En una misma estructura de código fuente se da soporte a \alert{todass las arquitecturas}
   \item Liberado bajo licencia GPLv2  
+  \item En un sentido estricto es el Sistema Operativo
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{¿Qué es el \textit{kernel} Linux?}
+  \begin{itemize}
+  \item Es un núcleo monolítico híbrido
+    \begin{itemize}
+    \item Los drivers y el código del Kernel se ejecutan en modo privilegiado
+    \item Lo que lo hace híbrido es la posibilidad de cargar y descargar funcionalidad a través de módulos
+    \end{itemize}
   \end{itemize}
   \vfill
   \pause
@@ -112,7 +125,7 @@ Fechas relevantes:
 
 \item En el año 1995 Linux se porta a arquitecturas \textit{DEC Alpha} y
   \textit{Sun SPARC}. Con el correr de los años se portó a otra decena de
-  otras arquitecturas.
+   arquitecturas.
 
 \item En mayo de 1996 se decide adoptar a Tux como mascota oficial de
   Linux.
@@ -120,6 +133,7 @@ Fechas relevantes:
 \end{frame}
 
 \begin{frame}{Linux, un poco de historia}
+Fechas relevantes:
   \begin{itemize}
 \item En julio de 1996 se lanza la versión 2.0 y se define un sistema de
   nomenclatura. Se desarrolló hasta febrero de 2004 y terminó con la
@@ -144,10 +158,23 @@ Fechas relevantes:
   misma desde meses previos como la última en su revisión.
 
 \item El 17 Julio de 2011 se lanza la versión 3.0
+    \begin{itemize}
+    \item No agrega mayores cambios. La decisión del cambio son los 20 años del SO y no superar los 40 números de revisión
+    \item Totalmente compatible con Kernel 2.6
+    \end{itemize}
+
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux, un poco de historia}
+\begin{itemize}
+\item El 17 Julio de 2011 se lanza la versión 3.0
+    \begin{itemize}
+    \item Termina con la versión 3.8.30
+    \item Provee mejoras en Virtualización y FileSystems
+    \end{itemize}
+\end{itemize}
+
 \begin{block}{Anuncio de Linux 3.0 \hfill (2011)}
   [\ldots]
 
@@ -162,8 +189,32 @@ Fechas relevantes:
 \end{block}
 \end{frame}
 
+\begin{frame}{Linux, un poco de historia}
+\begin{itemize}
+\item El 12 de Abril de 2015 se lanza la versión 4.0
+    \begin{itemize}
+    \item Una de sus principales mejoras es la posibilidad de aplicar parches y actualizaciones si necesidad de reiniciar el SO.
+    \item Soporte para nuevas CPU
+    \item La versión actual es 4.5
+    \end{itemize}
+\end{itemize}
+
+\begin{block}{Anuncio de Linux 4.0 \hfill (2015)}
+  [\ldots]
+
+  .. Because the people have spoken, and while most of it was complete
+gibberish, numbers don't lie. People preferred 4.0, and 4.0 it shall
+be. Unless somebody can come up with a good argument against it.
+
+  [\ldots]
+
+  \hfill \emph{Linus Torvalds},  2015
+\end{block}
+\end{frame}
+
+
 \section{Versionado}
-\begin{frame}{Versionado en Linux 2.6 y 3}
+\begin{frame}{Versionado en Linux 2.6 y 3/4}
   
   \begin{block}{Anatomía de una versión}
     \alert{A}.\alert{B}.\structure{C}.[\structure{D}]
@@ -173,7 +224,7 @@ Fechas relevantes:
   \begin{description}
 
   \item[\alert{A}] Denota Versión. Cambia con menor Frecuencia. en 1994
-    (versión 1.0), en 1996 (versión 2.0) y en 2011 (versión 3.0).
+    (versión 1.0), en 1996 (versión 2.0), en 2011 (versión 3.0) y en  en 2015 (versión 4.0).
 
   \item[\alert{B}] Denota revisión mayor. Antes de la versión 2.6, los
     números impares indicaban desarrollo, los pares producción.
@@ -222,7 +273,7 @@ Fechas relevantes:
 \item Agregar \alert{mayor funcionalidad} (soporte para algún hardware
   específico)
 
-\item Optimizar funcionamiento de acuerdo al \alert{procesador en el que
+\item Optimizar funcionamiento de acuerdo al \alert{sistema en el que
     corre}
 
 \item \alert{Adaptarlo} al sistema donde corre (quitar soporte de hardware no utilizado)
@@ -280,8 +331,8 @@ Fechas relevantes:
     \tiny {
     \texttt{\$ cd /usr/src}\\
     \texttt{\$ sudo wget
-      https://kernel.org/pub/linux/kernel/v3.x/linux-\KERNELBASEVERSION.tar.xz} }
-  \end{block}
+      https://kernel.org/pub/linux/kernel/v4.x/linux-\KERNELBASEVERSION.tar.xz} }
+  \end{block}	
   \vfill
   \alert{Opcional}: Por cuestiones de seguridad, opcionalmente se puede
   descargar un archivo con una firma criptográfica del \textit{kernel}
@@ -290,9 +341,9 @@ Fechas relevantes:
   modificaciones maliciosas de por medio.
   \begin{block}{}
     \tiny{\texttt{%
-\$ wget https://kernel.org/pub/linux/kernel/v3.x/linux-\KERNELBASEVERSION.tar.sign \\
+\$ wget https://kernel.org/pub/linux/kernel/v4.x/linux-\KERNELBASEVERSION.tar.sign \\
 \$ xz -cd linux-\KERNELBASEVERSION.tar.xz | gpg --verify linux-\KERNELBASEVERSION.tar.sign -\\
-gpg: Signature made Thu 13 Feb 2014 07:02:52 PM ART using RSA key ID 6092693E\\
+gpg: Signature made Thu 30 Mar 2014 11:35:06 AM ART using RSA key ID 4395693E\\
 gpg: Good signature from "Greg Kroah-Hartman (Linux kernel stable release signing key) <greg@kroah.com>"\\
 gpg: WARNING: This key is not certified with a trusted signature!\\
 gpg:          There is no indication that the signature belongs to the owner.\\
@@ -307,13 +358,17 @@ Primary key fingerprint: 647F 2865 4894 E3BD 4571  99BE 38DB BDC8 6092 693E}}
   tiene permisos de escritura para usuarios no privilegiados, el archivo se
   debe descomprimir en un directorio donde tengamos permisos, como el
   \texttt{\$HOME} del usuario actual.
-  
   { \small
   \begin{block}{}
     \texttt{\$ mkdir \KERNELSOURCEPATH}\\
     \texttt{\$ cd \KERNELSOURCEPATH}\\
     \texttt{\$ tar xvf /usr/src/linux-\KERNELBASEVERSION.tar.xz}
   \end{block}}
+  Generalmente se crea un enlace simbólico llamado linux apuntando al directorio del código fuente que actualmente se está configurando
+  \begin{block}{}
+    \texttt{\$ ln -s /usr/src/linux-\KERNELBASEVERSION\   /usr/src/linux}
+  \end{block}
+
 \end{frame}
 
 \begin{frame}{Configurar el \textit{kernel}}
@@ -337,9 +392,9 @@ Existen tres interfaces que permiten generar este archivo:
 \begin{itemize}
 \item \texttt{make config}: modo texto y secuencial. \alert{Tedioso}.
 \item \texttt{make xconfig}: interfaz gráfica utilizando un sistema de
-  ventanas.
+  ventanas.\alert{No todos los sistemas tienen instalado X}.
 \item \texttt{make menuconfig}: este modo utiliza \texttt{ncurses}, una
-  librería que permite generar una interfaz con paneles desde la terminal.
+  librería que permite generar una interfaz con paneles desde la terminal.\alert{Generalmente el más utilizado}.
 \end{itemize}
 \end{frame}
 
@@ -366,6 +421,21 @@ Las herramientas mencionadas permiten:
 \end{block}
 \end{frame}
 
+\begin{frame}{Configurar el \textit{kernel} (Modulos)}
+¿Qué es un modulo del Kernel?
+\begin{itemize}
+\item Un fragmento de código que puede cargarse/descargarse en el mapa de memoria del SO (Kernel)bajo demanda
+\item Permiten extender la funcionalidad del Kernel en "caliente" (sin necesidad de reiniciar el sistema
+\item Todo su codigo se ejecuta en modo Kernel (privilegiado)
+\item Cualquier error en el módulo, puede colgar el SO
+\item Permiten que el kernel se desarrolle bajo un diseño mas modular
+\item Los modulos disponibles se ubican en \textit{/lib/modules/version del kernel}
+\item Con el comando \textit{lsmod} es posible ver qué modulos están cargados
+\item \alert{Vamos a ampliar en las próximas prácticas}
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Configurar el \textit{kernel}}
 ¿El soporte lo damos como módulo o \textit{built-in}?
 \pause
@@ -387,6 +457,27 @@ Las herramientas mencionadas permiten:
   \end{itemize}
 \end{itemize}
 \end{frame}
+
+\begin{frame}{Parcheando el \textit{kernel}}
+\begin{itemize}
+\item Es un mecanismo que permite aplicar actualizaciones NO incrementales sobre la version base
+\item Se basa en archivos \textit{diff} (archivos de diferencia), que indican qué agregar y qué quitar
+\item Se aplican sobre la versión base
+\item Permiten agregar funcionalidad (nuevos drivers, correcciones menores, etc.)
+\item A veces puede resultar más sencillo descargar el archivo de diferencia y aplicarlo en vez de descargar todo el código de la nueva versión
+\end{itemize}
+\pause
+\begin{block}{}
+    \texttt{\$ cd linux; zcat ../patch-\PATCHEDKERNELVERSION.gz | patch -p1}
+\end{block}
+
+\begin{block}{Tip}
+  Parámetro útil:
+  \texttt{\ --dry-run}
+\end{block}
+
+\end{frame}
+
 
 \begin{frame}{Configurar el \textit{kernel}}
   En el trabajo práctico debemos dar el siguiente soporte adicional:
@@ -427,9 +518,25 @@ Verificar que este proceso no arroje errores al concluir.
    \end{center}
 \end{frame}
 
+\begin{frame}{Compilación de \textit{modulos}}
+\begin{block}{Compilando}
+  \texttt{\$ make modules} 
+\end{block}
+
+El comando \texttt{make modules} compila todos los módulos necesarios para satisfacer las opciones que hayan sido seleccionadas como módulo .
+
+\begin{block}{Tip}
+\texttt{Generalmente la tarea anterior se encuentra incluida en la compilación del kernel con el comando \texttt{make}}
+\end{block}
+
+
+\end{frame}
+
 
 \begin{frame}{Instalación del \textit{kernel}}
-  Luego de que termina el proceso de compilación, la imagen del
+  \alert{Recién en este paso es necesario convertirse en root}
+
+  Al terminar el proceso de compilación, la imagen del
   \textit{kernel} quedará ubicada en
   \texttt{\textit{directorio-del-código}/arch/\textit{arquitectura}/boot/}. El
   próximo paso, entonces, es instalar el \textit{kernel} y otros archivos
@@ -437,20 +544,22 @@ Verificar que este proceso no arroje errores al concluir.
 
   { \tiny
   \begin{block}{Ejemplo con arquitectura \textit{i386}}
-    \texttt{\$ cd \KERNELSOURCEPATH/linux-\KERNELBASEVERSION \\
+    \texttt{\$ cd \KERNELSOURCEPATH/linux-\KERNELVERSION \\
 \$ sudo su \\
-\# cp arch/i386/boot/bzImage /boot/vmlinuz-\KERNELBASEVERSION \\
-\# cp System.map /boot/System.map-\KERNELBASEVERSION \\
-\# cp .config /boot/config-\KERNELBASEVERSION}
+\# cp arch/i386/boot/bzImage /boot/vmlinuz-\PATCHEDKERNELVERSION \\
+\# cp System.map /boot/System.map-\PATCHEDKERNELVERSION \\
+\# cp .config /boot/config-\PATCHEDKERNELVERSION}
   \end{block}}
   \vfill \pause
 
+\tiny
   Por supuesto, también existe una regla en el \texttt{Makefile} que
   realiza esto mismo automáticamente.
   { \tiny
   \begin{block}{}
     \texttt{\$ sudo make install}
   \end{block}}
+System.map: http://rlworkman.net/system.map/
 \end{frame} 
 
 \begin{frame}{Instalar los módulos}
@@ -473,7 +582,7 @@ Verificar que este proceso no arroje errores al concluir.
   arranque el disco se desmonta.
   
   \begin{block}{}
-    \texttt{\# mkinitramfs -o /boot/initrd.img-\KERNELBASEVERSION\ \KERNELBASEVERSION.0 }
+    \texttt{\# mkinitramfs -o /boot/initrd.img-\PATCHEDKERNELVERSION\ \PATCHEDKERNELVERSION }
   \end{block}  
 \end{frame}
 
@@ -481,17 +590,17 @@ Verificar que este proceso no arroje errores al concluir.
 \begin{itemize}
 \item \texttt{LILO}
   \begin{block}{\texttt{/etc/lilo.conf}}
-    \texttt{image=/boot/vmlinuz-\KERNELBASEVERSION \\
-    label=Linux-kernel-\KERNELBASEVERSION \\
+    \texttt{image=/boot/vmlinuz-\PATCHEDKERNELVERSION \\
+    label=Linux-kernel-\PATCHEDKERNELVERSION \\
     read-only \\
     root=/dev/sda1}
   \end{block}
 \item GRUB \textit{legacy}
   \begin{block}{\texttt{/boot/grub/menu.lst}}
-    \texttt{title     Linux-kernel-\KERNELBASEVERSION \\
+    \texttt{title     Linux-kernel-\PATCHEDKERNELVERSION \\
     root     (hd0,0) \#Disco en el 1º IDE, 1º partición \\
-    kernel  /vmlinuz-\KERNELBASEVERSION\ root=/dev/sda1 ro \\
-    initrd /initrd.img-\KERNELBASEVERSION}
+    kernel  /vmlinuz-\PATCHEDKERNELVERSION\ root=/dev/sda1 ro \\
+    initrd /initrd.img-\PATCHEDKERNELVERSION}
   \end{block}
 \end{itemize}
 \end{frame}
@@ -513,15 +622,15 @@ Verificar que el \textit{kernel} esté instalado en \texttt{/boot}:
 
 { \tiny
   \begin{block}{}
-    \texttt{\$ test -f /boot/vmlinuz-\KERNELBASEVERSION\ \&\& echo "Kernel instalado"}
+    \texttt{\$ test -f /boot/vmlinuz-\PATCHEDKERNELVERSION\ \&\& echo "Kernel instalado"}
 \end{block} }
 
 Verificar que los módulos estén instalados en
-\texttt{/lib/modules/\KERNELBASEVERSION}:
+\texttt{/lib/modules/\PATCHEDKERNELVERSION}:
 
 { \tiny
   \begin{block}{}
-    \texttt{\$ test -d /lib/modules/\KERNELBASEVERSION-\textit{arquitectura}
+    \texttt{\$ test -d /lib/modules/\PATCHEDKERNELVERSION-\textit{arquitectura}
       \&\& echo "Modulos aparentemente instalados"}
 \end{block} }
 
@@ -538,39 +647,6 @@ Paso final: ¡\alert{reiniciar} y \structure{probar}!
 \end{frame}
 
 \section{Apéndice}
-\subsection{Parches}
-
-\begin{frame}{Aplicar parches al \textit{kernel}}
-  Como se comentó en la sección de \textit{Versionado}, luego de que se
-  libera una versión del kernel, como la \KERNELBASEVERSION, con el tiempo
-  salen revisiones menores que incorporan \textit{bugfixes}. Si bien desde
-  el sitio de \texttt{kernel.org} se ofrecen archivos con el
-  \textit{kernel} y parche aplicado, a veces es conveniente descargar solo
-  el parche y aplicarlo manualmente.
-
-  Desde el sitio \texttt{kernel.org} se ofrecen los parches para las
-  revisiones liberadas. Estos parches \alert{no son incrementales}. Esto
-  implica que, suponiendo que quisieramos aplicar un parche para ir a la
-  revisión 3 de un \textit{kernel}, no tendremos que aplicar el parche de
-  la revisión 2 ni de la 1. Simplemente se precisa el código de la versión
-  base.
-\end{frame}
-
-\begin{frame}{Aplicar parches al \textit{kernel}}
-  Un ejemplo:
-  { \tiny
-  \begin{block}{}
-    \texttt{\\
-\$ cd /usr/src \\
-\$ sudo su \\
-\# wget
-https://kernel.org/pub/linux/kernel/v3.x/patch-\PATCHEDKERNELVERSION.xz \\
-\# exit \\
-\$ cd \KERNELSOURCEPATH/linux-\KERNELBASEVERSION \\
-\$ xzcat /usr/src/patch-\PATCHEDKERNELVERSION.xz | patch -p1}
-\end{block}
-}
-\end{frame}
 
 \subsection{Debian way}
 \begin{frame}{Debian \textit{way}}
@@ -584,21 +660,21 @@ Instalar un \textit{kernel} de forma empaquetada ofrece muchas ventajas:
 
 \vfill Debian designa una versión de Linux a la cual dar soporte durante
 todo el ciclo de vida de su versión estable, actualmente Debian
-\textit{wheezy}. Esto implica portar actualizaciones críticas y
+\textit{jessie}. Esto implica portar actualizaciones críticas y
 \textit{bugfixes}. La versión de Linux que está en la actual Debian estable
-es la 3.2.
+es la 3.16.
 
 { \tiny
   \begin{block}{}
     \texttt{\\
-\# apt-get install linux-source-3.2 \\
-\$ tar xjf /usr/src/linux-source-3.2.tar.bz2 \\
-\$ cd linux-source-3.2 \\
+\# apt-get install linux-source-3.16 \\
+\$ tar xjf /usr/src/linux-source-3.16.tar.bz2 \\
+\$ cd linux-source-3.16 \\
 \$ make menuconfig \\
 \$ scripts/config --disable DEBUG\_INFO \\
 \$ make clean \\
 \$ make deb-pkg \\
-\# dpkg -i ../linux-image-3.2.*.deb
+\# dpkg -i ../linux-image-3.16.*.deb
 }
 \end{block} }
 
