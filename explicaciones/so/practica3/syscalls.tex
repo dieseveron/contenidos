@@ -44,14 +44,11 @@
  
 \end{frame}
 
-
-
-
 \begin{frame}{Invocando System Calls}
   \begin{itemize}
   \item Utilizando los wrappers de glibc
          \begin{itemize}
-            \item \texttt{int rc = chmod( "/etc/passwd" , 0444);}
+            \item \texttt{int rc = chmod( ``/etc/passwd'' , 0444);}
          \end{itemize}
   \item Invocación explícita utilizando la System Call \alert{syscall} provista por glibc
          \begin{itemize}
@@ -61,14 +58,11 @@
 	    \end{itemize} 
 	    \item Ejemplo utilizando syscall: 
               \begin{itemize}
-                \item \texttt{rc = syscall(SYS\_chmod, "/etc/passwd", 0444);}
+                \item \texttt{rc = syscall(SYS\_chmod, ``/etc/passwd'', 0444);}
               \end{itemize}
          \end{itemize} 
   \end{itemize}
 \end{frame}
-
-
-
 
 \begin{frame}[fragile]
 \frametitle{Ejemplo}
@@ -286,7 +280,87 @@ access("/etc/ld.so.preload", R\_OK)      = -1 ENOENT (No such file or directory)
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{DESAFIO}
+   \begin{itemize}  
+   \item Realizar un parche que contenga los cambios asociados a la siguiente \textit{system call}: 
+   \begin{itemize}
+      \item Simplemente debe imprimir el texto ``Hello World!'' a través de la función \textit{printk}
+    \end{itemize}
+    \item Tips:
+    \begin{itemize}
+      \item Utilizar explicación y práctica para guiarse
+      \item \url{http://lxr.free-electrons.com/}
+    \end{itemize}
+ \end{itemize}
+\end{frame}
 
+\begin{frame}[fragile]
+\frametitle{DESAFIO - Implementación}
+  \begin{itemize}
+    \item ¿Dónde incluir la implementación?:
+    \begin{itemize}
+      \item Dos opciones:
+      \begin{itemize}
+        \item Incluir el código en un fichero existente
+        \item Agregar un nuevo fichero $\rangle$ modificar \emph{Makefile} existente
+      \end{itemize}
+    \end{itemize}
+    \item Crearemos un nuevo fichero \emph{.c} nuevo en \emph{kernel/mysyscall.c}
+  \end{itemize}
+  \begin{lstlisting}
+#include <linux/syscalls.h> /* For SYSCALL_DEFINEi() */
+#include <linux/kernel.h>
+
+SYSCALL_DEFINE0(mysyscall)
+{
+  printk(KERN_DEBUG "Hello world\n");
+  return 0;
+}      
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{DESAFIO - Modificar \emph{Makefile}}
+  \begin{lstlisting}
+#
+# Makefile for the linux kernel.
+#
+
+obj-y = ...
+        async.o range.o groups.o smpboot.o mysyscall.o
+...
+  \end{lstlisting}  
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{DESAFIO - Test}
+  \begin{lstlisting}
+#include <linux/errno.h>
+#include <sys/syscall.h>
+#include <linux/unistd.h>
+#include <stdio.h>
+
+#define __NR_MYSYSCALL 316
+
+int main() {
+  printf("Invocando system call\n");
+  return (long) syscall(__NR_MY_SYSCALL);
+}
+  \end{lstlisting}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{DESAFIO - Parche}
+  \begin{lstlisting}
+## Crear parche
+$ diff -urpN ${DIR_KERNEL_ORIGINAL} ${DIR_KERNEL_MODIFICADO} > patch-4.4.0-so
+
+## Aplicar parche
+$ patch -p1 < ${RUTA_MI_PARCHE}
+  \end{lstlisting}  
+\end{frame}
 
 %%% Local Variables: 
 %%% mode: latex

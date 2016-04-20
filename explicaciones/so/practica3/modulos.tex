@@ -4,11 +4,11 @@
   \begin{itemize}
   \item “Pedazos de código” que pueden ser cargados y descargados bajo demanda 
   \item Extienden la funcionalidad del kernel
-  \item Sin ellos el kernel sería 100% monolítico   
+  \item Sin ellos el kernel sería 100\% monolítico   
   \begin{itemize}
-    \item Monolítico "hibrido"
+    \item Monolítico ``hibrido''
   \end{itemize} 
- \item No recompilar ni rebootear   
+ \item No recompilar ni rebootear el kernel
   \end{itemize}
 \end{frame}
 
@@ -43,8 +43,6 @@
   \end{itemize}
 
 \end{frame}
-
-
 
 \begin{frame}[fragile]
 \frametitle{¿Como creamos un módulo?}
@@ -126,10 +124,10 @@ clean:
 make -C /lib/modules/$(shell uname -r)/build M=$(pwd) clean
 \end{lstlisting}
   \begin{itemize}
-  \item Compilamos make
+  \item Compilamos
   \end{itemize}
 \begin{lstlisting}
-make -C <KERNEL_CODE> M=$(pwd) modules
+    $ make
 \end{lstlisting}
 
 \end{frame}
@@ -155,7 +153,7 @@ make -C <KERNEL_CODE> M=$(pwd) modules
 \end{frame}
 
 
-\begin{frame}{¿Que son los \textit{Dispositivos}?(Cont)}
+\begin{frame}{¿Que son los \textit{Dispositivos}? (Cont.)}
   \begin{itemize}
 	\item Podemos clasificar el hard en varios tipos.
 	\begin{itemize}

@@ -344,7 +344,7 @@ be. Unless somebody can come up with a good argument against it.
 \$ wget https://kernel.org/pub/linux/kernel/v4.x/linux-\KERNELBASEVERSION.tar.sign \\
 \$ xz -cd linux-\KERNELBASEVERSION.tar.xz | gpg --verify linux-\KERNELBASEVERSION.tar.sign -\\
 gpg: Signature made Thu 30 Mar 2014 11:35:06 AM ART using RSA key ID 4395693E\\
-gpg: Good signature from "Greg Kroah-Hartman (Linux kernel stable release signing key) <greg@kroah.com>"\\
+gpg: Good signature from ``Greg Kroah-Hartman (Linux kernel stable release signing key) <greg@kroah.com>''\\
 gpg: WARNING: This key is not certified with a trusted signature!\\
 gpg:          There is no indication that the signature belongs to the owner.\\
 Primary key fingerprint: 647F 2865 4894 E3BD 4571  99BE 38DB BDC8 6092 693E}}
@@ -425,7 +425,7 @@ Las herramientas mencionadas permiten:
 ¿Qué es un modulo del Kernel?
 \begin{itemize}
 \item Un fragmento de código que puede cargarse/descargarse en el mapa de memoria del SO (Kernel)bajo demanda
-\item Permiten extender la funcionalidad del Kernel en "caliente" (sin necesidad de reiniciar el sistema
+\item Permiten extender la funcionalidad del Kernel en ``caliente'' (sin necesidad de reiniciar el sistema
 \item Todo su codigo se ejecuta en modo Kernel (privilegiado)
 \item Cualquier error en el módulo, puede colgar el SO
 \item Permiten que el kernel se desarrolle bajo un diseño mas modular
@@ -622,7 +622,7 @@ Verificar que el \textit{kernel} esté instalado en \texttt{/boot}:
 
 { \tiny
   \begin{block}{}
-    \texttt{\$ test -f /boot/vmlinuz-\PATCHEDKERNELVERSION\ \&\& echo "Kernel instalado"}
+    \texttt{\$ test -f /boot/vmlinuz-\PATCHEDKERNELVERSION\ \&\& echo ``Kernel instalado''}
 \end{block} }
 
 Verificar que los módulos estén instalados en
@@ -631,7 +631,7 @@ Verificar que los módulos estén instalados en
 { \tiny
   \begin{block}{}
     \texttt{\$ test -d /lib/modules/\PATCHEDKERNELVERSION-\textit{arquitectura}
-      \&\& echo "Modulos aparentemente instalados"}
+      \&\& echo ``Modulos aparentemente instalados''}
 \end{block} }
 
 Verificar que el gestor de arranque haya indexado el \textit{kernel}. Si el
@@ -693,6 +693,19 @@ es la 3.16.
   \bibitem{DebianKernelHandboox} \newblock {\em Debian Linux Kernel Handbook}
     \newblock \url{http://kernel-handbook.alioth.debian.org/}
   \end{thebibliography}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{DESAFIO}
+   \begin{itemize}  
+   \item Compilar el Kernel en la distribución que posean
+   \item Una vez que el kernel haya sido compilado, bootear con ese kernel y ejecutar el siguiente comando:
+   \begin{lstlisting}
+# uname -r | md5sum
+    \end{lstlisting}
+    \item Pegar el texto devuelto en la tarea que se publicará para tal fin en el sitio de la cátedra
+    \item ¡Tienen tiempo hasta el Lunes 18 a las 15:00 horas!
+ \end{itemize}
 \end{frame}
 
 %%% Local Variables: 
