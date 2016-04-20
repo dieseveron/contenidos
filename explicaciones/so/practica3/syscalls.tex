@@ -104,7 +104,7 @@ void main(void){
    \item \texttt{Se usa el vector 0x80 para transferir el control al kernel. Este vector de interrupción esta inicializado durante el startup del sistema.}
  \end{itemize}
     \item Una librería de espacio de usuario(libc) carga el índice de la system call y sus argumentos, la interrupción enmascarable por software 	0x80 es invocada, la cual resulta en el cambio de modo.	
-   \item La estructura sys\_call\_table y el registro eax como índice se determina que función invocar.	
+   \item A través de la estructura sys\_call\_table y el registro eax como índice se determina que \emph{handler function} invocar.
   \end{itemize}
 \end{frame}
 
@@ -171,7 +171,7 @@ ret
 \begin{frame}{System Calls en GNU Linux}
    \begin{itemize}  
    \item Debemos declarar nuestra syscall por un número único(syscall number). 
-   \item Aggregamos una entrada a la syscall table.
+   \item Agregamos una entrada a la syscall table.
    \item Debemos considerar el sys call number.
    \item Ver que el código fuente organizado por arquitectura.
    \item Respetar las convenciones del Kernel(ej. prefijo sys\_).
@@ -222,7 +222,7 @@ asmlinkage long sys\_newcall(int i);
 
 \begin{block}{En algún archivo ya incluido en los fuentes del Kernel...}
 asmlinkage int sys\_newcall(int a) { \\
-	printk(" calling newcall... ");   \\
+	printk(``calling newcall... '');   \\
 return a+1; \\
 }
 \end{block}
@@ -345,7 +345,7 @@ obj-y = ...
 
 int main() {
   printf("Invocando system call\n");
-  return (long) syscall(__NR_MY_SYSCALL);
+  return syscall(__NR_MY_SYSCALL);
 }
   \end{lstlisting}  
 \end{frame}
