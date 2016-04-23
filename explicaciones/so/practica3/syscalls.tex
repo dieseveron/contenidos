@@ -34,7 +34,7 @@
   \item Son llamados al kernel para ejecutar una función específica que controla un dispositivo o ejecuta una instrucción privilegiada 
   \item Su próposito es proveer una interfaz común para lograr portabilidad
   \item Su funcionalidad la ejecuta el Kernel   
-  \item Recordar
+  \item Recordar  
   \begin{itemize}
     \item Cambio de Modo
     \item ¿Como se pasa de modo usuario a modo Kernel?
@@ -177,7 +177,7 @@ ret
    \item Respetar las convenciones del Kernel(ej. prefijo sys\_).
  \end{itemize}
 
-\begin{block}{/usr/src/linux-3.8/arch/x86/syscalls/syscall\_32.tbl}
+\begin{block}{/usr/src/linux-3.8/arch/x86/entry/syscalls/syscall\_32.tbl}
   \begin{block}{}
      343     i386    clock\_adjtime            sys\_clock\_adjtime    \\           
      347     i386    process\_vm\_readv        sys\_process\_vm\_readv  \\          
@@ -286,10 +286,11 @@ access("/etc/ld.so.preload", R\_OK)      = -1 ENOENT (No such file or directory)
    \item Realizar un parche que contenga los cambios asociados a la siguiente \textit{system call}: 
    \begin{itemize}
       \item Simplemente debe imprimir el texto ``Hello World!'' a través de la función \textit{printk}
+      \item Se debe hacer sobre la la \emph{4.4.6}
     \end{itemize}
     \item Tips:
     \begin{itemize}
-      \item Utilizar explicación y práctica para guiarse
+      \item Utilizar explicación y práctica para guiarse      
       \item \url{http://lxr.free-electrons.com/}
     \end{itemize}
  \end{itemize}
@@ -345,7 +346,7 @@ obj-y = ...
 
 int main() {
   printf("Invocando system call\n");
-  return syscall(__NR_MY_SYSCALL);
+  return syscall(__NR_MYSYSCALL);
 }
   \end{lstlisting}  
 \end{frame}
@@ -355,7 +356,7 @@ int main() {
 \frametitle{DESAFIO - Parche}
   \begin{lstlisting}
 ## Crear parche
-$ diff -urpN ${DIR_KERNEL_ORIGINAL} ${DIR_KERNEL_MODIFICADO} > patch-4.4.0-so
+$ diff -urpN ${DIR_KERNEL_ORIGINAL} ${DIR_KERNEL_MODIFICADO} > patch-4.4.6-so2016
 
 ## Aplicar parche
 $ patch -p1 < ${RUTA_MI_PARCHE}
