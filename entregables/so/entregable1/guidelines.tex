@@ -77,7 +77,7 @@
 
 	     \item \textbf{pwd}: Tiene el mismo comportamiento que un pwd de bash.
 	     
-	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Como primer parámetro siempre debe recibir el \textit{path} del directorio a crear y a continuación cualquier otro parámetro soportado por el comando \emph{mkdir} de bash. También tendrá que tener en cuenta lo siguiente:
+	     \item \textbf{mkdir}: Crea un directorio dentro del FileSystem. Debe recibir como parámetro SOLO el \textit{path absoluto} del directorio a crear. También tendrá que tener en cuenta lo siguiente:
 	     \begin{itemize}
 	     	\item Si el usuario que lo ejecuta no tiene permiso para escribir en la estructura del FileSystem, deberá devolver el mensaje de error ”No tenés permiso!”, sin mostrar otro error en la pantalla.
 	     	\item Si al momento de realizar la operación hay algun error se debera visualizar en pantalla ”Error!, Directorio/s no creado/s” y nada más.
