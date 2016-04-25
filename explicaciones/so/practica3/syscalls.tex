@@ -285,7 +285,7 @@ access("/etc/ld.so.preload", R\_OK)      = -1 ENOENT (No such file or directory)
    \begin{itemize}  
    \item Realizar un parche que contenga los cambios asociados a la siguiente \textit{system call}: 
    \begin{itemize}
-      \item Simplemente debe imprimir el texto ``Hello World!'' a través de la función \textit{printk}
+      \item Simplemente debe imprimir el texto ``Hello world'' a través de la función \textit{printk}
       \item Se debe hacer sobre la la \emph{4.4.6}
     \end{itemize}
     \item Tips:
@@ -307,7 +307,7 @@ access("/etc/ld.so.preload", R\_OK)      = -1 ENOENT (No such file or directory)
         \item Agregar un nuevo fichero $\rangle$ modificar \emph{Makefile} existente
       \end{itemize}
     \end{itemize}
-    \item Crearemos un nuevo fichero \emph{.c} nuevo en \emph{kernel/mysyscall.c}
+    \item Crearemos un nuevo fichero \emph{.c} bajo el directorio \emph{$\langle$source$\rangle$/kernel}
   \end{itemize}
   \begin{lstlisting}
 #include <linux/syscalls.h> /* For SYSCALL_DEFINEi() */
@@ -348,7 +348,11 @@ int main() {
   printf("Invocando system call\n");
   return syscall(__NR_MYSYSCALL);
 }
-  \end{lstlisting}  
+  \end{lstlisting}
+  \begin{lstlisting}
+$ gcc mysyscall.c -o mysyscall
+$ ./mysyscall
+  \end{lstlisting}
 \end{frame}
 
 
@@ -356,10 +360,12 @@ int main() {
 \frametitle{DESAFIO - Parche}
   \begin{lstlisting}
 ## Crear parche
-$ diff -urpN ${DIR_KERNEL_ORIGINAL} ${DIR_KERNEL_MODIFICADO} > patch-4.4.6-so2016
-
-## Aplicar parche
-$ patch -p1 < ${RUTA_MI_PARCHE}
+$ diff -urpN linux-4.4.6 linux-4.4.6-modificado > patch-4.4.6-so2016
+  \end{lstlisting}
+  \textcolor{red}{¡No olvidar ejecutar!}:
+  \begin{lstlisting}
+$ make clean
+$ make mrproper
   \end{lstlisting}  
 \end{frame}
 
