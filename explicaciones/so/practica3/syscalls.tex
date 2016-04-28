@@ -8,9 +8,9 @@
     \fbox{\includegraphics[width=0.4\textwidth]{images/layers.png}}
    \end{center}
 
-  \item En UNIX el API principal que provee estos servicios es libc:
+  \item En UNIX la API principal que provee estos servicios es libc:
   \begin{itemize}
-    \item Es el \alert{API} principal del SO
+    \item Es la \alert{API} principal del SO
     \item Provee las librerías estandar de C
     \item \textit{Es una Interface entre aplicaciones de usuario y las \alert{System Calls}(System Call Wrappers).} 
       \end{itemize} 
@@ -21,8 +21,8 @@
   \begin{itemize}
   \item La funcionalidad anterior está definida por el estandar POSIX
   \item Su próposito es proveer una interfaz común para lograr portabilidad
-  \item En el caso de las System Calls, el desarrollador generalmente interactúa con el \textit{API} y NO directamente con el Kernel   
-  \item En UNIX por lo general cada función del \alert{API} se corresponde con una \alert{System Call}
+  \item En el caso de las System Calls, el desarrollador generalmente interactúa con la \textit{API} y NO directamente con el Kernel   
+  \item En UNIX por lo general cada función de la \alert{API} se corresponde con una \alert{System Call}
   \end{itemize}
  \begin{center}
     \fbox{\includegraphics[width=0.8\textwidth]{images/printf.jpg}}
@@ -177,7 +177,7 @@ ret
    \item Respetar las convenciones del Kernel(ej. prefijo sys\_).
  \end{itemize}
 
-\begin{block}{/usr/src/linux-3.8/arch/x86/entry/syscalls/syscall\_32.tbl}
+\begin{block}{/usr/src/linux-\KERNELBASEVERSION/arch/x86/entry/syscalls/syscall\_32.tbl}
   \begin{block}{}
      343     i386    clock\_adjtime            sys\_clock\_adjtime    \\           
      347     i386    process\_vm\_readv        sys\_process\_vm\_readv  \\          
@@ -223,7 +223,7 @@ asmlinkage long sys\_newcall(int i);
 \begin{block}{En algún archivo ya incluido en los fuentes del Kernel...}
 asmlinkage int sys\_newcall(int a) { \\
 	printk(``calling newcall... '');   \\
-return a+1; \\
+  return a+1; \\
 }
 \end{block}
    \begin{itemize}
