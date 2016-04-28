@@ -84,7 +84,6 @@ void main(void){
    struct timeval tv;
    /* usando el wrapper de glibc */
    gettimeofday(&tv, NULL);
-
    /* Invocación explícita del  system call */
    syscall(SYS_gettimeofday, &tv, NULL);
 }
@@ -132,7 +131,7 @@ int main(void) {
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{System Calls e Interrupciones(cont.)}
+\frametitle{System Calls e Interrupciones (cont.)}
 \lstset{language=C,
                 basicstyle=\ttfamily,
                 keywordstyle=\color{blue}\ttfamily,
@@ -140,11 +139,9 @@ int main(void) {
                 commentstyle=\color{green}\ttfamily,
                 morecomment=[l][\color{magenta}]{\#}
 }
-El compilador generará:
+El compilador generará algo parecido a:
 \begin{lstlisting}
-_setuid:
-subl $4,%exp
-pushl %ebx
+...
 movzwl 12(%esp),%eax
 movl %eax,4(%esp)
 movl $20,%eax
@@ -155,16 +152,7 @@ testl %edx,%edx
 jge L2
 negl %edx
 movl %edx,_errno
-movl $-1,%eax
-popl %ebx
-addl $4,%esp
-ret
-L2:
-movl %edx,%eax
-popl %ebx
-addl $4,%esp
-ret
-
+...
 \end{lstlisting}
 \end{frame}
 
@@ -177,14 +165,11 @@ ret
    \item Respetar las convenciones del Kernel(ej. prefijo sys\_).
  \end{itemize}
 
-\begin{block}{/usr/src/linux-\KERNELBASEVERSION/arch/x86/entry/syscalls/syscall\_32.tbl}
+\begin{block}{/usr/src/linux-$\langle$X$\rangle$/arch/x86/entry/syscalls/syscall\_32.tbl}
   \begin{block}{}
-     343     i386    clock\_adjtime            sys\_clock\_adjtime    \\           
-     347     i386    process\_vm\_readv        sys\_process\_vm\_readv  \\          
-     348     i386    process\_vm\_writev       sys\_process\_vm\_writev \\          
-     349     i386    kcmp                      sys\_kcmp \\
-     350     i386    finit\_module             sys\_finit\_module \\
-     \alert{351     i386    newcall                   sys\_newcall} \\ 
+     $\langle$number$\rangle$ $\langle$abi$\rangle$ $\langle$name$\rangle$ $\langle$entry point$\rangle$ \\
+     ... \\
+     \alert{351   i386  newcall   sys\_newcall} \\ 
   \end{block}
 
 \end{block}
@@ -203,14 +188,14 @@ ret
     \end{itemize}   
  \end{itemize}
 
-\begin{block}{/usr/src/linux-3.8/include/linux/syscalls.h}
+\begin{block}{/usr/src/linux-\KERNELBASEVERSION/include/linux/syscalls.h}
 asmlinkage long sys\_newcall(int i);
 
 \end{block}
 
 \end{frame}
 
-\begin{frame}{System Calls en GNU Linux(Cont..)}
+\begin{frame}{System Calls en GNU Linux (cont.)}
    \begin{itemize}  
    \item Debemos nuestra syscall en algún punto del árbol de fuentes. 
    \item Podemos utilizar algún archivo existente.
