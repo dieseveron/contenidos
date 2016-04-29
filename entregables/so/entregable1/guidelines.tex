@@ -100,7 +100,7 @@
 		$ echo $RUTA
 		/bin;/usr/bin;/usr/local/bin
 	    \end{lstlisting}
-	    Entonces, si el usuario ingresa \textbf{tree}, primero se deberá comprobar si es un comando interno (una funcion bash en nuestro caso). Si no lo es, se lo buscará en \textbf{/usr/local/bin/}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir ``No se pudo encontrar el programa `tree'''.
+	    Entonces, si el usuario ingresa \textbf{tree}, por ejemplo, y se determino que es un comando externo, se lo buscará en \textbf{/usr/local/bin}, luego en \textbf{/usr/bin} y finalmente en \textbf{/bin}. En caso de que no se lo encuentre, la shell deberá imprimir ``No se pudo encontrar el programa `tree'''.
       \end{enumerate}
 
       \item Cree un directorio llamado \textbf{externalSO} a la misma altura que la shell para luego agregar esa ruta a la variable \textbf{RUTA}. El mismo debe contener lo siguiente: \label{puntoComandosExternos}
@@ -118,8 +118,9 @@
 
 \end{enumerate}
 
-\textbf{TIPS}:
+\textbf{AYUDAS}:
 \begin{itemize}
+	\item Investigue el comando interno \textit{eval}.
 	\item Para crear una \textit{subshell} puede utilizar \textbf{\&}.
 	\item Investigue las variables internas de \emph{bash}. Una que le va a ser de utilidad es \textbf{\$!}.
 	\item Investigue los comandos internos de \emph{bash}. Uno que le va a ser de utilidad es \textbf{wait}.
