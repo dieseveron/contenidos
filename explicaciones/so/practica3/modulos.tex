@@ -269,15 +269,12 @@ unregister_chrdev(major_number, "myDriver");
 \end{lstlisting}
 \end{frame}
 
-
-
-
 \begin{frame}[fragile]
 \frametitle{¿Como creamos un driver?(Cont..)}
   \begin{itemize}
   \item Operaciones sobre el dispositivo  
   \begin{itemize}
-    \item Escritura del archivo de dispositivo (Ej. echo "hi" > /dev/myDeviceFile) 
+    \item Escritura del archivo de dispositivo (Ej. echo ``hi'' > /dev/myDeviceFile) 
   \end{itemize}	
   \end{itemize}
 \lstset{language=C,
@@ -307,7 +304,7 @@ ssize_t myDriver_read(struct file *filp, char *buf,size_t count, loff_t *f_pos)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{¿Como creamos un driver?(Cont...)}
+\begin{frame}{¿Como creamos un driver? (cont.)}
   \begin{itemize}
   \item Parámetros de las funciones funciones:
  	 \begin{itemize}
@@ -319,9 +316,51 @@ ssize_t myDriver_read(struct file *filp, char *buf,size_t count, loff_t *f_pos)
   \end{itemize}
 \end{frame}
 
-	
+\begin{frame}
+\frametitle{EXPERIMENTO - Explicación}
+   \begin{itemize}  
+   \item Implementar un módulo que encienda los leds del teclado en base a un número escrito en una entrada del \emph{/proc}.
+   \item Cadena puede incluir los caracteres ‘1’,‘2’ y ‘3’:
+   \begin{itemize}
+      \item Si aparece el ‘1’ → encender Num Lock
+      \item Si aparece el ‘2’ → encender Caps Lock
+      \item Si aparece el ‘3’ → encender Scroll Lock
+    \end{itemize}
+   \item Tips:
+   \begin{itemize}
+      \item \emph{procfs} (\textit{process filesystem})
+      \item File Operations      
+      \item KBD Driver
+    \end{itemize}
+ \end{itemize}
+\end{frame}
 
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "main"
-%%% End:
+\begin{frame}[fragile]
+\frametitle{EXPERIMENTO - Implemetación}
+  \begin{itemize}
+    \item Utilizar:
+       \begin{itemize}
+          \item \href{https://github.com/unlp-so/contenidos/tree/master/explicaciones/so}{Fichero .c}
+          \item \href{https://github.com/unlp-so/contenidos/tree/master/explicaciones/so}{Makefile}
+       \end{itemize}
+  \end{itemize}
+  \begin{lstlisting}
+#Compilamos el módulo
+$ make
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{EXPERIMENTO - Test}
+  \begin{lstlisting}
+#Insertar el módulo
+$ sudo insmod procleds.ko
+
+#Encender leds
+$ sudo echo 1 > /proc/leds
+$ sudo echo 123 > /proc/leds
+
+#Eliminar módulo
+$ sudo rmmod procleds
+  \end{lstlisting}
+\end{frame}
