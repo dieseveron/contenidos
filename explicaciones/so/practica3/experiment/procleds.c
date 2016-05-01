@@ -1,9 +1,8 @@
-#include <linux/module.h> /* We're doing kernel work. Specifically, a module */
-#include <asm-generic/errno.h> /* Standard errors */
-#include <linux/tty.h>      /* For fg_console */
-#include <linux/kd.h>       /* For KDSETLED */
-#include <linux/vt_kern.h>
-#include <linux/proc_fs.h> /* Necessary because we use proc fs */
+#include <linux/module.h>       /* We're doing kernel work. Specifically, a module */
+#include <asm-generic/errno.h>  /* Standard errors */
+#include <linux/tty.h>          /* For fg_console */
+#include <linux/vt_kern.h>      /* For "vc_cons", KDSETLED. Keyboard interface */
+#include <linux/proc_fs.h>      /* Necessary because we use proc fs */
 
 /* Module information */
 MODULE_LICENSE("GPL");
@@ -15,7 +14,7 @@ MODULE_AUTHOR("SO");
 #define ALL_LEDS_OFF 0
 #define MAX_SIZE 5
 
-/* Keyboard driver */
+/* KDB keyboard driver */
 struct tty_driver* kbd_driver= NULL;
 /* procfs entry struct */
 static struct proc_dir_entry *proc_entry;
