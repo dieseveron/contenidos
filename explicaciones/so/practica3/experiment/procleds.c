@@ -1,10 +1,9 @@
-#include <linux/module.h>
-#include <asm-generic/errno.h>
-#include <linux/init.h>
+#include <linux/module.h> /* We're doing kernel work. Specifically, a module */
+#include <asm-generic/errno.h> /* Standard errors */
 #include <linux/tty.h>      /* For fg_console */
 #include <linux/kd.h>       /* For KDSETLED */
 #include <linux/vt_kern.h>
-#include <linux/proc_fs.h>
+#include <linux/proc_fs.h> /* Necessary because we use proc fs */
 
 /* Module information */
 MODULE_LICENSE("GPL");
@@ -54,6 +53,7 @@ static ssize_t procleds_write(struct file *filp, const char __user *buf, size_t 
   }
 
   /* Transfer data from user to kernel space in a secure way */
+  /* copy_to_user is an alternative to write_proc */
   if (copy_from_user(&str[0], buf, len))
     return -EFAULT;
 
@@ -61,7 +61,7 @@ static ssize_t procleds_write(struct file *filp, const char __user *buf, size_t 
   str[len] = '\0';
 
   for (i=0; i < len -1; i++) {
-    
+
     printk(KERN_INFO "%c", str[i]);
 
     switch (str[i]) {

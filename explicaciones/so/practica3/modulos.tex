@@ -308,10 +308,10 @@ ssize_t myDriver_read(struct file *filp, char *buf,size_t count, loff_t *f_pos)
   \begin{itemize}
   \item Parámetros de las funciones funciones:
  	 \begin{itemize}
- 	   \item Struct file: Estructura del kernel que representa un archivo abierto.
-	   \item char *buf: El dato a leído o a escribir desde/hacia el dispositivo(espacio de usuario) 
-	   \item size\_t count: La longitud de buf. 
-           \item loff\_t *f\_pos count: La posición manipulada
+ 	   \item struct file: Estructura del kernel que representa un archivo abierto.
+	   \item char *buf: El dato a leer o a escribir desde/hacia el dispositivo(espacio de usuario) 
+	   \item size\_t count: La longitud de a leer de \texttt{buf}.
+           \item loff\_t *f\_pos count: La posición actual en el archivo
  	 \end{itemize}  
   \end{itemize}
 \end{frame}
@@ -322,13 +322,15 @@ ssize_t myDriver_read(struct file *filp, char *buf,size_t count, loff_t *f_pos)
    \item Implementar un módulo que encienda los leds del teclado en base a un número escrito en una entrada del \emph{/proc}.
    \item Cadena puede incluir los caracteres ‘1’,‘2’ y ‘3’:
    \begin{itemize}
-      \item Si aparece el ‘1’ → encender Num Lock
-      \item Si aparece el ‘2’ → encender Caps Lock
-      \item Si aparece el ‘3’ → encender Scroll Lock
+      \item Si aparece el ‘1’ $\rightarrow$ encender Num Lock (\texttt{bit 1} encendido)
+      \item Si aparece el ‘2’ $\rightarrow$ encender Caps Lock (\texttt{bit 2} encendido)
+      \item Si aparece el ‘3’ $\rightarrow$ encender Scroll Lock (\texttt{bit 0} encendido)
     \end{itemize}
    \item Tips:
    \begin{itemize}     
       \item KBD Driver
+      \item Privilegios de \emph{root}
+      \item En la \texttt{VM} hay que asociar el dispositivo \texttt{USB}
     \end{itemize}
  \end{itemize}
 \end{frame}
