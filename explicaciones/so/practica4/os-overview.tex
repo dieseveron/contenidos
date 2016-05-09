@@ -4,15 +4,15 @@
 \begin{frame}
   \frametitle{Principales características}
   \begin{itemize}
-    \item Android corre sobre Linux (v3.10).
+    \item Android corre sobre Linux (v3.10 - \textit{LTS}).
     
     \item Android se aprovecha de Linux para:
       \begin{itemize}
-	\item Abstracción de hardware.
-	\item Administración de memoria.
-	\item Administración de CPU.
-	\item Networking.
-	\item Seguridad.
+  \item Abstracción de hardware.
+  \item Administración de memoria.
+  \item Administración de CPU.
+  \item Networking.
+  \item Seguridad.
       \end{itemize}
     
     \item El usuario no nota el Linux subyacente.
@@ -23,10 +23,10 @@
 \begin{frame}
   \frametitle{Eimología e Historia}
   \begin{itemize}
-    \item Philip K. Dick
+    \item ¿Sueñan los androides con ovejas eléctricas? - Philip K. Dick
     \begin{figure}
-	\includegraphics[scale=0.1]{images/andy.png}
-	\caption{Andy}
+  \includegraphics[scale=0.1]{images/andy.png}
+  \caption{Andy}
     \end{figure}
     
     \item Android Inc. $\rightarrow$ 2003.
@@ -49,7 +49,7 @@
     
     \item Reparación de bugs y agregación de funciones.    
     
-    \item v3.0 (Honeycomb), v4.0 (Ice Cream Sandwich), v5.1 (Lollipop).
+    \item v3.0 (Honeycomb), v4.4 (KitKat), v5.1 (Lollipop), v6.0 (Marshmallow), v7.0 (N).
   \end{itemize}
 \end{frame}
 
@@ -65,13 +65,15 @@
 \begin{frame}
   \frametitle{Procesos e Hilos - Componentes}
   \begin{itemize}
+    \item Componentes: \textit{activity}, \textit{service}, etc.
+
     \item Cuando se invoca el primer componente de una aplicación se crea un proceso Linux con un único thread (\textit{main}/\textit{UI} thread).
     
-    \item Por defecto todos los componentes de una aplicación se ejecutan sobre ese mismo thread.
+    \item Por defecto todos los componentes de una aplicación se ejecutan sobre ese mismo thread del proceso que represente a la aplicación.
     
     \item Los componentes pueden ser configurados para que ejecuten sobre diferentes procesos (\textit{android:process}).
     
-    \item Es posible crear threads dentro de cada proceso $\rightarrow$ importante para el acceso a la \textit{UI}.
+    \item Es posible crear threads dentro de cada proceso $\rightarrow$ importante para el acceso a la \textit{UI} (\emph{UI toolkit thread unsafe}).
   \end{itemize}
 \end{frame}
 
@@ -80,12 +82,12 @@
   \begin{itemize}
     \item Android elimina procesos bajo demanda ante la ausencia de memoria $\rightarrow$ no cuenta con área de intercambio.
     
-    \item Decición en base a Jerarquía de procesos clasificados en:
+    \item Decición en base a jerarquía de procesos clasificados en:
     \begin{itemize}
      \item \textit{Foreground process}
      \item \textit{Visible process} $\rightarrow$ \textit{onPause()}
-     \item \textit{Service process} $\rightarrow$ \textit{LRU}
-     \item \textit{Background process} $\rightarrow$ \textit{onStop()}
+     \item \textit{Service process} $\rightarrow$ \textit{startService()}
+     \item \textit{Background process} (\emph{LRU}) $\rightarrow$ \textit{onStop()}
      \item \textit{Empty process}
     \end{itemize}       
   \end{itemize}
@@ -109,8 +111,8 @@
       \item Cada thread es un thread Linux.
       
       \begin{figure}
-	\centering
-	\includegraphics[scale=0.3]{images/dvm-linux-processes.png}
+  \centering
+  \includegraphics[scale=0.3]{images/dvm-linux-processes.png}
       \end{figure}
   \end{itemize}
 \end{frame}
@@ -121,21 +123,21 @@
   \begin{table}
       \centering
       \resizebox{\textwidth}{!}{
-	  \begin{tabular}{| c | c |}
-	      \hline
-	      \bf DVM & \bf JVM \\
-	      \hline
-	      Máquina basada en registros & Máquina basada en stack \\
-	      \hline
-	      Diseñada para ejecutar sobre poca memoria & Consume más memoria \\
-	      \hline
-	      Ejecuta sus propios bytes codes (\textit{.dex}) $\rightarrow$ contiene multiples \textit{.class} & Ejecuta bytes codes Java (\textit{.class}) \\
-	      \hline 
-	      Uni-plataforma $\rightarrow$ Android & Multi-plataforma \\
-	      \hline
-	      Ejecutable $\rightarrow$ \textit{.apk} & Ejecutable $\rightarrow$ \textit{.jar} \\
-	      \hline
-	  \end{tabular}
+    \begin{tabular}{| c | c |}
+        \hline
+        \bf DVM & \bf JVM \\
+        \hline
+        Máquina basada en registros & Máquina basada en stack \\
+        \hline
+        Diseñada para ejecutar sobre poca memoria & Consume más memoria \\
+        \hline
+        Ejecuta sus propios bytes codes (\textit{.dex}) $\rightarrow$ contiene multiples \textit{.class} & Ejecuta bytes codes Java (\textit{.class}) \\
+        \hline 
+        Uni-plataforma $\rightarrow$ Android & Multi-plataforma \\
+        \hline
+        Ejecutable $\rightarrow$ \textit{.apk} & Ejecutable $\rightarrow$ \textit{.jar} \\
+        \hline
+    \end{tabular}
       }
   \end{table}
 \end{frame}
@@ -148,8 +150,8 @@
     
     \item \textbf{Gradle} es el \textit{application builder} oficial del \textit{SDK} de Android (\textit{build.gradle}).
     \begin{itemize}
-	\item Debug mode $\rightarrow$ automático.
-	\item Release mode.
+  \item Debug mode $\rightarrow$ automático.
+  \item Release mode.
     \end{itemize}
   \end{itemize}
   
@@ -187,7 +189,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Seguridad - Id. de usuario y permisos sobre archivos}
   \begin{itemize}
     \item Cuando se instala un \textit{.apk}, Android le otorga un \textit{userId} de Linux definitivo.
@@ -198,7 +200,12 @@
     
     \item Mismo \textit{userId} = Mismo usuario Linux = Misma aplicación = Mismos permisos (\textit{UGO}) sobre los archivos de la aplicación.
     
-    \item Las aplicaciones que comparten el \textit{userId} tienen que compartir la firma. Es decir que deben ser firmados por la misma clave privada.        
+    \item Las aplicaciones que comparten el \textit{userId} tienen que compartir la firma. Es decir que deben ser firmados por la misma clave privada.
+
+    \begin{lstlisting}
+# ls -l data/data/ | grep brow                              
+# drwxr-x--x u0_a14 u0_a14 2016-05-01 17:55 com.android.browse    
+    \end{lstlisting}
   \end{itemize}
 \end{frame}
 
@@ -213,7 +220,7 @@
 \begin{frame}[fragile]
   \frametitle{Seguridad - Recursos}
   \begin{itemize}
-    \item Se debe declarar el acceso a los recursos de manera estática (\textit{Manifest.xml}).
+    \item Se debe declarar el acceso a los recursos de manera estática (\textit{Manifest.xml}) $\rightarrow$ dinámico a partir de v6.0.
     
     \item Cuando la aplicación es instalada el usuario debe dar su consentimiento.
     
@@ -251,9 +258,9 @@
 
     \item Se emiten certificados auto-firmados (\textit{KeyTool}):
     \begin{itemize}
-	\item Debug mode $\rightarrow$ \textit{debug key} $\rightarrow$ el \textit{keystore} se crea automáticamente (\textit{\$HOME/.android}).
-	
-	\item Release mode $\rightarrow$ \textit{developer's private key} $\rightarrow$ manualmente.
+  \item Debug mode $\rightarrow$ \textit{debug key} $\rightarrow$ el \textit{keystore} se crea automáticamente (\textit{\$HOME/.android}).
+  
+  \item Release mode $\rightarrow$ \textit{developer's private key} $\rightarrow$ manualmente.
     \end{itemize}    
   \end{itemize}
 \end{frame}
@@ -261,7 +268,7 @@
 \begin{frame}
   \frametitle{Seguridad - Repaso y Overview}
   \begin{itemize}
-   \item A nivel de \textit{AndroidManifest} $\rightarrow$ permisos a recursos que termina de conseder el usuario (aplicado por el \textit{sandbox}).
+   \item A nivel de \textit{AndroidManifest} $\rightarrow$ permisos a recursos que termina de conseder o configurar el usuario (aplicado por el \textit{sandbox}).
    
    \item A nivel de las aplicaciones y sus archivos $\rightarrow$ certificado, \textit{userId} y permisos \textit{UGO} (aplicado por el \textit{sandbox}).
    
@@ -277,28 +284,28 @@
   \begin{itemize}
       \item SQLite: 
       \begin{itemize}
-	  \item Se maneja a través de una biblioteca.
-	  
-	  \item Bajo licencia \textit{GPL}.
-	  
-	  \item Actúa sobre archivos ordinarios.
+    \item Se maneja a través de una biblioteca.
+    
+    \item Bajo licencia \textit{GPL}.
+    
+    \item Actúa sobre archivos ordinarios.
 
-	  \item Cumple las propiedades ACID.
-	  
-	  \item \textit{/data/data/$<$package\_name$>$/databases/}
+    \item Cumple las propiedades ACID.
+    
+    \item \textit{/data/data/$<$package\_name$>$/databases/}
       \end{itemize}
       
       \item Shared preferences
       \begin{itemize}
-	  \item Se puede manejar una colección de ellas.
-	  
-	  \item Se almacenan a través de archivos XML.
-	  
-	  \item Se identifican a través del nombre que se le da al archivo.
-	  
-	  \item Pueden ser privadas (\textit{MODE\_PRIVATE}) o compartidas (\textit{MODE\_WORLD\_READABLE} o \textit{MODE\_WORLD\_WRITEABLE}).
-	  
-	  \item \textit{/data/data/$<$package\_name$>$/shared\_prefs/}
+    \item Se puede manejar una colección de ellas.
+    
+    \item Se almacenan a través de archivos XML.
+    
+    \item Se identifican a través del nombre que se le da al archivo.
+    
+    \item Pueden ser privadas (\textit{MODE\_PRIVATE}) o compartidas (\textit{MODE\_WORLD\_READABLE} o \textit{MODE\_WORLD\_WRITEABLE}).
+    
+    \item \textit{/data/data/$<$package\_name$>$/shared\_prefs/}
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -309,31 +316,31 @@
   \begin{itemize}
       \item Raw NAND flash:
       \begin{itemize}
-	  \item Subsistema \textit{MTD}.
-	  
-	  \item \textit{/dev/block/mtdblockN}
-	  
-	  \begin{lstlisting}
+    \item Subsistema \textit{MTD}.
+    
+    \item \textit{/dev/block/mtdblockN}
+    
+    \begin{lstlisting}
 $ cat /proc/mtd                                                 
 dev:    size   erasesize  name
 mtd0: 05660000 00020000 "system"
 mtd1: 04000000 00020000 "userdata"
 mtd2: 04000000 00020000 "cache"
-	  \end{lstlisting}
+    \end{lstlisting}
       \end{itemize} 
       
       \item SD, MicroSD y eMMC:
       \begin{itemize}
-	  \item Driver \textit{mmcblock}.
-	  
-	  \item \textit{/dev/block/mmcblk[chip number]p[partition number]}
-	  
-	  \begin{lstlisting}
+    \item Driver \textit{mmcblock}.
+    
+    \item \textit{/dev/block/mmcblk[chip number]p[partition number]}
+    
+    \begin{lstlisting}
 $ ls -l /dev/block/platform/msm_sdcc.1/by-name
 cache -> /dev/block/mmcblk0p36
 system -> /dev/block/mmcblk0p38
 userdata -> /dev/block/mmcblk0p40
-	  \end{lstlisting}
+    \end{lstlisting}
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -343,30 +350,30 @@ userdata -> /dev/block/mmcblk0p40
   \begin{itemize}
       \item YAFFS
       \begin{itemize}
-	\item Booteo más rápido.
-	
-	\item Consume menos memoria.
-	
-	\item Divide los archivos en páginas.
-	
-	\item \textit{GPL}.
-	
-	\item v1 y v2.
-	
-	\item Single-theading.
-	
-	\item Por lo general, hasta \textbf{Froyo} (v2.2).
-	
-	\item Especializado para funcionar en memorias de tipo raw NAND.
+  \item Booteo más rápido.
+  
+  \item Consume menos memoria.
+  
+  \item Divide los archivos en páginas.
+  
+  \item \textit{GPL}.
+  
+  \item v1 y v2.
+  
+  \item Single-theading.
+  
+  \item Por lo general, hasta \textbf{Froyo} (v2.2).
+  
+  \item Especializado para funcionar en memorias de tipo raw NAND.
       \end{itemize}
       
       \item Ext4
       \begin{itemize}
-	\item Multi-theading.
-	
-	\item Desde \textbf{Gingerbread} (v2.3).
-	
-	\item Utilizado generalmente en memorias SD, MicroSD o eMMC.
+  \item Multi-theading.
+  
+  \item Desde \textbf{Gingerbread} (v2.3).
+  
+  \item Utilizado generalmente en memorias SD, MicroSD o eMMC.
       \end{itemize}   
   \end{itemize}
 \end{frame}
@@ -396,9 +403,9 @@ userdata -> /dev/block/mmcblk0p40
   \begin{itemize}
       \item La idea de \textbf{Google} es mantener \textit{GPL} fuera del espacio de usuario:
       \begin{itemize}
-	  \item \textit{Apache v2} para el espacio de usuario.
-	  
-	  \item \textit{GPL} para el espacio de kernel.
+    \item \textit{Apache v2} para el espacio de usuario.
+    
+    \item \textit{GPL} para el espacio de kernel.
       \end{itemize}
       
       \item Además de tamaño y optimización, esta fue otra de las razones por las que implementaron su propia versión de \textit{libc} (\textit{BIONIC}).
